@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Tuner</string>
+    <string name="tuner_view">Tuner View</string>
+    <string name="vu_indicator">Vu Indicator</string>
+    <string name="guitar">Guitar</string>
+</resources>
