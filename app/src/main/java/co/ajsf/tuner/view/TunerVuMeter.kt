@@ -1,7 +1,6 @@
 package co.ajsf.tuner.view
 
 import android.content.Context
-import android.graphics.Canvas
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import co.ajsf.tuner.R

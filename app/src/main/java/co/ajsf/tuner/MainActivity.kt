@@ -3,15 +3,19 @@ package co.ajsf.tuner
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import co.ajsf.tuner.frequencyDetection.FrequencyDetectorImpl
-
+import co.ajsf.tuner.frequencyDetection.FrequencyDetector
+import co.ajsf.tuner.model.InstrumentFactory
+import co.ajsf.tuner.model.findClosestString
+import co.ajsf.tuner.tarsos.DetectionEngineImpl
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private val TAG = this.javaClass.canonicalName
-    private val frequencyDetector = FrequencyDetectorImpl()
+    private val frequencyDetector = FrequencyDetector { DetectionEngineImpl.builder() }
     private val requestCode = 202
     private val recordAudioPermission = RecordAudioPermissionHandler(this, requestCode)
+    private val instrument = InstrumentFactory.GUITAR
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +23,11 @@ class MainActivity : AppCompatActivity() {
         if (recordAudioPermission.isPermissionGranted().not()) {
             recordAudioPermission.requestPermission()
         }
+        selectInstrument()
+    }
+
+    private fun selectInstrument() {
+        tunerView.selectInstrument(instrument)
     }
 
     override fun onResume() {
@@ -36,6 +45,8 @@ class MainActivity : AppCompatActivity() {
     private fun listenForFrequencies() {
         frequencyDetector.listen {
             Log.d(TAG, it.toString())
+            val detectedString = instrument.findClosestString(it)
+            tunerView.selectString(detectedString.number)
         }
     }
 

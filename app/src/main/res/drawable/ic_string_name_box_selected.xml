@@ -9,7 +9,7 @@
         android:pathData="M100.825,4.003C102.585,4.003 103.995,5.423 103.995,7.173C103.995,26.533 103.995,81.463 103.995,100.833C103.995,102.583 102.585,104.003 100.825,104.003C81.465,104.003 26.535,104.003 7.165,104.003C5.415,104.003 3.995,102.583 3.995,100.833C3.995,81.463 3.995,26.533 3.995,7.173C3.995,5.423 5.415,4.003 7.165,4.003C26.535,4.003 81.465,4.003 100.825,4.003Z"
         android:strokeWidth="8"
         android:strokeAlpha="1"
-        android:strokeColor="@color/colorPrimaryDark" />
+        android:strokeColor="@color/colorAccent" />
     <path
         android:fillAlpha="1"
         android:fillColor="@color/colorPrimary"

@@ -16,6 +16,14 @@ class TunerStringView
         string_name_text.text = name.toString()
     }
 
+    fun setSelected() {
+        string_name_outline.setImageResource(R.drawable.ic_string_name_box_selected)
+    }
+
+    fun unselect() {
+        string_name_outline.setImageResource(R.drawable.ic_string_name_box)
+    }
+
     init {
         layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, 1f)
         LayoutInflater.from(context).inflate(R.layout.tuner_string, this)
