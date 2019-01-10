@@ -7,7 +7,6 @@ import co.ajsf.tuner.frequencyDetection.FrequencyDetector
 import co.ajsf.tuner.model.Instrument
 import co.ajsf.tuner.model.InstrumentFactory
 import co.ajsf.tuner.model.findClosestString
-import co.ajsf.tuner.tarsos.DetectionEngineImpl
 
 typealias SelectedStringInfo = Pair<Int, Int>
 typealias SelectedInstrumentInfo = Pair<String, List<Char>>
@@ -24,7 +23,7 @@ class TunerViewModel : ViewModel() {
     private val _selectedInstrumentInfo = MutableLiveData<SelectedInstrumentInfo>()
     private val _selectedStringInfo = MutableLiveData<SelectedStringInfo>()
 
-    private val frequencyDetector = FrequencyDetector { DetectionEngineImpl.builder() }
+    private val frequencyDetector = FrequencyDetector { FrequencyDetector.engineBuilder() }
 
     init {
         selectedInstrument.observeForever { instrument ->

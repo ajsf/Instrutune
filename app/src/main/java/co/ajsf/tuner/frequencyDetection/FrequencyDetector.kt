@@ -1,5 +1,7 @@
 package co.ajsf.tuner.frequencyDetection
 
+import co.ajsf.tuner.tarsos.DetectionEngineImpl
+
 typealias FrequencyListener = (Float) -> Unit
 
 class FrequencyDetector(private val engineBuilder: () -> DetectionEngine) {
@@ -32,6 +34,10 @@ class FrequencyDetector(private val engineBuilder: () -> DetectionEngine) {
         if (freqListener == null) throw NotListeningException()
         freqListener = null
         engine.stopListening()
+    }
+
+    companion object {
+        fun engineBuilder(): DetectionEngine = DetectionEngineImpl.builder()
     }
 }
 

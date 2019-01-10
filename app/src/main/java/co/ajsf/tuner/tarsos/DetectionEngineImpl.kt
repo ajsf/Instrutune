@@ -2,14 +2,12 @@ package co.ajsf.tuner.tarsos
 
 import be.tarsos.dsp.AudioDispatcher
 import be.tarsos.dsp.AudioEvent
-import be.tarsos.dsp.io.android.AudioDispatcherFactory
 import be.tarsos.dsp.pitch.PitchDetectionHandler
 import be.tarsos.dsp.pitch.PitchDetectionResult
 import be.tarsos.dsp.pitch.PitchProcessor
 import co.ajsf.tuner.frequencyDetection.DetectionEngine
 import co.ajsf.tuner.frequencyDetection.DetectionHandler
 import co.ajsf.tuner.mapper.TarsosResponseToModelMapper
-import co.ajsf.tuner.mapper.mapTarsosResponseToDetectionResult
 
 typealias TarsosResponse = Pair<PitchDetectionResult, AudioEvent>
 
@@ -50,11 +48,6 @@ class DetectionEngineImpl(
     }
 
     companion object {
-        fun builder(): DetectionEngineImpl {
-            return DetectionEngineImpl(
-                AudioDispatcherFactory
-                    .fromDefaultMicrophone(22050, 1024, 0), ::mapTarsosResponseToDetectionResult
-            )
-        }
+        fun builder(): DetectionEngineImpl = EngineBuilder.build()
     }
 }
