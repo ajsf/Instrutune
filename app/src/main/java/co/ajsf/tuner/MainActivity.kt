@@ -1,8 +1,8 @@
 package co.ajsf.tuner
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import co.ajsf.tuner.frequencyDetection.FrequencyDetector
 import co.ajsf.tuner.model.InstrumentFactory
 import co.ajsf.tuner.model.findClosestString
