@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import co.ajsf.tuner.R
-import co.ajsf.tuner.model.Instrument
 import kotlinx.android.synthetic.main.tuner_view.view.*
 
 class TunerView
@@ -16,9 +15,9 @@ class TunerView
         LinearLayout.inflate(context, R.layout.tuner_view, this)
     }
 
-    fun selectInstrument(instrument: Instrument) {
-        strings_view.setStringNames(instrument.strings.map { it.name })
-        selected_instrument_text.text = instrument.name
+    fun selectInstrument(name: String, stringNames: List<Char>) {
+        strings_view.setStringNames(stringNames)
+        selected_instrument_text.text = name
     }
 
     fun selectString(stringNumber: Int) = strings_view.selectString(stringNumber)

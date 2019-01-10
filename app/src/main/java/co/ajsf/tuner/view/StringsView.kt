@@ -20,11 +20,11 @@ class StringsView
         setBackgroundResource(R.color.backgroundColor)
     }
 
-    fun setStringNames(strings: List<String>) {
+    fun setStringNames(strings: List<Char>) {
         removeAllViews()
         stringViews = strings.map {
             TunerStringView(context).apply {
-                setStringName(it.first())
+                setStringName(it)
             }
         }
         stringViews.onEach { addView(it) }
