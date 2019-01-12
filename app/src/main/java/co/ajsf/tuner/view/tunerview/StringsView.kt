@@ -1,4 +1,4 @@
-package co.ajsf.tuner.view
+package co.ajsf.tuner.view.tunerview
 
 import android.content.Context
 import android.util.AttributeSet
@@ -35,7 +35,7 @@ class StringsView
         if (selectedString != -1) {
             stringViews[selectedString].unselect()
         }
-        if (stringNumber > -1) stringViews[stringNumber].setSelected()
+        if (stringNumber in stringViews.indices) stringViews[stringNumber].setSelected()
         selectedString = stringNumber
     }
 }

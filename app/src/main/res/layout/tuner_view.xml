@@ -20,13 +20,13 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/guitar" />
 
-    <co.ajsf.tuner.view.TunerVuMeter
+    <co.ajsf.tuner.view.tunerview.TunerVuMeter
         android:id="@+id/tuner_vu_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/selected_instrument_text" />
 
-    <co.ajsf.tuner.view.StringsView
+    <co.ajsf.tuner.view.tunerview.StringsView
         android:id="@+id/strings_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"

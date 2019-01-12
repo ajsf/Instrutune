@@ -5,8 +5,8 @@ import be.tarsos.dsp.AudioEvent
 import be.tarsos.dsp.pitch.PitchDetectionHandler
 import be.tarsos.dsp.pitch.PitchDetectionResult
 import be.tarsos.dsp.pitch.PitchProcessor
-import co.ajsf.tuner.frequencyDetection.DetectionEngine
-import co.ajsf.tuner.frequencyDetection.DetectionHandler
+import co.ajsf.tuner.frequencydetection.DetectionEngine
+import co.ajsf.tuner.frequencydetection.DetectionHandler
 import co.ajsf.tuner.mapper.TarsosResponseToModelMapper
 
 typealias TarsosResponse = Pair<PitchDetectionResult, AudioEvent>
@@ -45,9 +45,5 @@ class DetectionEngineImpl(
     fun handleDetection(pitchDetectionResult: PitchDetectionResult, audioEvent: AudioEvent) {
         val detectionResult = mapper.invoke(pitchDetectionResult to audioEvent)
         detectionHandler?.invoke(detectionResult)
-    }
-
-    companion object {
-        fun builder(): DetectionEngineImpl = EngineBuilder.build()
     }
 }

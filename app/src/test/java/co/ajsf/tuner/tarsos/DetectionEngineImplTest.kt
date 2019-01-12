@@ -3,7 +3,7 @@ package co.ajsf.tuner.tarsos
 import be.tarsos.dsp.AudioDispatcher
 import be.tarsos.dsp.AudioEvent
 import be.tarsos.dsp.pitch.PitchDetectionResult
-import co.ajsf.tuner.frequencyDetection.DetectionHandler
+import co.ajsf.tuner.frequencydetection.DetectionHandler
 import co.ajsf.tuner.mapper.TarsosResponseToModelMapper
 import co.ajsf.tuner.model.DetectionResult
 import com.nhaarman.mockitokotlin2.any

@@ -3,7 +3,7 @@ package co.ajsf.tuner.tarsos
 import be.tarsos.dsp.io.android.AudioDispatcherFactory
 import co.ajsf.tuner.mapper.mapTarsosResponseToDetectionResult
 
-object EngineBuilder {
+object TarsosEngineBuilder {
 
     fun build(): DetectionEngineImpl = DetectionEngineImpl(buildAudioDispatcher(), mapper)
 

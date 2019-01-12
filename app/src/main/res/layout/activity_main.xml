@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".view.TunerActivity">
 
-    <co.ajsf.tuner.view.TunerView
+    <co.ajsf.tuner.view.tunerview.TunerView
         android:id="@+id/tunerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -5,14 +5,16 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.yesButton
 
-class RecordAudioPermissionHandler(private val activity: AppCompatActivity, private val requestCode: Int) {
+class RecordAudioPermissionHandler(private val activity: AppCompatActivity) {
+
+    val requestCode = 202
 
     fun requestPermission(): Unit = with(activity) {
         val requestRecordAudioPermissionTitle = resources.getString(R.string.record_audio_permission_title)

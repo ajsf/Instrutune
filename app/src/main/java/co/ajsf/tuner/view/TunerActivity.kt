@@ -1,20 +1,29 @@
-package co.ajsf.tuner
+package co.ajsf.tuner.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import co.ajsf.tuner.viewmodel.SelectedInstrumentInfo
-import co.ajsf.tuner.viewmodel.SelectedStringInfo
+import co.ajsf.tuner.R
+import co.ajsf.tuner.RecordAudioPermissionHandler
+import co.ajsf.tuner.di.frequencyDetectionModule
+import co.ajsf.tuner.di.tunerActivityModule
 import co.ajsf.tuner.viewmodel.TunerViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.retainedKodein
 
-class MainActivity : AppCompatActivity() {
+class TunerActivity : AppCompatActivity(), KodeinAware {
 
-    private val recordAudioRequestCode = 202
-    private val recordAudioPermission = RecordAudioPermissionHandler(this, recordAudioRequestCode)
+    override val kodein: Kodein by retainedKodein {
+        import(tunerActivityModule())
+        import(frequencyDetectionModule())
+    }
 
-    private lateinit var viewModel: TunerViewModel
+    private val viewModel: TunerViewModel by buildViewModel()
+
+    private val recordAudioPermission = RecordAudioPermissionHandler(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,17 +34,13 @@ class MainActivity : AppCompatActivity() {
         initViewModel()
     }
 
-    private fun initViewModel() {
-        viewModel = ViewModelProviders.of(this).get(TunerViewModel::class.java)
-        val selectedStringObserver = Observer<SelectedStringInfo> {
-            tunerView.selectString(it.first)
-        }
-        viewModel.selectedStringInfo.observe(this, selectedStringObserver)
-        val selectedInstrumentObserver = Observer<SelectedInstrumentInfo> {
-            tunerView.selectInstrument(it.first, it.second)
-        }
-        viewModel.selectedInstrumentInfo.observe(this, selectedInstrumentObserver)
+    private fun initViewModel() = viewModel.apply {
+        selectedStringInfo.onUpdate { tunerView.selectString(it.first) }
+        selectedInstrumentInfo.onUpdate { tunerView.selectInstrument(it.first, it.second) }
     }
+
+    private fun <T> LiveData<T>.onUpdate(action: (T) -> Unit) =
+        observe(this@TunerActivity, Observer { action.invoke(it) })
 
     override fun onResume() {
         super.onResume()
@@ -52,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ): Unit = when {
-        requestCode != this.recordAudioRequestCode -> Unit
+        requestCode != recordAudioPermission.requestCode -> Unit
         recordAudioPermission.isPermissionGranted() -> viewModel.listenForFrequencies()
         recordAudioPermission.userCheckedNeverAskAgain() ->
             recordAudioPermission.showSettingsReasonAndRequest()

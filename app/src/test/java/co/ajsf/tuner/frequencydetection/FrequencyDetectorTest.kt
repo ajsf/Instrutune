@@ -1,4 +1,4 @@
-package co.ajsf.tuner.frequencyDetection
+package co.ajsf.tuner.frequencydetection
 
 import co.ajsf.tuner.model.DetectionResult
 import com.nhaarman.mockitokotlin2.any
