@@ -9,7 +9,7 @@ import co.ajsf.tuner.RecordAudioPermissionHandler
 import co.ajsf.tuner.di.frequencyDetectionModule
 import co.ajsf.tuner.di.tunerActivityModule
 import co.ajsf.tuner.viewmodel.TunerViewModel
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_tuner.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.retainedKodein
@@ -27,7 +27,7 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_tuner)
         if (recordAudioPermission.isPermissionGranted().not()) {
             recordAudioPermission.requestPermission()
         }
@@ -35,8 +35,8 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun initViewModel() = viewModel.apply {
-        selectedStringInfo.onUpdate { tunerView.selectString(it.first) }
-        selectedInstrumentInfo.onUpdate { tunerView.selectInstrument(it.first, it.second) }
+        selectedStringInfo.onUpdate { tuner_view.selectString(it.first) }
+        selectedInstrumentInfo.onUpdate { tuner_view.selectInstrument(it.first, it.second) }
     }
 
     private fun <T> LiveData<T>.onUpdate(action: (T) -> Unit) =
