@@ -79,18 +79,6 @@ internal class FrequencyDetectorTest {
         }
 
         @Test
-        fun `when called with a non-pitched non-silent result, it doesn't call the frequencyListener`() {
-            detector.detectionHandler(nonPitchedNoise)
-            verify(mockFrequencyListener, times(0)).invoke(any())
-        }
-
-        @Test
-        fun `when called with a pitched non-silent result with low probability, it doesn't call the frequencyListener`() {
-            detector.detectionHandler(lowProbabilityNoise)
-            verify(mockFrequencyListener, times(0)).invoke(any())
-        }
-
-        @Test
         fun `when called with a silent result, it calls the frequencyListener with -1`() {
             detector.detectionHandler(silence)
             verify(mockFrequencyListener).invoke(-1f)

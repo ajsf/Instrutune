@@ -35,7 +35,7 @@ internal class DetectionEngineImplTest {
     @BeforeEach
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        detectionEngine = DetectionEngineImpl(mockDispatcher, mockMapper)
+        detectionEngine = DetectionEngineImpl(mockDispatcher, mockMapper, 1, 1)
         detectionEngine.listen(mockDetectionHandler)
     }
 

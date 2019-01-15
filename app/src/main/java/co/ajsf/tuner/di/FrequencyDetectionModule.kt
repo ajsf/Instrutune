@@ -14,6 +14,6 @@ fun frequencyDetectionModule() = Kodein
             FrequencyDetector { instance() }
         }
         bind<DetectionEngine>() with provider {
-            TarsosEngineBuilder.build() as DetectionEngine
+            TarsosEngineBuilder.build(44100, 2048) as DetectionEngine
         }
     }

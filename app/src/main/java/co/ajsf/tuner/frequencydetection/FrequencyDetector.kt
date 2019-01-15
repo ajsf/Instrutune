@@ -10,11 +10,11 @@ class FrequencyDetector(private val engineBuilder: EngineBuilder) {
 
     val detectionHandler: DetectionHandler = { result ->
         result.apply {
-            if (isSilence.not() && isPitched && probability > 0.80) {
-                println("DETECTED: Freq: $pitch Probability: $probability, Dbspl: $dBSPL")
+            println("DETECTED: Freq: $pitch Probability: $probability, Dbspl: $dBSPL")
+            if (isSilence.not() && isPitched && probability > 0.88) {
                 lastPitch = pitch
                 freqListener?.invoke(lastPitch)
-            } else if (isSilence && lastPitch != -1f) {
+            } else if (lastPitch != -1f) {
                 lastPitch = -1f
                 freqListener?.invoke(lastPitch)
             }

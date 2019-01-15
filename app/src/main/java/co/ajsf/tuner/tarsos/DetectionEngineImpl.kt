@@ -13,7 +13,9 @@ typealias TarsosResponse = Pair<PitchDetectionResult, AudioEvent>
 
 class DetectionEngineImpl(
     private val dispatcher: AudioDispatcher,
-    private val mapper: TarsosResponseToModelMapper
+    private val mapper: TarsosResponseToModelMapper,
+    sampleRate: Int,
+    bufferSize: Int
 ) : DetectionEngine {
 
     private var audioThread: Thread? = null
@@ -24,7 +26,7 @@ class DetectionEngineImpl(
     }
 
     private val pitchProcessor = PitchProcessor(
-        PitchProcessor.PitchEstimationAlgorithm.MPM, 22050f, 1024, pdh
+        PitchProcessor.PitchEstimationAlgorithm.MPM, sampleRate.toFloat(), bufferSize, pdh
     )
 
     override fun listen(detectionHandler: DetectionHandler) {
