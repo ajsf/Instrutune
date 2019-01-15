@@ -31,11 +31,18 @@ class StringsView
     }
 
     fun selectString(stringNumber: Int) {
-        Log.d("DETECT", "Selecting string: $stringNumber")
-        if (selectedString != -1) {
-            stringViews[selectedString].unselect()
+        if (stringNumber in stringViews.indices) {
+            Log.d("DETECT", "Selecting string: $stringNumber")
+            unselectStrings()
+            stringViews[stringNumber].setSelected()
+            selectedString = stringNumber
         }
-        if (stringNumber in stringViews.indices) stringViews[stringNumber].setSelected()
-        selectedString = stringNumber
+    }
+
+    fun unselectStrings() {
+        if (selectedString in stringViews.indices) {
+            stringViews[selectedString].unselect()
+            selectedString = -1
+        }
     }
 }

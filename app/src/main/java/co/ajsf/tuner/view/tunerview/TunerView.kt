@@ -20,5 +20,15 @@ class TunerView
         selected_instrument_text.text = name
     }
 
-    fun selectString(stringNumber: Int) = strings_view.selectString(stringNumber)
+    fun selectString(stringNumber: Int) {
+        if (stringNumber != -1) {
+            strings_view.selectString(stringNumber)
+            tuner_vu_view.setIndicatorVisibility(true)
+        } else {
+            strings_view.unselectStrings()
+            tuner_vu_view.setIndicatorVisibility(false)
+        }
+    }
+
+    fun setDelta(delta: Float) = tuner_vu_view.setIndicatorDelta(delta)
 }
