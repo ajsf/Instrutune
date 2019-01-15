@@ -37,7 +37,9 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
     private fun initViewModel() = viewModel.apply {
         selectedStringInfo.onUpdate {
             tuner_view.selectString(it.first)
-            tuner_view.setDelta(it.second)
+            if (it.first != -1) {
+                tuner_view.setDelta(it.second)
+            }
         }
         selectedInstrumentInfo.onUpdate { tuner_view.selectInstrument(it.first, it.second) }
     }

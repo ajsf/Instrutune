@@ -1,8 +1,8 @@
 package co.ajsf.tuner.view.tunerview
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import android.widget.LinearLayout
 import co.ajsf.tuner.R
 import kotlinx.android.synthetic.main.tuner_vu_meter.view.*
@@ -16,19 +16,23 @@ class TunerVuMeter
         inflate(context, R.layout.tuner_vu_meter, this)
     }
 
-    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
-        super.onLayout(changed, l, t, r, b)
-        setIndicatorDelta(0f)
-    }
-
     fun setIndicatorDelta(delta: Float) {
-        vu_indicator.x = calculateTunerXValue(width, delta)
+        val xTranslation = calculateVuMeterXTranslation(width, delta)
+        ObjectAnimator.ofFloat(vu_indicator, "translationX", xTranslation).apply {
+            duration = 100
+            start()
+        }
     }
 
     fun setIndicatorVisibility(isVisible: Boolean) {
-        vu_indicator.visibility = when {
-            isVisible -> View.VISIBLE
-            else -> View.GONE
+        if (isVisible) {
+            vu_indicator.translationX = 0f
+            vu_indicator.imageAlpha = 255
+        } else {
+            ObjectAnimator.ofInt(vu_indicator, "imageAlpha", 0).apply {
+                duration = 800
+                start()
+            }
         }
     }
 }

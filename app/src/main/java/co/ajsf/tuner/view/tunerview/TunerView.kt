@@ -1,6 +1,7 @@
 package co.ajsf.tuner.view.tunerview
 
 import android.content.Context
+import android.os.Handler
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import co.ajsf.tuner.R
@@ -25,8 +26,10 @@ class TunerView
             strings_view.selectString(stringNumber)
             tuner_vu_view.setIndicatorVisibility(true)
         } else {
-            strings_view.unselectStrings()
-            tuner_vu_view.setIndicatorVisibility(false)
+            Handler().postDelayed({
+                tuner_vu_view.setIndicatorVisibility(false)
+                strings_view.unselectStrings()
+            }, 800)
         }
     }
 
