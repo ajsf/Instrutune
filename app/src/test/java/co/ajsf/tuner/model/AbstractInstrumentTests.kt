@@ -37,7 +37,7 @@ internal abstract class AbstractInstrumentTests {
     fun `it returns a delta of 0 for tuned frequencies`() {
         instrument.strings.forEach { string ->
             val stringData = instrument.findClosestString(string.tunedFreq)
-            assertEquals(0, stringData.delta)
+            assertEquals(0f, stringData.delta)
         }
     }
 
@@ -50,10 +50,10 @@ internal abstract class AbstractInstrumentTests {
     }
 
     @Test
-    fun `it returns a delta of 75 for max frequencies`() {
+    fun `it returns a delta of 100 for max frequencies`() {
         instrument.strings.forEach { string ->
             val stringData = instrument.findClosestString(string.maxFreq)
-            assertEquals(75, stringData.delta)
+            assertEquals(100f, stringData.delta)
         }
     }
 
@@ -74,10 +74,10 @@ internal abstract class AbstractInstrumentTests {
     }
 
     @Test
-    fun `it returns a delta of -75 for min frequencies`() {
+    fun `it returns a delta of -100 for min frequencies`() {
         instrument.strings.forEach { string ->
             val stringData = instrument.findClosestString(string.minFreq)
-            assertEquals(-75, stringData.delta)
+            assertEquals(-100f, stringData.delta)
         }
     }
 

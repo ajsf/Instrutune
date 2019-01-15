@@ -8,7 +8,7 @@ import co.ajsf.tuner.model.Instrument
 import co.ajsf.tuner.model.InstrumentFactory
 import co.ajsf.tuner.model.findClosestString
 
-typealias SelectedStringInfo = Pair<Int, Int>
+typealias SelectedStringInfo = Pair<Int, Float>
 typealias SelectedInstrumentInfo = Pair<String, List<Char>>
 
 class TunerViewModel(private val frequencyDetector: FrequencyDetector) : ViewModel() {
@@ -28,7 +28,7 @@ class TunerViewModel(private val frequencyDetector: FrequencyDetector) : ViewMod
             val info = instrument.name to instrument.strings.map { it.name.first() }
             _selectedInstrumentInfo.postValue(info)
         }
-        _selectedStringInfo.postValue(-1 to 0)
+        _selectedStringInfo.postValue(-1 to 0f)
         selectInstrument(InstrumentFactory.GUITAR)
     }
 
