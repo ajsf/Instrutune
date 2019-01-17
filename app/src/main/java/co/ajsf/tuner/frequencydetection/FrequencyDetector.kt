@@ -1,42 +1,15 @@
 package co.ajsf.tuner.frequencydetection
 
-typealias FrequencyListener = (Float) -> Unit
+import io.reactivex.Flowable
 
-class FrequencyDetector(private val engineBuilder: EngineBuilder) {
+class FrequencyDetector(private val engine: DetectionEngine) {
 
-    private var freqListener: ((Float) -> Unit)? = null
-    private var lastPitch = Float.MIN_VALUE
-    private lateinit var engine: DetectionEngine
+    fun listen(): Flowable<Float> {
 
-    val detectionHandler: DetectionHandler = { result ->
-        result.apply {
-            println("DETECTED: Freq: $pitch Probability: $probability, Dbspl: $dBSPL")
-            if (isSilence.not() && isPitched && probability > 0.88) {
-                lastPitch = pitch
-                freqListener?.invoke(lastPitch)
-            } else if (lastPitch != -1f) {
-                lastPitch = -1f
-                freqListener?.invoke(lastPitch)
-            }
-        }
-    }
+        val micInput = engine.listen().filter { it.pitch > -1.0 }.distinctUntilChanged()
 
-    fun listen(listener: FrequencyListener) {
-        if (freqListener != null) throw CurrentlyListeningException()
-        freqListener = listener
-        engine = engineBuilder()
-        engine.listen(detectionHandler)
-    }
-
-    fun stopListening() {
-        if (freqListener == null) throw NotListeningException()
-        freqListener = null
-        engine.stopListening()
+        return micInput.map {
+            if (it.isSilence) -1f else it.pitch
+        }.distinctUntilChanged()
     }
 }
-
-class CurrentlyListeningException :
-    Exception("The frequency detector is currently listening. Call stopListening before calling listen again.")
-
-class NotListeningException :
-    Exception("The frequency detector is not listening listening. Call listen before calling stopListening again.")

@@ -30,11 +30,12 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
         setContentView(R.layout.activity_tuner)
         if (recordAudioPermission.isPermissionGranted().not()) {
             recordAudioPermission.requestPermission()
+        } else {
+            initViewModel()
         }
-        initViewModel()
     }
 
-    private fun initViewModel() = viewModel.apply {
+    private fun initViewModel(): Unit = with(viewModel) {
         selectedStringInfo.onUpdate {
             tuner_view.selectString(it.first)
             if (it.first != -1) {
@@ -47,23 +48,11 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
     private fun <T> LiveData<T>.onUpdate(action: (T) -> Unit) =
         observe(this@TunerActivity, Observer { action.invoke(it) })
 
-    override fun onResume() {
-        super.onResume()
-        if (recordAudioPermission.isPermissionGranted()) {
-            viewModel.listenForFrequencies()
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.stopListening()
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ): Unit = when {
         requestCode != recordAudioPermission.requestCode -> Unit
-        recordAudioPermission.isPermissionGranted() -> viewModel.listenForFrequencies()
+        recordAudioPermission.isPermissionGranted() -> initViewModel()
         recordAudioPermission.userCheckedNeverAskAgain() ->
             recordAudioPermission.showSettingsReasonAndRequest()
         else -> recordAudioPermission.requestPermission()
