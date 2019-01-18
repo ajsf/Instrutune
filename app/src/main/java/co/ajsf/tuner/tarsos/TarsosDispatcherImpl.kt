@@ -31,8 +31,8 @@ class TarsosDispatcherImpl(
         }
         val processor = processorBuilder(pdh)
         dispatcher.addAudioProcessor(processor)
-        dispatcher.run()
         listening = true
+        dispatcher.run()
     }
 
     override fun stop() {
