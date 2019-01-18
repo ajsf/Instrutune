@@ -25,6 +25,8 @@ class TunerStringView
 
     fun unselect() {
         string_image.clearAnimation()
+        val shakeEndAnimation = AnimationUtils.loadAnimation(context, R.anim.string_shake_end)
+        string_image.startAnimation(shakeEndAnimation)
         string_name_outline.setImageResource(R.drawable.ic_string_name_box)
     }
 

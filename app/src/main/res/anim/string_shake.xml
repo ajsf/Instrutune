@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shareInterpolator="false">
-     <translate
-         android:duration="6"
-         android:fromXDelta="-5%"
-         android:interpolator="@android:anim/anticipate_overshoot_interpolator"
-         android:repeatCount="5"
-         android:toXDelta="5%" />
+    android:repeatMode="reverse">
     <translate
-        android:duration="6"
-        android:fromXDelta="-4%"
-        android:interpolator="@android:anim/decelerate_interpolator"
-        android:repeatCount="12"
-        android:startOffset="24"
-        android:toXDelta="4%" />
+        android:duration="30"
+        android:fromXDelta="-6%"
+        android:interpolator="@android:anim/overshoot_interpolator"
+        android:repeatCount="8"
+        android:toXDelta="6%" />
 </set>
