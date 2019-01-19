@@ -19,21 +19,17 @@ class TarsosFlowable(tarsosDispatcher: TarsosDispatcher, scheduler: Scheduler) :
             emitter.setCancellable {
                 println("Detect Engine: cancelling")
                 tarsosDispatcher.stop()
-                emitter.onComplete()
             }
 
             tarsosDispatcher.listen { res ->
                 try {
                     if (!emitter.isCancelled) {
                         emitter.onNext(res)
-                    } else {
-                        emitter.onComplete()
                     }
                 } catch (e: IOException) {
                     emitter.onError(e)
                 }
             }
-
         }, BackpressureStrategy.DROP).subscribeOn(scheduler).share()
     }
 
