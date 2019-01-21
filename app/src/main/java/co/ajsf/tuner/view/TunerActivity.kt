@@ -1,6 +1,8 @@
 package co.ajsf.tuner.view
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -10,13 +12,17 @@ import co.ajsf.tuner.di.frequencyDetectionModule
 import co.ajsf.tuner.di.tunerActivityModule
 import co.ajsf.tuner.viewmodel.TunerViewModel
 import kotlinx.android.synthetic.main.activity_tuner.*
+import org.jetbrains.anko.selector
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
-import org.kodein.di.android.retainedKodein
+import org.kodein.di.android.closestKodein
 
 class TunerActivity : AppCompatActivity(), KodeinAware {
 
-    override val kodein: Kodein by retainedKodein {
+    private val _parentKodein: Kodein by closestKodein()
+
+    override val kodein = Kodein.lazy {
+        extend(_parentKodein)
         import(tunerActivityModule())
         import(frequencyDetectionModule())
     }
@@ -43,6 +49,26 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
             }
         }
         selectedInstrumentInfo.onUpdate { tuner_view.selectInstrument(it.first, it.second) }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.options_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
+        R.id.select_instrument -> {
+            showSelectInstrumentDialog()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun showSelectInstrumentDialog() {
+        val instruments = viewModel.getInstruments().map { it.name }
+        selector("Select an instrument:", instruments) { _, i ->
+            viewModel.saveSelectedInstrument(instruments[i])
+        }
     }
 
     private fun <T> LiveData<T>.onUpdate(action: (T) -> Unit) =

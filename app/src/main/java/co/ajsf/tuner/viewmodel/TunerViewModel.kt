@@ -4,16 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
+import co.ajsf.tuner.data.InstrumentRepository
 import co.ajsf.tuner.frequencydetection.FrequencyDetector
 import co.ajsf.tuner.model.Instrument
-import co.ajsf.tuner.model.InstrumentFactory
 import co.ajsf.tuner.model.NO_STRING
 import co.ajsf.tuner.model.findClosestString
 
 typealias SelectedStringInfo = Pair<Int, Float>
 typealias SelectedInstrumentInfo = Pair<String, List<Char>>
 
-class TunerViewModel(frequencyDetector: FrequencyDetector) : ViewModel() {
+class TunerViewModel(frequencyDetector: FrequencyDetector, private val instrumentRepository: InstrumentRepository) :
+    ViewModel() {
 
     val selectedInstrumentInfo: LiveData<SelectedInstrumentInfo>
         get() = _selectedInstrumentInfo
@@ -30,9 +31,20 @@ class TunerViewModel(frequencyDetector: FrequencyDetector) : ViewModel() {
             val info = instrument.name to instrument.strings.map { it.name.first() }
             _selectedInstrumentInfo.postValue(info)
         }
-        selectInstrument(InstrumentFactory.GUITAR)
+        getSelectedInstrument()
     }
 
-    private fun selectInstrument(instrument: Instrument) = selectedInstrument
-        .postValue(instrument)
+    fun getInstruments(): List<Instrument> {
+        return instrumentRepository.getInstruments()
+    }
+
+    fun saveSelectedInstrument(instrumentName: String) {
+        instrumentRepository.saveSelectedInstrument(instrumentName)
+        getSelectedInstrument()
+    }
+
+    private fun getSelectedInstrument() {
+        val instrument = instrumentRepository.getSelectedInstrument()
+        selectedInstrument.postValue(instrument)
+    }
 }
