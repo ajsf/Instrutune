@@ -7,6 +7,7 @@
 /.idea/workspace.xml
 /.idea/misc.xml
 /.idea/markdown-navigator.xml
+/.idea/*
 .DS_Store
 /build
 /captures
