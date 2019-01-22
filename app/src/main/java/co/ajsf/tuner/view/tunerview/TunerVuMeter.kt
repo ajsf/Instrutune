@@ -19,18 +19,17 @@ class TunerVuMeter
     fun setIndicatorDelta(delta: Float) {
         val xTranslation = calculateVuMeterXTranslation(width, delta)
         ObjectAnimator.ofFloat(vu_indicator, "translationX", xTranslation).apply {
-            duration = 60
+            duration = 400
             start()
         }
     }
 
     fun setIndicatorVisibility(isVisible: Boolean) {
         if (isVisible) {
-            vu_indicator.translationX = 0f
             vu_indicator.imageAlpha = 255
         } else {
-            ObjectAnimator.ofInt(vu_indicator, "imageAlpha", 0).apply {
-                duration = 800
+            ObjectAnimator.ofInt(vu_indicator, "imageAlpha", 60).apply {
+                duration = 400
                 start()
             }
         }

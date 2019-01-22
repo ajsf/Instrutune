@@ -2,9 +2,9 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:repeatMode="reverse">
     <translate
-        android:duration="30"
-        android:fromXDelta="-6%"
+        android:duration="40"
+        android:fromXDelta="-8%"
         android:interpolator="@android:anim/overshoot_interpolator"
         android:repeatCount="8"
-        android:toXDelta="6%" />
+        android:toXDelta="8%" />
 </set>
