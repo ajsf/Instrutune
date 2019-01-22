@@ -17,7 +17,24 @@ fun tarsosModule() = Kodein
         val sampleRate = 44100
         val bufferSize = 4096
 
-        bind<PitchProcessorBuilder>() with provider {
+        bind<TarsosResponseStream>() with provider {
+            TarsosFlowable(instance(), Schedulers.io())
+        }
+
+        bind<TarsosDispatcher>() with provider {
+            TarsosDispatcherImpl(instance(), instance())
+        }
+
+        bind<DispatcherFactory>() with provider {
+            {
+                AudioDispatcherFactory
+                    .fromDefaultMicrophone(
+                        sampleRate, bufferSize, bufferSize / 2
+                    )
+            }
+        }
+
+        bind<PitchProcessorFactory>() with provider {
             { pdh: PitchDetectionHandler ->
                 PitchProcessor(
                     PitchProcessor.PitchEstimationAlgorithm.FFT_YIN,
@@ -30,20 +47,5 @@ fun tarsosModule() = Kodein
 
         bind<TarsosResponseToModelMapper>() with provider { ::mapTarsosResponseToDetectionResult }
 
-        bind<AudioDispatcherBuilder>() with provider {
-            {
-                AudioDispatcherFactory
-                    .fromDefaultMicrophone(
-                        sampleRate, bufferSize, bufferSize / 2
-                    )
-            }
-        }
 
-        bind<TarsosDispatcher>() with provider {
-            TarsosDispatcherImpl(instance(), instance())
-        }
-
-        bind<TarsosResponseStream>() with provider {
-            TarsosFlowable(instance(), Schedulers.io())
-        }
     }

@@ -7,16 +7,16 @@ import be.tarsos.dsp.pitch.PitchDetectionResult
 import be.tarsos.dsp.pitch.PitchProcessor
 import co.ajsf.tuner.frequencydetection.DetectorDispatcher
 
-typealias AudioDispatcherBuilder = () -> AudioDispatcher
-typealias PitchProcessorBuilder = (PitchDetectionHandler) -> PitchProcessor
+typealias DispatcherFactory = () -> AudioDispatcher
+typealias PitchProcessorFactory = (PitchDetectionHandler) -> PitchProcessor
 
 typealias TarsosResponse = Pair<PitchDetectionResult, AudioEvent>
 typealias TarsosListener = (TarsosResponse) -> Unit
 typealias TarsosDispatcher = DetectorDispatcher<TarsosResponse>
 
 class TarsosDispatcherImpl(
-    private val audioDispatcherBuilder: AudioDispatcherBuilder,
-    private val processorBuilder: PitchProcessorBuilder
+    private val dispatcherFactory: DispatcherFactory,
+    private val processorFactory: PitchProcessorFactory
 ) :
     TarsosDispatcher {
 
@@ -25,11 +25,11 @@ class TarsosDispatcherImpl(
 
     override fun listen(listener: TarsosListener) {
         if (listening) throw CurrentlyListeningException()
-        dispatcher = audioDispatcherBuilder()
+        dispatcher = dispatcherFactory()
         val pdh = PitchDetectionHandler { res, event ->
             listener(res to event)
         }
-        val processor = processorBuilder(pdh)
+        val processor = processorFactory(pdh)
         dispatcher.addAudioProcessor(processor)
         listening = true
         dispatcher.run()
