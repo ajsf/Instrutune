@@ -1,7 +1,7 @@
 package co.ajsf.tuner.mapper
 
-import co.ajsf.tuner.model.DetectionResult
 import co.ajsf.tuner.frequencydetection.tarsos.TarsosResponse
+import co.ajsf.tuner.model.DetectionResult
 
 typealias TarsosResponseToModelMapper = (TarsosResponse) -> DetectionResult
 
@@ -9,7 +9,7 @@ fun mapTarsosResponseToDetectionResult(response: TarsosResponse): DetectionResul
     val (res, event) = response
     return DetectionResult(
         res.pitch,
-        event.isSilence(-46.0),
+        event.isSilence(-50.0),
         res.isPitched,
         res.probability,
         event.getdBSPL().toFloat()

@@ -3,12 +3,12 @@ package co.ajsf.tuner.model
 object InstrumentFactory {
     val GUITAR = Instrument(
         "Guitar", listOf(
-            InstrumentString(name = "E", tunedFreq = 82f, minFreq = 60f, maxFreq = 96f),
+            InstrumentString(name = "E", tunedFreq = 82.41f, minFreq = 60f, maxFreq = 96f),
             InstrumentString(name = "A", tunedFreq = 110f, minFreq = 96.01f, maxFreq = 128f),
-            InstrumentString(name = "D", tunedFreq = 146f, minFreq = 128.01f, maxFreq = 171f),
+            InstrumentString(name = "D", tunedFreq = 146.8f, minFreq = 128.01f, maxFreq = 171f),
             InstrumentString(name = "G", tunedFreq = 196f, minFreq = 171.01f, maxFreq = 221f),
-            InstrumentString(name = "B", tunedFreq = 246f, minFreq = 221.01f, maxFreq = 287f),
-            InstrumentString(name = "E", tunedFreq = 329f, minFreq = 287.01f, maxFreq = 371f)
+            InstrumentString(name = "B", tunedFreq = 246.9f, minFreq = 221.01f, maxFreq = 287f),
+            InstrumentString(name = "E", tunedFreq = 329.6f, minFreq = 287.01f, maxFreq = 371f)
         )
     )
 
