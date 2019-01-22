@@ -8,21 +8,24 @@ class FrequencyDetector(private val engine: DetectionEngine) {
     fun listen(): Flowable<Float> {
 
         val micInput = engine.listen()
-            .filter { it.pitch > -1.0 && it.probability > 0.85 }
+            .filter { it.pitch > -1.0 }
 
         val noise = micInput
-            .filter { it.isSilence.not() }
             .buffer(200, TimeUnit.MILLISECONDS)
             .filter { it.isNotEmpty() }
-            .flatMap { detectionResults ->
-                Flowable.just(detectionResults.maxBy { it.probability })
-            }
+            .map { it.groupBy { result -> result.pitch.roundToTen() } }
+            .map { it.maxBy { result -> result.value.size } }
+            .map { it.value }
+            .filter { it.size > 2 }
+            .flatMap { Flowable.just(it.maxBy { result -> result.probability }) }
             .map { it.pitch }
 
         val silence = noise
-            .debounce(800, TimeUnit.MILLISECONDS)
+            .debounce(600, TimeUnit.MILLISECONDS)
             .map { -1f }
 
         return noise.mergeWith(silence).startWith(-1f)
     }
+
+    private fun Float.roundToTen(): Int = Math.round(this / 10) * 10
 }

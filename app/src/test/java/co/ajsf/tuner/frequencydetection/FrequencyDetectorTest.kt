@@ -5,7 +5,6 @@ import co.ajsf.tuner.test.data.TestDataFactory
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
-import io.reactivex.Flowable
 import io.reactivex.rxkotlin.toFlowable
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -20,14 +19,11 @@ internal class FrequencyDetectorTest {
 
     private lateinit var detector: FrequencyDetector
 
-    private fun createPitchedNoise() = DetectionResult(TestDataFactory.randomFloat(), false, true, 1f, 50f)
+    private fun createPitchedNoise() =
+        DetectionResult(TestDataFactory.randomFloat(), false, true, TestDataFactory.randomFloat(), 50f)
 
-    private fun createSilence() = DetectionResult(TestDataFactory.randomFloat(), true, true, 1f, 50f)
-
-    private fun createRandomResults() = (0..TestDataFactory.randomInt(10)).map {
-        if (TestDataFactory.randomBoolean()) createPitchedNoise()
-        else createSilence()
-    }
+    private fun createRandomResults(length: Int = TestDataFactory.randomInt(10)) = (1..length)
+        .map { createPitchedNoise() }
 
     @BeforeEach
     fun setup() {
@@ -37,63 +33,102 @@ internal class FrequencyDetectorTest {
 
     @Test
     fun `calling listen calls listen on the DetectionEngine`() {
-        whenever(mockDetectionEngine.listen()).thenReturn(createRandomResults().toFlowable())
+        whenever(mockDetectionEngine.listen())
+            .thenReturn(createRandomResults().toFlowable())
+
         detector.listen()
+
         verify(mockDetectionEngine).listen()
     }
 
     @Test
     fun `it sends -1f when first subscribed to`() {
-        whenever(mockDetectionEngine.listen()).thenReturn(emptyList<DetectionResult>().toFlowable())
+        whenever(mockDetectionEngine.listen())
+            .thenReturn(emptyList<DetectionResult>().toFlowable())
         val testSubscriber = detector.listen().test()
+
         testSubscriber.assertValue(-1f)
     }
 
     @Test
     fun `calling listen multiple times calls listen on the detection engine the same amount of time`() {
-        whenever(mockDetectionEngine.listen()).thenReturn(createRandomResults().toFlowable())
+        whenever(mockDetectionEngine.listen())
+            .thenReturn(createRandomResults().toFlowable())
+
         val times = TestDataFactory.randomInt(10)
         repeat(times) { detector.listen() }
+
         verify(mockDetectionEngine, times(times)).listen()
     }
 
     @Test
     fun `multiple subscribers all receive the same values`() {
-        whenever(mockDetectionEngine.listen()).thenReturn(createRandomResults().toFlowable())
+        whenever(mockDetectionEngine.listen())
+            .thenReturn(createRandomResults().toFlowable())
+
         val times = TestDataFactory.randomInt(10)
         val testSubscribers = (0..times).map { detector.listen().test() }
+
         (1..testSubscribers.lastIndex).onEach {
             assertEquals(testSubscribers.first().values(), testSubscribers[it].values())
         }
     }
 
     @Test
-    fun `when the detectionEngine sends a pitched, non-silent result, it sends the frequency, followed by -1`() {
-        val pitchedNoise = createPitchedNoise()
-        whenever(mockDetectionEngine.listen()).thenReturn(Flowable.just(pitchedNoise))
+    fun `when the detectionEngine sends less than two sounds, only the first -1 is sent`() {
+        whenever(mockDetectionEngine.listen())
+            .thenReturn(createRandomResults(2).toFlowable())
+
         val testSubscriber = detector.listen().test()
-        testSubscriber.assertValueSequence(listOf(-1f, pitchedNoise.pitch, -1f))
+
+        testSubscriber.assertValueSequence(listOf(-1f))
     }
 
     @Test
-    fun `when the detectionEngine only sends silence, it only the first -1 is sent`() {
-        whenever(mockDetectionEngine.listen()).thenReturn(
-            listOf(
-                createSilence(),
-                createSilence(),
-                createSilence()
-            ).toFlowable()
-        )
-        val testSubscriber = detector.listen().test()
-        testSubscriber.assertValue(-1f)
-    }
-
-    @Test
-    fun `when the detection engine sends silence, followed by pitched noise, followed by silence twice, it sends -1, the pitch, -1`() {
-        val results = listOf(createSilence(), createPitchedNoise(), createSilence(), createSilence())
+    fun `when the detectionEngine sends three sounds, three sounds are sent`() {
+        val results = createRandomResults(3)
         whenever(mockDetectionEngine.listen())
             .thenReturn(results.toFlowable())
+
         val testSubscriber = detector.listen().test()
-        testSubscriber.assertValueSequence(listOf(-1f, results[1].pitch, -1f))
+
+        testSubscriber.assertValueCount(3)
+    }
+
+    @Test
+    fun `when the detectionEngine sends three sounds, the sound with the highest probability is sent, between two -1s`() {
+        val results = createRandomResults(3)
+        val max = results.maxBy { it.probability }
+
+        whenever(mockDetectionEngine.listen())
+            .thenReturn(results.toFlowable())
+
+        val testSubscriber = detector.listen().test()
+
+        testSubscriber.assertValueSequence(listOf(-1f, max?.pitch, -1f))
+    }
+
+    @Test
+    fun `when the detectionEngine sends ten sounds, three sounds are sent`() {
+        val results = createRandomResults(10)
+        whenever(mockDetectionEngine.listen())
+            .thenReturn(results.toFlowable())
+
+        val testSubscriber = detector.listen().test()
+
+        testSubscriber.assertValueCount(3)
+    }
+
+    @Test
+    fun `when the detectionEngine sends ten sounds, the sound with the highest probability is sent, between two -1s`() {
+        val results = createRandomResults(10)
+        val max = results.maxBy { it.probability }
+
+        whenever(mockDetectionEngine.listen())
+            .thenReturn(results.toFlowable())
+
+        val testSubscriber = detector.listen().test()
+
+        testSubscriber.assertValueSequence(listOf(-1f, max?.pitch, -1f))
     }
 }
