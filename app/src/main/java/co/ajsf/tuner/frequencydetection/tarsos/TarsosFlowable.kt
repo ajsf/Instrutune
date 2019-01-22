@@ -1,4 +1,4 @@
-package co.ajsf.tuner.tarsos
+package co.ajsf.tuner.frequencydetection.tarsos
 
 import co.ajsf.tuner.frequencydetection.FlowableResponseStream
 import io.reactivex.BackpressureStrategy

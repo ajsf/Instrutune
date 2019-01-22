@@ -1,4 +1,4 @@
-package co.ajsf.tuner.tarsos
+package co.ajsf.tuner.frequencydetection.tarsos
 
 import be.tarsos.dsp.AudioDispatcher
 import be.tarsos.dsp.AudioEvent
@@ -44,4 +44,4 @@ class TarsosDispatcherImpl(
 
 class NotListeningException : Exception("Listen must be called before calling stop.")
 class CurrentlyListeningException :
-    Exception("The disptacher is currently listening. Stop must be called before calling listen again.")
+    Exception("The dispatcher is currently listening. Stop must be called before calling listen again.")

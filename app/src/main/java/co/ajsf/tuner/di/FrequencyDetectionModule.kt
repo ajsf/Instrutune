@@ -7,7 +7,7 @@ import co.ajsf.tuner.frequencydetection.DetectionEngine
 import co.ajsf.tuner.frequencydetection.FrequencyDetector
 import co.ajsf.tuner.mapper.TarsosResponseToModelMapper
 import co.ajsf.tuner.mapper.mapTarsosResponseToDetectionResult
-import co.ajsf.tuner.tarsos.*
+import co.ajsf.tuner.frequencydetection.tarsos.*
 import io.reactivex.schedulers.Schedulers
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind

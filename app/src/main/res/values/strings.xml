@@ -15,4 +15,5 @@
         Hit CANCEL to exit.
     </string>
     <string name="select_instrument">Select Instrument</string>
+    <string name="select_instrument_title">Select an instrument:</string>
 </resources>

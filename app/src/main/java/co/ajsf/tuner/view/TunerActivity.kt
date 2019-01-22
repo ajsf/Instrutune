@@ -65,9 +65,10 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun showSelectInstrumentDialog() {
-        val instruments = viewModel.getInstruments().map { it.name }
-        selector("Select an instrument:", instruments) { _, i ->
-            viewModel.saveSelectedInstrument(instruments[i])
+        val instrumentNames = viewModel.getInstruments().map { it.name }
+        val title = getString(R.string.select_instrument_title)
+        selector(title, instrumentNames) { _, i ->
+            viewModel.saveSelectedInstrument(instrumentNames[i])
         }
     }
 

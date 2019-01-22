@@ -1,4 +1,4 @@
-package co.ajsf.tuner.tarsos
+package co.ajsf.tuner.frequencydetection.tarsos
 
 import co.ajsf.tuner.mapper.TarsosResponseToModelMapper
 import co.ajsf.tuner.test.data.DetectionDataFactory
