@@ -3,7 +3,7 @@ package co.ajsf.tuner.model
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
-data class Note(val freq: Int, val name: String)
+data class MusicalNote(val freq: Int, val name: String)
 
 class Octave(number: Int, centerA: Int = 440) {
 
@@ -11,18 +11,18 @@ class Octave(number: Int, centerA: Int = 440) {
     private val aFreq = (centerA * 2.0.pow(number) * 100).toInt()
 
     val notes = listOf(
-        Note(aFreq, "A"),
-        Note(aFreq.nextNote(1), "A#"),
-        Note(aFreq.nextNote(2), "B"),
-        Note(aFreq.nextNote(3), "C"),
-        Note(aFreq.nextNote(4), "C#"),
-        Note(aFreq.nextNote(5), "D"),
-        Note(aFreq.nextNote(6), "D#"),
-        Note(aFreq.nextNote(7), "E"),
-        Note(aFreq.nextNote(8), "F"),
-        Note(aFreq.nextNote(9), "F#"),
-        Note(aFreq.nextNote(10), "G"),
-        Note(aFreq.nextNote(11), "G#")
+        MusicalNote(aFreq, "A"),
+        MusicalNote(aFreq.nextNote(1), "A#"),
+        MusicalNote(aFreq.nextNote(2), "B"),
+        MusicalNote(aFreq.nextNote(3), "C"),
+        MusicalNote(aFreq.nextNote(4), "C#"),
+        MusicalNote(aFreq.nextNote(5), "D"),
+        MusicalNote(aFreq.nextNote(6), "D#"),
+        MusicalNote(aFreq.nextNote(7), "E"),
+        MusicalNote(aFreq.nextNote(8), "F"),
+        MusicalNote(aFreq.nextNote(9), "F#"),
+        MusicalNote(aFreq.nextNote(10), "G"),
+        MusicalNote(aFreq.nextNote(11), "G#")
     )
 
     val frequencyRange = (calculateLowRange()..calculateHighRange())

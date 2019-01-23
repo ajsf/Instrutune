@@ -3,9 +3,9 @@ package co.ajsf.tuner.frequencydetection.notefinder
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-internal class NoteFinderTest {
+internal class ChromaticNoteFinderTest {
 
-    private val noteFinder = NoteFinder()
+    private val noteFinder = ChromaticNoteFinder()
 
     @Test
     fun `440 returns A`() {
