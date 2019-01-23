@@ -31,4 +31,12 @@ class TunerView
     }
 
     fun setDelta(delta: Float) = tuner_vu_view.setIndicatorDelta(delta)
+
+    fun setFreq(freq: String) {
+        recent_freq_text.text = freq
+    }
+
+    fun setNoteName(noteName: String) {
+        note_name_text.text = noteName
+    }
 }

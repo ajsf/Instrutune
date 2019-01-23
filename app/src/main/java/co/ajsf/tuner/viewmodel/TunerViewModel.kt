@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
 import co.ajsf.tuner.data.InstrumentRepository
 import co.ajsf.tuner.frequencydetection.FrequencyDetector
+import co.ajsf.tuner.frequencydetection.notefinder.NoteFinder
 import co.ajsf.tuner.model.Instrument
 import co.ajsf.tuner.model.NO_STRING
 import co.ajsf.tuner.model.findClosestString
@@ -16,12 +17,25 @@ typealias SelectedInstrumentInfo = Pair<String, List<Char>>
 class TunerViewModel(frequencyDetector: FrequencyDetector, private val instrumentRepository: InstrumentRepository) :
     ViewModel() {
 
+    private val noteFinder = NoteFinder()
+
     val selectedInstrumentInfo: LiveData<SelectedInstrumentInfo>
         get() = _selectedInstrumentInfo
 
     val selectedStringInfo: LiveData<SelectedStringInfo> = frequencyDetector.listen()
         .map { selectedInstrument.value?.findClosestString(it) ?: NO_STRING }
         .map { it.number to it.delta }.toLiveData()
+
+    val mostRecentFrequency: LiveData<String> = frequencyDetector
+        .listen()
+        .filter { it != -1f }
+        .map { String.format("%.2f", it) }
+        .toLiveData()
+
+    val mostRecentNoteName: LiveData<String> = frequencyDetector.listen()
+        .filter { it != -1f }
+        .map { noteFinder.findNote(it) }
+        .toLiveData()
 
     private val selectedInstrument = MutableLiveData<Instrument>()
     private val _selectedInstrumentInfo = MutableLiveData<SelectedInstrumentInfo>()
@@ -47,4 +61,5 @@ class TunerViewModel(frequencyDetector: FrequencyDetector, private val instrumen
         val instrument = instrumentRepository.getSelectedInstrument()
         selectedInstrument.postValue(instrument)
     }
+
 }

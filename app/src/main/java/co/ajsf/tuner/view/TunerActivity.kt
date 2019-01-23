@@ -1,6 +1,7 @@
 package co.ajsf.tuner.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -42,13 +43,24 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun initViewModel(): Unit = with(viewModel) {
-        selectedStringInfo.onUpdate {
-            tuner_view.selectString(it.first)
-            if (it.first != -1) {
-                tuner_view.setDelta(it.second)
+        selectedStringInfo
+            .onUpdate {
+                tuner_view.selectString(it.first)
+                if (it.first != -1) {
+                    tuner_view.setDelta(it.second)
+                }
             }
+
+        selectedInstrumentInfo
+            .onUpdate { tuner_view.selectInstrument(it.first, it.second) }
+
+        mostRecentFrequency.onUpdate {
+            Log.d("TunerActivity", "Current Freq: $it")
+            tuner_view.setFreq(it)
         }
-        selectedInstrumentInfo.onUpdate { tuner_view.selectInstrument(it.first, it.second) }
+        mostRecentNoteName.onUpdate {
+            tuner_view.setNoteName(it)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
