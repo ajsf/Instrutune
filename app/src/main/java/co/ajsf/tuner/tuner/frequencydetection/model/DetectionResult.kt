@@ -1,4 +1,4 @@
-package co.ajsf.tuner.model
+package co.ajsf.tuner.tuner.frequencydetection.model
 
 data class DetectionResult(
     val pitch: Float,

@@ -1,6 +1,6 @@
 package co.ajsf.tuner.tuner.frequencydetection.tarsos
 
-import co.ajsf.tuner.mapper.TarsosResponseToModelMapper
+import co.ajsf.tuner.tuner.frequencydetection.model.TarsosResponseToModelMapper
 import co.ajsf.tuner.test.data.DetectionDataFactory
 import co.ajsf.tuner.test.data.TestDataFactory
 import com.nhaarman.mockitokotlin2.mock

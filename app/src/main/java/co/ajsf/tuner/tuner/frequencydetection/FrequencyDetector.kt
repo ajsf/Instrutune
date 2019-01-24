@@ -1,5 +1,6 @@
 package co.ajsf.tuner.tuner.frequencydetection
 
+import co.ajsf.tuner.tuner.frequencydetection.detector.DetectionEngine
 import io.reactivex.Flowable
 import java.util.concurrent.TimeUnit
 

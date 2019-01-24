@@ -1,7 +1,8 @@
 package co.ajsf.tuner.tuner.frequencydetection
 
-import co.ajsf.tuner.model.DetectionResult
+import co.ajsf.tuner.tuner.frequencydetection.model.DetectionResult
 import co.ajsf.tuner.test.data.TestDataFactory
+import co.ajsf.tuner.tuner.frequencydetection.detector.DetectionEngine
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
@@ -20,7 +21,13 @@ internal class FrequencyDetectorTest {
     private lateinit var detector: FrequencyDetector
 
     private fun createPitchedNoise() =
-        DetectionResult(TestDataFactory.randomFloat(), false, true, TestDataFactory.randomFloat(), 50f)
+        DetectionResult(
+            TestDataFactory.randomFloat(),
+            false,
+            true,
+            TestDataFactory.randomFloat(),
+            50f
+        )
 
     private fun createRandomResults(length: Int = TestDataFactory.randomInt(10)) = (1..length)
         .map { createPitchedNoise() }

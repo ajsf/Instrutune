@@ -1,7 +1,7 @@
-package co.ajsf.tuner.tuner.frequencydetection.notefinder
+package co.ajsf.tuner.tuner.notefinder
 
-import co.ajsf.tuner.model.ChromaticOctave
-import co.ajsf.tuner.model.MusicalNote
+import co.ajsf.tuner.tuner.notefinder.model.ChromaticOctave
+import co.ajsf.tuner.tuner.notefinder.model.MusicalNote
 
 data class NoteData(val name: String, val number: Int, val delta: Int)
 

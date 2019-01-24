@@ -1,4 +1,4 @@
-package co.ajsf.tuner.mapper
+package co.ajsf.tuner.tuner.frequencydetection.model
 
 import be.tarsos.dsp.AudioEvent
 import be.tarsos.dsp.pitch.PitchDetectionResult
@@ -29,7 +29,8 @@ internal class TarsosResponseToModelMapperTest {
         whenever(audioEvent.getdBSPL()).thenReturn(expectedResult.dBSPL.toDouble())
         whenever(audioEvent.isSilence(any())).thenReturn(expectedResult.isSilence)
 
-        val mapped = mapTarsosResponseToDetectionResult(pitchDetectionResult to audioEvent)
+        val mapped =
+            mapTarsosResponseToDetectionResult(pitchDetectionResult to audioEvent)
         assertEquals(expectedResult, mapped)
     }
 }

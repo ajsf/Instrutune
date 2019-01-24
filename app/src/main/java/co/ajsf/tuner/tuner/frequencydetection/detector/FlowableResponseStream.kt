@@ -1,4 +1,4 @@
-package co.ajsf.tuner.tuner.frequencydetection
+package co.ajsf.tuner.tuner.frequencydetection.detector
 
 import io.reactivex.Flowable
 

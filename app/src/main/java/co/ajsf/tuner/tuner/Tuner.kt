@@ -1,10 +1,10 @@
 package co.ajsf.tuner.tuner
 
-import co.ajsf.tuner.mapper.mapToNoteList
 import co.ajsf.tuner.model.Instrument
 import co.ajsf.tuner.tuner.frequencydetection.FrequencyDetector
-import co.ajsf.tuner.tuner.frequencydetection.notefinder.NO_NOTE
-import co.ajsf.tuner.tuner.frequencydetection.notefinder.NoteFinder
+import co.ajsf.tuner.tuner.notefinder.NO_NOTE
+import co.ajsf.tuner.tuner.notefinder.NoteFinder
+import co.ajsf.tuner.tuner.notefinder.model.mapToNoteList
 import io.reactivex.Flowable
 
 class Tuner(frequencyDetector: FrequencyDetector) {

@@ -1,8 +1,8 @@
-package co.ajsf.tuner.tuner.frequencydetection.notefinder
+package co.ajsf.tuner.tuner.notefinder
 
-import co.ajsf.tuner.mapper.mapToNoteList
+import co.ajsf.tuner.tuner.notefinder.model.mapToNoteList
 import co.ajsf.tuner.model.Instrument
-import co.ajsf.tuner.model.MusicalNote
+import co.ajsf.tuner.tuner.notefinder.model.MusicalNote
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

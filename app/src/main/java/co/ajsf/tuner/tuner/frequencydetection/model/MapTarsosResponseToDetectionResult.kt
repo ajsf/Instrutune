@@ -1,7 +1,6 @@
-package co.ajsf.tuner.mapper
+package co.ajsf.tuner.tuner.frequencydetection.model
 
 import co.ajsf.tuner.tuner.frequencydetection.tarsos.TarsosResponse
-import co.ajsf.tuner.model.DetectionResult
 
 typealias TarsosResponseToModelMapper = (TarsosResponse) -> DetectionResult
 

@@ -1,6 +1,6 @@
 package co.ajsf.tuner.tuner.frequencydetection.tarsos
 
-import co.ajsf.tuner.tuner.frequencydetection.FlowableResponseStream
+import co.ajsf.tuner.tuner.frequencydetection.detector.FlowableResponseStream
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Scheduler

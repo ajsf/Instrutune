@@ -1,4 +1,4 @@
-package co.ajsf.tuner.tuner.frequencydetection.notefinder
+package co.ajsf.tuner.tuner.notefinder
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

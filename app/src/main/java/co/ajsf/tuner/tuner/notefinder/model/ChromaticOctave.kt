@@ -1,4 +1,4 @@
-package co.ajsf.tuner.model
+package co.ajsf.tuner.tuner.notefinder.model
 
 import kotlin.math.pow
 

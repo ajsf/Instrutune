@@ -5,7 +5,7 @@ import be.tarsos.dsp.AudioEvent
 import be.tarsos.dsp.pitch.PitchDetectionHandler
 import be.tarsos.dsp.pitch.PitchDetectionResult
 import be.tarsos.dsp.pitch.PitchProcessor
-import co.ajsf.tuner.tuner.frequencydetection.DetectorDispatcher
+import co.ajsf.tuner.tuner.frequencydetection.detector.DetectorDispatcher
 
 typealias DispatcherFactory = () -> AudioDispatcher
 typealias PitchProcessorFactory = (PitchDetectionHandler) -> PitchProcessor
