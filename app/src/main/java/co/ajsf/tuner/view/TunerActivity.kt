@@ -52,7 +52,11 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
             }
 
         selectedInstrumentInfo
-            .onUpdate { tuner_view.selectInstrument(it.first, it.second) }
+            .onUpdate { (name, stringNames) ->
+                val appName = resources.getString(R.string.app_name)
+                title = "$appName - $name"
+                tuner_view.selectInstrument(stringNames)
+            }
 
         mostRecentFrequency.onUpdate {
             Log.d("TunerActivity", "Current Freq: $it")

@@ -15,10 +15,7 @@ class TunerView
         LinearLayout.inflate(context, R.layout.tuner_view, this)
     }
 
-    fun selectInstrument(name: String, stringNames: List<Char>) {
-        strings_view.setStringNames(stringNames)
-        selected_instrument_text.text = name
-    }
+    fun selectInstrument(stringNames: List<Char>): Unit = strings_view.setStringNames(stringNames)
 
     fun selectString(stringNumber: Int) {
         if (stringNumber != -1) {

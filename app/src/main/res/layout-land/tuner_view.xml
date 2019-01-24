@@ -15,10 +15,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Display3"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Display2"
         android:textColor="@color/white"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -26,10 +26,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=" Hz"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Display2"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
         android:textColor="@color/white"
         app:layout_constraintBaseline_toBaselineOf="@id/recent_freq_text"
         app:layout_constraintLeft_toRightOf="@id/recent_freq_text" />
+
+    <TextView
+        android:id="@+id/note_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Note: "
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
+        android:textColor="@color/white"
+        app:layout_constraintBaseline_toBaselineOf="@id/note_name_text"
+        app:layout_constraintLeft_toRightOf="@id/hz"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/note_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Display2"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toRightOf="@id/note_name_label"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="A" />
 
     <co.ajsf.tuner.view.tunerview.TunerVuMeter
         android:id="@+id/tuner_vu_view"
@@ -43,28 +64,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/note_name_label"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tuner_vu_view" />
 
-    <TextView
-        android:id="@+id/note_name_label"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Note: "
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Display2"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <TextView
-        android:id="@+id/note_name_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Display2"
-        android:textColor="@color/white"
-        app:layout_constraintBaseline_toBaselineOf="@id/note_name_label"
-        app:layout_constraintLeft_toRightOf="@id/note_name_label"
-        tools:text="A" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
