@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
 import co.ajsf.tuner.data.InstrumentRepository
 import co.ajsf.tuner.frequencydetection.FrequencyDetector
-import co.ajsf.tuner.frequencydetection.notefinder.ChromaticNoteFinder
+import co.ajsf.tuner.frequencydetection.notefinder.NO_NOTE
+import co.ajsf.tuner.frequencydetection.notefinder.NoteFinder
+import co.ajsf.tuner.mapper.mapToNoteList
 import co.ajsf.tuner.model.Instrument
-import co.ajsf.tuner.model.NO_STRING
-import co.ajsf.tuner.model.findClosestString
 
 typealias SelectedStringInfo = Pair<Int, Float>
 typealias SelectedInstrumentInfo = Pair<String, List<Char>>
@@ -17,24 +17,27 @@ typealias SelectedInstrumentInfo = Pair<String, List<Char>>
 class TunerViewModel(frequencyDetector: FrequencyDetector, private val instrumentRepository: InstrumentRepository) :
     ViewModel() {
 
-    private val noteFinder = ChromaticNoteFinder()
+    private val audioFeed = frequencyDetector.listen()
+    private val chromaticNoteFinder = NoteFinder.chromaticNoteFinder()
+
+    private var instrumentNoteFinder: NoteFinder? = null
 
     val selectedInstrumentInfo: LiveData<SelectedInstrumentInfo>
         get() = _selectedInstrumentInfo
 
-    val selectedStringInfo: LiveData<SelectedStringInfo> = frequencyDetector.listen()
-        .map { selectedInstrument.value?.findClosestString(it) ?: NO_STRING }
-        .map { it.number to it.delta }.toLiveData()
+    val selectedStringInfo: LiveData<SelectedStringInfo> = audioFeed
+        .map { instrumentNoteFinder?.findNote(it) ?: NO_NOTE }
+        .map { it.number to it.delta.toFloat() }.toLiveData()
 
-    val mostRecentFrequency: LiveData<String> = frequencyDetector
-        .listen()
+    val mostRecentFrequency: LiveData<String> = audioFeed
         .filter { it != -1f }
         .map { String.format("%.2f", it) }
         .toLiveData()
 
-    val mostRecentNoteName: LiveData<String> = frequencyDetector.listen()
+    val mostRecentNoteName: LiveData<String> = audioFeed
         .filter { it != -1f }
-        .map { noteFinder.findNote(it) }
+        .map { chromaticNoteFinder.findNote(it) }
+        .map { it.name }
         .toLiveData()
 
     private val selectedInstrument = MutableLiveData<Instrument>()
@@ -42,6 +45,7 @@ class TunerViewModel(frequencyDetector: FrequencyDetector, private val instrumen
 
     init {
         selectedInstrument.observeForever { instrument ->
+            instrumentNoteFinder = NoteFinder.instrumentNoteFinder(instrument.mapToNoteList())
             val info = instrument.name to instrument.strings.map { it.name.first() }
             _selectedInstrumentInfo.postValue(info)
         }
@@ -61,5 +65,4 @@ class TunerViewModel(frequencyDetector: FrequencyDetector, private val instrumen
         val instrument = instrumentRepository.getSelectedInstrument()
         selectedInstrument.postValue(instrument)
     }
-
 }
