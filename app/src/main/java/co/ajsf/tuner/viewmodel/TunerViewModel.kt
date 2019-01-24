@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
 import co.ajsf.tuner.data.InstrumentRepository
 import co.ajsf.tuner.model.Instrument
+import co.ajsf.tuner.tuner.SelectedStringInfo
 import co.ajsf.tuner.tuner.Tuner
 
-typealias SelectedStringInfo = Pair<Int, Float>
 typealias SelectedInstrumentInfo = Pair<String, List<Char>>
 
 class TunerViewModel(tuner: Tuner, private val instrumentRepository: InstrumentRepository) :

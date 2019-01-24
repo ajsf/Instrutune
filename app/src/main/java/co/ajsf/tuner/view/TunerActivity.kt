@@ -9,7 +9,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import co.ajsf.tuner.R
 import co.ajsf.tuner.RecordAudioPermissionHandler
-import co.ajsf.tuner.di.frequencyDetectionModule
 import co.ajsf.tuner.di.tunerActivityModule
 import co.ajsf.tuner.viewmodel.TunerViewModel
 import kotlinx.android.synthetic.main.activity_tuner.*
@@ -25,7 +24,6 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
     override val kodein = Kodein.lazy {
         extend(_parentKodein)
         import(tunerActivityModule())
-        import(frequencyDetectionModule())
     }
 
     private val viewModel: TunerViewModel by buildViewModel()
@@ -45,9 +43,9 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
     private fun initViewModel(): Unit = with(viewModel) {
         selectedStringInfo
             .onUpdate {
-                tuner_view.selectString(it.first)
-                if (it.first != -1) {
-                    tuner_view.setDelta(it.second)
+                tuner_view.selectString(it.number)
+                if (it.number != -1) {
+                    tuner_view.setDelta(it.delta)
                 }
             }
 

@@ -19,4 +19,6 @@ fun tunerActivityModule() = Kodein
         }
         bind<ViewModelProvider.Factory>() with singleton { ViewModelFactory(kodein.direct) }
         bind<InstrumentRepository>() with singleton { InstrumentRepository(instance()) }
+
+        import(frequencyDetectionModule())
     }
