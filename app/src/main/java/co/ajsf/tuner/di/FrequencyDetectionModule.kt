@@ -1,5 +1,6 @@
 package co.ajsf.tuner.di
 
+import co.ajsf.tuner.tuner.Tuner
 import co.ajsf.tuner.tuner.frequencydetection.DetectionEngine
 import co.ajsf.tuner.tuner.frequencydetection.FrequencyDetector
 import co.ajsf.tuner.tuner.frequencydetection.tarsos.TarsosDetectionEngine
@@ -16,5 +17,9 @@ fun frequencyDetectionModule() = Kodein.Module("frequencyDetectionModule") {
 
     bind<DetectionEngine>() with provider {
         TarsosDetectionEngine(instance(), instance())
+    }
+
+    bind<Tuner>() with provider {
+        Tuner(instance())
     }
 }
