@@ -1,4 +1,4 @@
-package co.ajsf.tuner.frequencydetection.notefinder
+package co.ajsf.tuner.tuner.frequencydetection.notefinder
 
 import co.ajsf.tuner.mapper.mapToNoteList
 import co.ajsf.tuner.model.Instrument

@@ -1,11 +1,11 @@
-package co.ajsf.tuner.frequencydetection.tarsos
+package co.ajsf.tuner.tuner.frequencydetection.tarsos
 
 import be.tarsos.dsp.AudioDispatcher
 import be.tarsos.dsp.AudioEvent
 import be.tarsos.dsp.pitch.PitchDetectionHandler
 import be.tarsos.dsp.pitch.PitchDetectionResult
 import be.tarsos.dsp.pitch.PitchProcessor
-import co.ajsf.tuner.frequencydetection.DetectorDispatcher
+import co.ajsf.tuner.tuner.frequencydetection.DetectorDispatcher
 
 typealias DispatcherFactory = () -> AudioDispatcher
 typealias PitchProcessorFactory = (PitchDetectionHandler) -> PitchProcessor

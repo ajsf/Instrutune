@@ -1,8 +1,8 @@
 package co.ajsf.tuner.di
 
-import co.ajsf.tuner.frequencydetection.DetectionEngine
-import co.ajsf.tuner.frequencydetection.FrequencyDetector
-import co.ajsf.tuner.frequencydetection.tarsos.TarsosDetectionEngine
+import co.ajsf.tuner.tuner.frequencydetection.DetectionEngine
+import co.ajsf.tuner.tuner.frequencydetection.FrequencyDetector
+import co.ajsf.tuner.tuner.frequencydetection.tarsos.TarsosDetectionEngine
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance

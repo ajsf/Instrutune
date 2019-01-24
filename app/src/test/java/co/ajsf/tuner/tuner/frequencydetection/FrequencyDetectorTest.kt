@@ -1,4 +1,4 @@
-package co.ajsf.tuner.frequencydetection
+package co.ajsf.tuner.tuner.frequencydetection
 
 import co.ajsf.tuner.model.DetectionResult
 import co.ajsf.tuner.test.data.TestDataFactory

@@ -1,4 +1,4 @@
-package co.ajsf.tuner.frequencydetection
+package co.ajsf.tuner.tuner.frequencydetection
 
 typealias DispatcherListener<T> = (T) -> Unit
 

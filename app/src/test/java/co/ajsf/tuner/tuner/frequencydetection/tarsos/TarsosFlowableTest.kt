@@ -1,4 +1,4 @@
-package co.ajsf.tuner.frequencydetection.tarsos
+package co.ajsf.tuner.tuner.frequencydetection.tarsos
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.verify

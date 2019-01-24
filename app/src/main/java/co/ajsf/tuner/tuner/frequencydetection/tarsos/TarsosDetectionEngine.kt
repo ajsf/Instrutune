@@ -1,6 +1,6 @@
-package co.ajsf.tuner.frequencydetection.tarsos
+package co.ajsf.tuner.tuner.frequencydetection.tarsos
 
-import co.ajsf.tuner.frequencydetection.DetectionEngine
+import co.ajsf.tuner.tuner.frequencydetection.DetectionEngine
 import co.ajsf.tuner.mapper.TarsosResponseToModelMapper
 import co.ajsf.tuner.model.DetectionResult
 import io.reactivex.Flowable

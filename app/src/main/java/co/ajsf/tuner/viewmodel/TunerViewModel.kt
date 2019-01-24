@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
 import co.ajsf.tuner.data.InstrumentRepository
-import co.ajsf.tuner.frequencydetection.FrequencyDetector
-import co.ajsf.tuner.frequencydetection.notefinder.NO_NOTE
-import co.ajsf.tuner.frequencydetection.notefinder.NoteFinder
+import co.ajsf.tuner.tuner.frequencydetection.FrequencyDetector
+import co.ajsf.tuner.tuner.frequencydetection.notefinder.NO_NOTE
+import co.ajsf.tuner.tuner.frequencydetection.notefinder.NoteFinder
 import co.ajsf.tuner.mapper.mapToNoteList
 import co.ajsf.tuner.model.Instrument
 

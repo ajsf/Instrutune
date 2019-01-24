@@ -1,4 +1,4 @@
-package co.ajsf.tuner.frequencydetection.tarsos
+package co.ajsf.tuner.tuner.frequencydetection.tarsos
 
 import be.tarsos.dsp.AudioDispatcher
 import be.tarsos.dsp.pitch.PitchProcessor
