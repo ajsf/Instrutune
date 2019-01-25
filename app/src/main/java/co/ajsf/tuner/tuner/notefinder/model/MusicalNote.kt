@@ -10,6 +10,8 @@ data class MusicalNote(val freq: Int, val name: String = "", val number: Int = -
     fun relativeFreq(steps: Int): Int = (freq * 2.0.pow(steps / 12.0))
         .roundToInt()
 
+    fun toRelativeNote(steps: Int) = MusicalNote(relativeFreq(steps))
+
     companion object {
         fun fromFloat(floatFreq: Float, name: String = "", number: Int = -1): MusicalNote {
 
