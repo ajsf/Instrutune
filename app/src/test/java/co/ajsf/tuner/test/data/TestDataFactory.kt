@@ -8,8 +8,9 @@ internal object TestDataFactory {
     fun randomFloat(): Float = Math.random().toFloat()
     fun randomInt(maxNumber: Int, minNumber: Int = 1): Int =
         ThreadLocalRandom.current().nextInt(minNumber, maxNumber + 1)
+
     fun randomBoolean(): Boolean = Math.random() < 0.5
-    fun randomString(): String = UUID.randomUUID().toString()
+    fun randomString(): String = UUID.randomUUID().toString().take(5)
 
 }
 

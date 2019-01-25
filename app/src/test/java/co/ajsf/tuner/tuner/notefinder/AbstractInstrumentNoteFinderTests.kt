@@ -4,19 +4,23 @@ import co.ajsf.tuner.model.Instrument
 import co.ajsf.tuner.tuner.notefinder.model.MusicalNote
 import co.ajsf.tuner.tuner.notefinder.model.mapToMusicalNoteList
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal abstract class AbstractInstrumentNoteFinderTests() {
+internal abstract class AbstractInstrumentNoteFinderTests {
 
     protected abstract val instrument: Instrument
 
     private lateinit var noteFinder: NoteFinder
 
+    private lateinit var sortedFreqs: List<Float>
+
     @BeforeEach
     fun setup() {
         noteFinder = NoteFinder
             .instrumentNoteFinder(instrument.mapToMusicalNoteList())
+        sortedFreqs = instrument.strings.map { it.freq }.sorted()
     }
 
     @Test
@@ -26,10 +30,10 @@ internal abstract class AbstractInstrumentNoteFinderTests() {
     }
 
     @Test
-    fun `it returns NO_NOTE for frequencies that are a whole step below the lowest string`() {
+    fun `it returns NO_NOTE for frequencies that are a whole step below the lowest note`() {
         val note = MusicalNote(
             MusicalNote
-                .fromFloat(instrument.strings.first().freq)
+                .fromFloat(sortedFreqs.first())
                 .relativeFreq(-2)
         )
 
@@ -39,26 +43,25 @@ internal abstract class AbstractInstrumentNoteFinderTests() {
     }
 
     @Test
-    fun `it returns the first string with a delta of 100 for frequencies that are a half step below the lowest string`() {
-        val note = MusicalNote(
-            MusicalNote
-                .fromFloat(instrument.strings.first().freq)
-                .relativeFreq(-1)
-        )
+    fun `it returns the first string with a delta of -100 for frequencies that are a half step below the lowest note`() {
+        val note = MusicalNote
+            .fromFloat(sortedFreqs.first())
+            .toRelativeNote(-1)
 
         val noteData = noteFinder.findNote(note.floatFreq)
-        val expectedNote = NoteData(instrument.strings.first().name, 0, -100)
+        val expectedString = instrument.strings.minBy { it.freq }!!
+        val expectedIndex = instrument.strings.indexOf(expectedString)
+
+        val expectedNote = NoteData(expectedString.name, expectedIndex, -100)
 
         assertEquals(expectedNote, noteData)
     }
 
     @Test
     fun `it returns NO_NOTE for frequencies that are a whole step above the highest string`() {
-        val note = MusicalNote(
-            MusicalNote
-                .fromFloat(instrument.strings.last().freq)
-                .relativeFreq(2)
-        )
+        val note = MusicalNote
+            .fromFloat(sortedFreqs.last())
+            .toRelativeNote(2)
 
         val noteData = noteFinder.findNote(note.floatFreq)
 
@@ -66,15 +69,16 @@ internal abstract class AbstractInstrumentNoteFinderTests() {
     }
 
     @Test
-    fun `it returns the first string with a delta of 100 for frequencies that are a half step above the highest string`() {
-        val note = MusicalNote(
-            MusicalNote
-                .fromFloat(instrument.strings.last().freq)
-                .relativeFreq(1)
-        )
+    fun `it returns the highest string with a delta of 100 for frequencies that are a half step above the highest note`() {
+        val note = MusicalNote
+            .fromFloat(sortedFreqs.last())
+            .toRelativeNote(1)
 
         val noteData = noteFinder.findNote(note.floatFreq)
-        val expectedData = NoteData(instrument.strings.last().name, instrument.strings.lastIndex, 100)
+        val expectedString = instrument.strings.maxBy { it.freq }!!
+        val index = instrument.strings.indexOf(expectedString)
+
+        val expectedData = NoteData(expectedString.name, index, 100)
 
         assertEquals(expectedData, noteData)
     }
@@ -82,7 +86,6 @@ internal abstract class AbstractInstrumentNoteFinderTests() {
     @Test
     fun `it returns the correct note and number with a delta of 0 for tuned frequencies`() {
         instrument.strings.forEachIndexed { index, string ->
-
             val noteData = noteFinder.findNote(string.freq)
             val expectedData = NoteData(string.name, index, 0)
 
@@ -91,36 +94,32 @@ internal abstract class AbstractInstrumentNoteFinderTests() {
     }
 
     @Test
-    fun `it returns the correct string name and number for frequencies a half step below the note`() {
-        instrument.strings.forEachIndexed { index, string ->
-            val note = MusicalNote(
-                MusicalNote
-                    .fromFloat(string.freq)
-                    .relativeFreq(-1)
-            )
+    fun `it returns the lower note when the frequency is halfway between two notes`() {
+        (1..sortedFreqs.lastIndex).forEach { i ->
+            val freq = ((sortedFreqs[i] - sortedFreqs[i - 1]) / 2f) + sortedFreqs[i - 1]
+            val noteData = noteFinder.findNote(freq)
 
-            val noteData = noteFinder.findNote(note.floatFreq)
+            val expectedString = instrument.strings.find { it.freq == sortedFreqs[i - 1] }!!
+            val expectedIndex = instrument.strings.indexOf(expectedString)
 
-            assertEquals(string.name, noteData.name)
-            assertEquals(index, noteData.number)
+            assertEquals(expectedString.name, noteData.name)
+            assertEquals(expectedIndex, noteData.number)
+            assertTrue { noteData.delta in (99..100) }
         }
     }
 
     @Test
-    fun `it returns the correct string name and number for frequencies a half step above the note`() {
-        instrument.strings.forEachIndexed { index, string ->
-            val note = MusicalNote(
-                MusicalNote
-                    .fromFloat(string.freq)
-                    .relativeFreq(1)
-            )
+    fun `it returns the higher note when the frequency is just above halfway between two notes`() {
+        (1..sortedFreqs.lastIndex).forEach { i ->
+            val freq = (((sortedFreqs[i] - sortedFreqs[i - 1]) / 2f) + sortedFreqs[i - 1]) + .0019f
+            val noteData = noteFinder.findNote(freq)
 
-            val noteData = noteFinder.findNote(note.floatFreq)
+            val expectedString = instrument.strings.find { it.freq == sortedFreqs[i] }!!
+            val expectedIndex = instrument.strings.indexOf(expectedString)
 
-            assertEquals(string.name, noteData.name)
-            assertEquals(index, noteData.number)
+            assertEquals(expectedString.name, noteData.name)
+            assertEquals(expectedIndex, noteData.number)
+            assertTrue { noteData.delta in (-100..-99) }
         }
     }
-
-
 }

@@ -6,13 +6,12 @@ import co.ajsf.tuner.model.InstrumentString
 internal object InstrumentDataFactory {
 
     fun randomFreq() = TestDataFactory.randomFloat() * 111
-    fun randomStringName() = TestDataFactory.randomString()
+    private fun randomStringName() = TestDataFactory.randomString()
 
     fun randomInstrument() = Instrument(
         name = TestDataFactory.randomString(),
-        strings = (0..TestDataFactory.randomInt(8, 3))
+        strings = (0..TestDataFactory.randomInt(3, 3))
             .map { randomInstrumentString() }
-            .sortedBy { it.freq }
     )
 
     private fun randomInstrumentString() =

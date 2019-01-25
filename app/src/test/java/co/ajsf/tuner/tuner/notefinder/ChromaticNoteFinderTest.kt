@@ -71,7 +71,6 @@ internal class ChromaticNoteFinderTest {
     @Test
     fun `8372_019 returns B with a delta of 100`() {
         val note = noteFinder.findNote(8372.019f)
-        println(note)
         assertEquals("B", note.name)
         assertEquals(100, note.delta)
     }
