@@ -22,15 +22,15 @@ internal class ChromaticNoteFinderTest {
     }
 
     @Test
-    fun `25_96 returns A with a delta of -100`() {
-        val note = noteFinder.findNote(25.96f)
+    fun `25_957 returns A with a delta of -100`() {
+        val note = noteFinder.findNote(25.957f)
         assertEquals("A", note.name)
         assertEquals(-100, note.delta)
     }
 
     @Test
-    fun `below 25_96 returns NO_NOTE`() {
-        val note = noteFinder.findNote(25.95f)
+    fun `below 25_957 returns NO_NOTE`() {
+        val note = noteFinder.findNote(25.956f)
         assertEquals(NO_NOTE, note)
     }
 

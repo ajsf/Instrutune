@@ -1,7 +1,7 @@
 package co.ajsf.tuner.tuner
 
+import co.ajsf.tuner.test.data.InstrumentDataFactory
 import co.ajsf.tuner.test.data.TestDataFactory
-import co.ajsf.tuner.test.data.randomInstrument
 import co.ajsf.tuner.tuner.frequencydetection.FrequencyDetector
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
@@ -65,7 +65,7 @@ class TunerTest {
     @Test
     fun `instrumentTuning sends the same number as it receives once an instrument has been set`() {
         stubRandomResponse()
-        tuner.setInstrument(randomInstrument())
+        tuner.setInstrument(InstrumentDataFactory.randomInstrument())
         val testSubscriber = tuner.instrumentTuning.test()
         testSubscriber.assertValueCount(floatList.size)
     }
@@ -73,7 +73,7 @@ class TunerTest {
     @Test
     fun `it returns each string number with a delta of 0 when the freq for each string of an instrument is sent`() {
 
-        val instrument = randomInstrument()
+        val instrument = InstrumentDataFactory.randomInstrument()
 
         whenever(mockDetector.listen())
             .thenReturn(instrument.strings.map { it.freq }.toFlowable())

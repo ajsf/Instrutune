@@ -13,7 +13,7 @@ class NoteFinder private constructor(private val notes: List<MusicalNote>) {
     private val highRange: Int = notes.last().relativeFreq(1)
 
     fun findNote(freq: Float): NoteData {
-        val freqInt = (freq * 100).toInt()
+        val freqInt = (freq * 1000).toInt()
         if (freqInt in (lowRange..highRange)) {
             return when (freqInt) {
                 in (lowRange..notes.first().freq) -> returnLowNote(freqInt)
@@ -47,19 +47,19 @@ class NoteFinder private constructor(private val notes: List<MusicalNote>) {
             val lowNote = notes[i - 1]
             val highNote = notes[i]
             if (freq in lowNote.freq..highNote.freq)
-                return findNearestNote(freq, lowNote, highNote, i)
+                return findNearestNote(freq, lowNote, highNote)
         }
         return NO_NOTE
     }
 
-    private fun findNearestNote(freq: Int, lowNote: MusicalNote, highNote: MusicalNote, index: Int): NoteData {
+    private fun findNearestNote(freq: Int, lowNote: MusicalNote, highNote: MusicalNote): NoteData {
         val midPoint = lowNote.freq + ((highNote.freq - lowNote.freq) / 2)
         return if (freq <= midPoint) {
             val delta = calculatePositiveDelta(freq, midPoint, lowNote.freq)
-            NoteData(lowNote.name, index - 1, delta)
+            NoteData(lowNote.name, lowNote.number, delta)
         } else {
             val delta = calculateNegativeDelta(freq, midPoint, highNote.freq)
-            NoteData(highNote.name, index, delta)
+            NoteData(highNote.name, highNote.number, delta)
         }
     }
 

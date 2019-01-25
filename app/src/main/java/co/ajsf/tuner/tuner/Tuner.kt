@@ -3,7 +3,7 @@ package co.ajsf.tuner.tuner
 import co.ajsf.tuner.model.Instrument
 import co.ajsf.tuner.tuner.frequencydetection.FrequencyDetector
 import co.ajsf.tuner.tuner.notefinder.NoteFinder
-import co.ajsf.tuner.tuner.notefinder.model.mapToNoteList
+import co.ajsf.tuner.tuner.notefinder.model.mapToMusicalNoteList
 import io.reactivex.Flowable
 
 data class SelectedStringInfo(val number: Int, val delta: Float)
@@ -29,6 +29,6 @@ class Tuner(frequencyDetector: FrequencyDetector) {
         .map { it.name }
 
     fun setInstrument(instrument: Instrument) {
-        instrumentNoteFinder = NoteFinder.instrumentNoteFinder(instrument.mapToNoteList())
+        instrumentNoteFinder = NoteFinder.instrumentNoteFinder(instrument.mapToMusicalNoteList())
     }
 }
