@@ -65,8 +65,9 @@ class NoteFinder private constructor(private val notes: List<MusicalNote>) {
 
     companion object {
         fun chromaticNoteFinder(): NoteFinder {
-            val octaves = (-4..2).map { ChromaticOctave(it) }
-            val notes: List<MusicalNote> = octaves.flatMap { it.notes }
+            val notes: List<MusicalNote> = ChromaticOctave
+                .createFullRange()
+                .flatMap { it.notes }
             return NoteFinder(notes)
         }
 

@@ -2,29 +2,37 @@ package co.ajsf.tuner.tuner.notefinder.model
 
 import kotlin.math.pow
 
-data class ChromaticOctave(private val number: Int, private val centerA: Int = 440) {
+data class ChromaticOctave(private val number: Int = 4, private val centerA: Int = 440) {
 
-    private val aFreq: Float = centerA * 2.0.pow(number).toFloat()
-    private val A = MusicalNote.fromFloat(aFreq, "A", number)
+    private val aFreq: Float = centerA * 2.0.pow(number - 4).toFloat()
+    private val A = MusicalNote.fromFloat(aFreq, "A", (number * 12) + 1)
+
+    init {
+        if ((number in (0..8)).not()) throw IllegalArgumentException("Invalid number: $number. It must be in the range of 0 to 8.")
+    }
 
     val notes = listOf(
+        MusicalNote(A.relativeFreq(-9), "C", (number * 12) - 8),
+        MusicalNote(A.relativeFreq(-8), "C#", (number * 12) - 7),
+        MusicalNote(A.relativeFreq(-7), "D", (number * 12) - 6),
+        MusicalNote(A.relativeFreq(-6), "D#", (number * 12) - 5),
+        MusicalNote(A.relativeFreq(-5), "E", (number * 12) - 4),
+        MusicalNote(A.relativeFreq(-4), "F", (number * 12) - 3),
+        MusicalNote(A.relativeFreq(-3), "F#", (number * 12) - 2),
+        MusicalNote(A.relativeFreq(-2), "G", (number * 12) - 1),
+        MusicalNote(A.relativeFreq(-1), "G#", number * 12),
         A,
-        MusicalNote(A.relativeFreq(1), "A#", number + 1),
-        MusicalNote(A.relativeFreq(2), "B", number + 2),
-        MusicalNote(A.relativeFreq(3), "C", number + 3),
-        MusicalNote(A.relativeFreq(4), "C#", number + 4),
-        MusicalNote(A.relativeFreq(5), "D", number + 5),
-        MusicalNote(A.relativeFreq(6), "D#", number + 6),
-        MusicalNote(A.relativeFreq(7), "E", number + 7),
-        MusicalNote(A.relativeFreq(8), "F", number + 8),
-        MusicalNote(A.relativeFreq(9), "F#", number + 9),
-        MusicalNote(A.relativeFreq(10), "G", number + 10),
-        MusicalNote(A.relativeFreq(11), "G#", number + 11)
+        MusicalNote(A.relativeFreq(1), "A#", (number * 12) + 2),
+        MusicalNote(A.relativeFreq(2), "B", (number * 12) + 3)
     )
 
     override fun toString(): String {
         return notes.joinToString {
-            "${it.name}-${String.format("%.2f", it.freq / 100f)} Hz"
+            "${it.name}-${String.format("%.3f", it.floatFreq)} Hz"
         }
+    }
+
+    companion object {
+        fun createFullRange(): List<ChromaticOctave> = (0..8).map { ChromaticOctave(it) }
     }
 }

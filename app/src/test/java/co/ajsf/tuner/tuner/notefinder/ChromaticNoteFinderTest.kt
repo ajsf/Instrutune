@@ -22,15 +22,29 @@ internal class ChromaticNoteFinderTest {
     }
 
     @Test
-    fun `25_957 returns A with a delta of -100`() {
-        val note = noteFinder.findNote(25.957f)
-        assertEquals("A", note.name)
+    fun `261_626 returns C with a delta of 0`() {
+        val note = noteFinder.findNote(261.626f)
+        assertEquals("C", note.name)
+        assertEquals(0, note.delta)
+    }
+
+    @Test
+    fun `16_352 returns C with a delta of 0`() {
+        val note = noteFinder.findNote(16.352f)
+        assertEquals("C", note.name)
+        assertEquals(0, note.delta)
+    }
+
+    @Test
+    fun `15_434 returns C with a delta of -100`() {
+        val note = noteFinder.findNote(15.434f)
+        assertEquals("C", note.name)
         assertEquals(-100, note.delta)
     }
 
     @Test
-    fun `below 25_957 returns NO_NOTE`() {
-        val note = noteFinder.findNote(25.956f)
+    fun `below 15_434 returns NO_NOTE`() {
+        val note = noteFinder.findNote(15.4339f)
         assertEquals(NO_NOTE, note)
     }
 
@@ -41,54 +55,37 @@ internal class ChromaticNoteFinderTest {
     }
 
     @Test
-    fun `3520 returns G# with a delta of 100`() {
+    fun `3520 returns A with a delta of 0`() {
         val note = noteFinder.findNote(3520f)
+        assertEquals("A", note.name)
+        assertEquals(0, note.delta)
+    }
+
+    @Test
+    fun `7902_133 returns B with a delta of 0`() {
+        val note = noteFinder.findNote(7902.133f)
+        assertEquals("B", note.name)
+        assertEquals(0, note.delta)
+    }
+
+    @Test
+    fun `8372_019 returns B with a delta of 100`() {
+        val note = noteFinder.findNote(8372.019f)
+        println(note)
+        assertEquals("B", note.name)
         assertEquals(100, note.delta)
     }
 
     @Test
-    fun `above 3352 returns NO_NOTE`() {
-        val note = noteFinder.findNote(3520.01f)
+    fun `above 8372_019 returns NO_NOTE`() {
+        val note = noteFinder.findNote(8372.02f)
         assertEquals(NO_NOTE, note)
     }
 
     @Test
-    fun `it returns A with delta of 0 for 7 octaves starting from 27_5`() {
-        var freq = 27.5f
-        repeat(7) {
-            val note = noteFinder.findNote(freq)
-            assertEquals("A", note.name)
-            assertEquals(0, note.delta)
-            freq *= 2
-        }
-    }
-
-    @Test
-    fun `it returns A# for 7 octaves starting from 29_14`() {
-        var freq = 29.14f
-        repeat(7) {
-            val note = noteFinder.findNote(freq)
-            assertEquals("A#", note.name)
-            assertEquals(0, note.delta)
-            freq *= 2
-        }
-    }
-
-    @Test
-    fun `it returns B for 7 octaves starting from 30_87`() {
-        var freq = 30.87f
-        repeat(7) {
-            val note = noteFinder.findNote(freq)
-            assertEquals("B", note.name)
-            assertEquals(0, note.delta)
-            freq *= 2
-        }
-    }
-
-    @Test
-    fun `it returns C for 7 octaves starting from 32_70`() {
-        var freq = 32.70f
-        repeat(7) {
+    fun `it returns C with a delta of 0 for 9 octaves starting from 16_352`() {
+        var freq = 16.352f
+        repeat(9) {
             val note = noteFinder.findNote(freq)
             assertEquals("C", note.name)
             assertEquals(0, note.delta)
@@ -97,9 +94,9 @@ internal class ChromaticNoteFinderTest {
     }
 
     @Test
-    fun `it returns C# for 7 octaves starting from 34_65`() {
-        var freq = 34.65f
-        repeat(7) {
+    fun `it returns C# for 9 octaves starting from 17_324`() {
+        var freq = 17.324f
+        repeat(9) {
             val note = noteFinder.findNote(freq)
             assertEquals("C#", note.name)
             assertEquals(0, note.delta)
@@ -108,9 +105,9 @@ internal class ChromaticNoteFinderTest {
     }
 
     @Test
-    fun `it returns D for 7 octaves starting from 36_71`() {
-        var freq = 36.71f
-        repeat(7) {
+    fun `it returns D for 9 octaves starting from 18_354`() {
+        var freq = 18.354f
+        repeat(9) {
             val note = noteFinder.findNote(freq)
             assertEquals("D", note.name)
             assertEquals(0, note.delta)
@@ -119,9 +116,9 @@ internal class ChromaticNoteFinderTest {
     }
 
     @Test
-    fun `it returns D# for 7 octaves starting from 38_89`() {
-        var freq = 38.89f
-        repeat(7) {
+    fun `it returns D# for 9 octaves starting from 19_445`() {
+        var freq = 19.445f
+        repeat(9) {
             val note = noteFinder.findNote(freq)
             assertEquals("D#", note.name)
             assertEquals(0, note.delta)
@@ -130,9 +127,9 @@ internal class ChromaticNoteFinderTest {
     }
 
     @Test
-    fun `it returns E for 7 octaves starting from 41_20`() {
-        var freq = 41.20f
-        repeat(7) {
+    fun `it returns E for 9 octaves starting from 20_601`() {
+        var freq = 20.601f
+        repeat(9) {
             val note = noteFinder.findNote(freq)
             assertEquals("E", note.name)
             assertEquals(0, note.delta)
@@ -141,9 +138,9 @@ internal class ChromaticNoteFinderTest {
     }
 
     @Test
-    fun `it returns F for 7 octaves starting from 43_65`() {
-        var freq = 43.65f
-        repeat(7) {
+    fun `it returns F for 9 octaves starting from 21_826`() {
+        var freq = 21.826f
+        repeat(9) {
             val note = noteFinder.findNote(freq)
             assertEquals("F", note.name)
             assertEquals(0, note.delta)
@@ -152,9 +149,9 @@ internal class ChromaticNoteFinderTest {
     }
 
     @Test
-    fun `it returns F# for 7 octaves starting from 46_25`() {
-        var freq = 46.25f
-        repeat(7) {
+    fun `it returns F# for 9 octaves starting from 23_124`() {
+        var freq = 23.124f
+        repeat(9) {
             val note = noteFinder.findNote(freq)
             assertEquals("F#", note.name)
             assertEquals(0, note.delta)
@@ -163,8 +160,8 @@ internal class ChromaticNoteFinderTest {
     }
 
     @Test
-    fun `it returns G for 7 octaves starting from 49`() {
-        var freq = 49f
+    fun `it returns G for 9 octaves starting from 24_499`() {
+        var freq = 24.499f
         repeat(7) {
             val note = noteFinder.findNote(freq)
             assertEquals("G", note.name)
@@ -174,11 +171,44 @@ internal class ChromaticNoteFinderTest {
     }
 
     @Test
-    fun `it returns G# for 7 octaves starting from 51_91`() {
-        var freq = 51.91f
-        repeat(7) {
+    fun `it returns G# for 9 octaves starting from 25_956`() {
+        var freq = 25.956f
+        repeat(9) {
             val note = noteFinder.findNote(freq)
             assertEquals("G#", note.name)
+            assertEquals(0, note.delta)
+            freq *= 2
+        }
+    }
+
+    @Test
+    fun `it returns A for 9 octaves starting from 27_5`() {
+        var freq = 27.5f
+        repeat(9) {
+            val note = noteFinder.findNote(freq)
+            assertEquals("A", note.name)
+            assertEquals(0, note.delta)
+            freq *= 2
+        }
+    }
+
+    @Test
+    fun `it returns A# for 9 octaves starting from 29_14`() {
+        var freq = 29.14f
+        repeat(9) {
+            val note = noteFinder.findNote(freq)
+            assertEquals("A#", note.name)
+            assertEquals(0, note.delta)
+            freq *= 2
+        }
+    }
+
+    @Test
+    fun `it returns B for 9 octaves starting from 30_87`() {
+        var freq = 30.87f
+        repeat(9) {
+            val note = noteFinder.findNote(freq)
+            assertEquals("B", note.name)
             assertEquals(0, note.delta)
             freq *= 2
         }
