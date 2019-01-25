@@ -14,10 +14,8 @@ class TarsosFlowable(tarsosDispatcher: TarsosDispatcher, scheduler: Scheduler) :
 
     init {
         flowable = Flowable.create<TarsosResponse>({ emitter ->
-            println("Detect Engine: creating")
 
             emitter.setCancellable {
-                println("Detect Engine: cancelling")
                 tarsosDispatcher.stop()
             }
 

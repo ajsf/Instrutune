@@ -27,13 +27,13 @@ class NoteFinder private constructor(private val notes: List<MusicalNote>) {
     private fun returnLowNote(freq: Int): NoteData {
         val note = notes.first()
         val delta = calculateNegativeDelta(freq, lowRange, note.freq)
-        return NoteData(note.name, 0, delta)
+        return NoteData(note.name, note.number, delta)
     }
 
     private fun returnHighNote(freq: Int): NoteData {
         val note = notes.last()
         val delta = calculatePositiveDelta(freq, highRange, note.freq)
-        return NoteData(note.name, notes.lastIndex, delta)
+        return NoteData(note.name, note.number, delta)
     }
 
     private fun calculatePositiveDelta(freq: Int, midPoint: Int, noteFreq: Int): Int =
