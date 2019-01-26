@@ -21,7 +21,9 @@ class TunerViewModel(tuner: Tuner, private val instrumentRepository: InstrumentR
 
     val mostRecentFrequency: LiveData<String> = tuner.mostRecentFrequency.toLiveData()
 
-    val mostRecentNoteName: LiveData<String> = tuner.mostRecentNoteName.toLiveData()
+    val mostRecentNoteName: LiveData<String> = tuner.mostRecentNoteInfo.map { it.name }.toLiveData()
+
+    val mostRecentNoteDelta: LiveData<Int> = tuner.mostRecentNoteInfo.map { it.delta }.toLiveData()
 
     private val selectedInstrument = MutableLiveData<Instrument>()
     private val _selectedInstrumentInfo = MutableLiveData<SelectedInstrumentInfo>()

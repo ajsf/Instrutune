@@ -51,7 +51,7 @@ class TunerTest {
     @Test
     fun `mostRecentNoteName sends the same number of items as it receives`() {
         stubRandomResponse()
-        val testSubscriber = tuner.mostRecentNoteName.test()
+        val testSubscriber = tuner.mostRecentNoteInfo.test()
         testSubscriber.assertValueCount(floatList.size)
     }
 

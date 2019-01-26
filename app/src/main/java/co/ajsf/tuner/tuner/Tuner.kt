@@ -7,6 +7,7 @@ import co.ajsf.tuner.tuner.notefinder.model.mapToMusicalNoteList
 import io.reactivex.Flowable
 
 data class SelectedStringInfo(val number: Int, val delta: Float)
+data class SelectedNoteInfo(val name: String, val delta: Int)
 
 class Tuner(frequencyDetector: FrequencyDetector) {
 
@@ -23,10 +24,10 @@ class Tuner(frequencyDetector: FrequencyDetector) {
         .filter { it != -1f }
         .map { String.format("%.2f", it) }
 
-    val mostRecentNoteName: Flowable<String> = audioFeed
+    val mostRecentNoteInfo: Flowable<SelectedNoteInfo> = audioFeed
         .filter { it != -1f }
         .map { chromaticNoteFinder.findNote(it) }
-        .map { it.name }
+        .map { SelectedNoteInfo(it.name, it.delta) }
 
     fun setInstrument(instrument: Instrument) {
         instrumentNoteFinder = NoteFinder.instrumentNoteFinder(instrument.mapToMusicalNoteList())
