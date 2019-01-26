@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
-        android:textColor="@color/white"
+        android:textColor="@color/textColor"
         app:layout_constraintLeft_toLeftOf="@id/string_name_outline"
         app:layout_constraintRight_toRightOf="@id/string_name_outline"
         app:layout_constraintTop_toTopOf="@id/string_name_outline" />
