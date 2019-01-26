@@ -1,7 +1,6 @@
 package co.ajsf.tuner.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -45,7 +44,7 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
             .onUpdate {
                 tuner_view.selectString(it.number)
                 if (it.number != -1) {
-                    tuner_view.setDelta(it.delta)
+                    tuner_view.setInstrumentDelta(it.delta)
                 }
             }
 
@@ -57,12 +56,12 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
             }
 
         mostRecentFrequency.onUpdate {
-            Log.d("TunerActivity", "Current Freq: $it")
             tuner_view.setFreq(it)
         }
         mostRecentNoteName.onUpdate {
             tuner_view.setNoteName(it)
         }
+        tuner_view.setChromaticDelta(mostRecentNoteDelta)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
