@@ -18,6 +18,11 @@ internal class InstrumentNoteFinderTest {
     }
 
     @Nested
+    inner class UkuleleTest : AbstractInstrumentNoteFinderTests() {
+        override val instrument: Instrument = InstrumentFactory.UKULELE
+    }
+
+    @Nested
     inner class RandomInstrumentNoteFinderTest : AbstractInstrumentNoteFinderTests() {
         override val instrument: Instrument = InstrumentDataFactory.randomInstrument()
     }
