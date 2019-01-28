@@ -6,6 +6,7 @@ import kotlin.math.roundToInt
 data class MusicalNote(val freq: Int, val name: String = "", val number: Int = -1) {
 
     val floatFreq = freq / 1000f
+    val numberedName: String = (name + ((number + 8) / 12).toString())
 
     fun relativeFreq(steps: Int): Int = (freq * 2.0.pow(steps / 12.0))
         .roundToInt()

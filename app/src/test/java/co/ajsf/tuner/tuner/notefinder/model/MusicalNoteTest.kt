@@ -50,6 +50,5 @@ internal class MusicalNoteTest {
             assertEquals(expectedFreqs[it], note.relativeFreq(it))
         }
     }
-
 }
 

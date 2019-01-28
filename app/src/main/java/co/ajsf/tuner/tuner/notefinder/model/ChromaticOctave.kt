@@ -33,6 +33,6 @@ data class ChromaticOctave(private val number: Int = 4, private val centerA: Int
     }
 
     companion object {
-        fun createFullRange(): List<ChromaticOctave> = (0..8).map { ChromaticOctave(it) }
+        fun createFullRange(): List<MusicalNote> = (0..8).map { ChromaticOctave(it) }.flatMap { it.notes }
     }
 }

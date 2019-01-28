@@ -6,16 +6,17 @@ import org.junit.jupiter.api.Test
 
 internal class ChromaticOctaveTest {
 
+    private val notesNames = listOf(
+        "C", "C#", "D", "D#", "E", "F",
+        "F#", "G", "G#", "A", "A#", "B"
+    )
+
     @Test
     fun `it creates a list of notes with the correct names from C through B`() {
         val octave = ChromaticOctave()
         val names = octave.notes.map { it.name }
 
-        val expectedNames = listOf(
-            "C", "C#", "D", "D#", "E", "F",
-            "F#", "G", "G#", "A", "A#", "B"
-        )
-        assertEquals(expectedNames, names)
+        assertEquals(notesNames, names)
     }
 
     @Test
@@ -40,6 +41,15 @@ internal class ChromaticOctaveTest {
     }
 
     @Test
+    fun `the default middle C range contains the notes with numberedNames C4 - B4`() {
+        val octave = ChromaticOctave()
+        val numberedNames = octave.notes.map { it.numberedName }
+
+        val expectedNames = notesNames.map { it + (4).toString() }
+        assertEquals(expectedNames, numberedNames)
+    }
+
+    @Test
     fun `passing 0 returns the lowest octave, ranging from 16_352 Hz - 30_868 Hz`() {
         val octave = ChromaticOctave(0)
         val freqs = octave.notes.map { it.freq }
@@ -52,21 +62,22 @@ internal class ChromaticOctaveTest {
     }
 
     @Test
-    fun `the 0 range contains note numbers -8 through 3`() {
+    fun `the 0 range contains note numberedNames C0 through B#0`() {
         val octave = ChromaticOctave(0)
-        val numbers = octave.notes.map { it.number }
+        val numberedNames = octave.notes.map { it.numberedName }
 
-        val expectedNumbers = (-8..3).map { it }
-        assertEquals(expectedNumbers, numbers)
+        val expectedNames = notesNames.map { it + (0).toString() }
+        assertEquals(expectedNames, numberedNames)
     }
 
     @Test
-    fun `the note with number 1 is the low  A on a piano - 27_5 Hz`() {
+    fun `the note with number 1 is A0, the low  A on a piano - 27_5 Hz`() {
         val octave = ChromaticOctave(0)
-        val noteOne = octave.notes.find { it.number == 1 }
+        val noteOne = octave.notes.find { it.number == 1 }!!
 
         val expectedNote = MusicalNote(27500, "A", 1)
         assertEquals(expectedNote, noteOne)
+        assertEquals("A0", noteOne.numberedName)
     }
 
     @Test
@@ -92,12 +103,13 @@ internal class ChromaticOctaveTest {
     }
 
     @Test
-    fun `the note with number 88 is the high C on a piano - 4186_009 Hz`() {
+    fun `the note with number 88 is C8 on a piano - 4186_009 Hz`() {
         val octave = ChromaticOctave(8)
-        val noteOne = octave.notes.find { it.number == 88 }
+        val noteOne = octave.notes.find { it.number == 88 }!!
 
         val expectedNote = MusicalNote(4186009, "C", 88)
         assertEquals(expectedNote, noteOne)
+        assertEquals("C8", noteOne.numberedName)
     }
 
     @Test
@@ -115,25 +127,26 @@ internal class ChromaticOctaveTest {
     }
 
     @Test
-    fun `the createFullRange companion function creates a list of octaves, with notes ranging from numbers -8 to 99`() {
-        val numbers = ChromaticOctave.createFullRange().flatMap { it.notes }.map { it.number }
+    fun `the createFullRange companion function creates a list of notes ranging from numbers -8 to 99`() {
+        val numbers = ChromaticOctave.createFullRange()
+            .map { it.number }
         val expectedNumbers = (-8..99).map { it }
         assertEquals(expectedNumbers, numbers)
     }
 
     @Test
-    fun `the lowest note from createFullRange range is low C - 16_352`() {
-        val notes = ChromaticOctave.createFullRange().flatMap { it.notes }
-        val first = notes.first()
+    fun `the lowest note from createFullRange range is C0 - 16_352`() {
+        val first = ChromaticOctave.createFullRange().first()
         assertEquals(16352, first.freq)
         assertEquals("C", first.name)
+        assertEquals("C0", first.numberedName)
     }
 
     @Test
-    fun `the highest note from createFullRange range is high B - 7902_133`() {
-        val notes = ChromaticOctave.createFullRange().flatMap { it.notes }
-        val last = notes.last()
+    fun `the highest note from createFullRange range is B8 - 7902_133`() {
+        val last = ChromaticOctave.createFullRange().last()
         assertEquals(7902133, last.freq)
         assertEquals("B", last.name)
+        assertEquals("B8", last.numberedName)
     }
 }
