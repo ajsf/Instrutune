@@ -2,7 +2,6 @@ package co.ajsf.tuner.view.tunerview
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.widget.LinearLayout
 import co.ajsf.tuner.R
 
@@ -12,7 +11,7 @@ class StringsView
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     private var stringViews: List<TunerStringView> = listOf()
-    private var selectedString = -1
+    private var selectedString = ""
 
     init {
         orientation = LinearLayout.HORIZONTAL
@@ -20,29 +19,28 @@ class StringsView
         setBackgroundResource(R.color.backgroundColor)
     }
 
-    fun setStringNames(strings: List<Char>) {
+    fun setStrings(numberedNames: List<String>) {
         removeAllViews()
-        stringViews = strings.map {
-            TunerStringView(context).apply {
-                setStringName(it)
-            }
+        stringViews = numberedNames.map {
+            TunerStringView(context).apply { numberedName = it }
         }
         stringViews.onEach { addView(it) }
     }
 
-    fun selectString(stringNumber: Int) {
-        if (stringNumber in stringViews.indices) {
-            Log.d("DETECT", "Selecting string: $stringNumber")
-            unselectStrings()
-            stringViews[stringNumber].setSelected()
-            selectedString = stringNumber
+    fun selectString(numberedName: String) {
+        unselectStrings()
+        selectedString = numberedName
+        stringViews.onEach {
+            if (it.numberedName == numberedName) {
+                it.setSelected()
+            }
         }
     }
 
     fun unselectStrings() {
-        if (selectedString in stringViews.indices) {
-            stringViews[selectedString].unselect()
-            selectedString = -1
+        if (selectedString.isNotBlank()) {
+            stringViews.firstOrNull { it.numberedName == selectedString }?.unselect()
+            selectedString = ""
         }
     }
 }

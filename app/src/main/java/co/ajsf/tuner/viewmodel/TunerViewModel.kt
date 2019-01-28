@@ -9,7 +9,7 @@ import co.ajsf.tuner.model.Instrument
 import co.ajsf.tuner.tuner.SelectedStringInfo
 import co.ajsf.tuner.tuner.Tuner
 
-typealias SelectedInstrumentInfo = Pair<String, List<Char>>
+typealias SelectedInstrumentInfo = Pair<String, List<String>>
 
 class TunerViewModel(tuner: Tuner, private val instrumentRepository: InstrumentRepository) :
     ViewModel() {
@@ -31,7 +31,7 @@ class TunerViewModel(tuner: Tuner, private val instrumentRepository: InstrumentR
     init {
         selectedInstrument.observeForever { instrument ->
             tuner.setInstrument(instrument)
-            val info = instrument.name to instrument.strings.map { it.name.first() }
+            val info = instrument.name to instrument.strings.map { it.numberedName }
             _selectedInstrumentInfo.postValue(info)
         }
         getSelectedInstrument()

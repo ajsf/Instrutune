@@ -50,9 +50,8 @@ internal abstract class AbstractInstrumentNoteFinderTests {
 
         val noteData = noteFinder.findNote(note.floatFreq)
         val expectedString = instrument.strings.minBy { it.freq }!!
-        val expectedIndex = instrument.strings.indexOf(expectedString)
 
-        val expectedNote = NoteData(expectedString.name, expectedIndex, -100)
+        val expectedNote = NoteData(expectedString.name, expectedString.numberedName, -100)
 
         assertEquals(expectedNote, noteData)
     }
@@ -76,18 +75,17 @@ internal abstract class AbstractInstrumentNoteFinderTests {
 
         val noteData = noteFinder.findNote(note.floatFreq)
         val expectedString = instrument.strings.maxBy { it.freq }!!
-        val index = instrument.strings.indexOf(expectedString)
 
-        val expectedData = NoteData(expectedString.name, index, 100)
+        val expectedData = NoteData(expectedString.name, expectedString.numberedName, 100)
 
         assertEquals(expectedData, noteData)
     }
 
     @Test
-    fun `it returns the correct note and number with a delta of 0 for tuned frequencies`() {
+    fun `it returns the correct note and numberedName with a delta of 0 for tuned frequencies`() {
         instrument.strings.forEachIndexed { index, string ->
             val noteData = noteFinder.findNote(string.freq)
-            val expectedData = NoteData(string.name, index, 0)
+            val expectedData = NoteData(string.name, string.numberedName, 0)
 
             assertEquals(expectedData, noteData)
         }
@@ -100,10 +98,9 @@ internal abstract class AbstractInstrumentNoteFinderTests {
             val noteData = noteFinder.findNote(freq)
 
             val expectedString = instrument.strings.find { it.freq == sortedFreqs[i - 1] }!!
-            val expectedIndex = instrument.strings.indexOf(expectedString)
 
             assertEquals(expectedString.name, noteData.name)
-            assertEquals(expectedIndex, noteData.number)
+            assertEquals(expectedString.numberedName, noteData.numberedName)
             assertTrue { noteData.delta in (99..100) }
         }
     }
@@ -115,10 +112,9 @@ internal abstract class AbstractInstrumentNoteFinderTests {
             val noteData = noteFinder.findNote(freq)
 
             val expectedString = instrument.strings.find { it.freq == sortedFreqs[i] }!!
-            val expectedIndex = instrument.strings.indexOf(expectedString)
 
             assertEquals(expectedString.name, noteData.name)
-            assertEquals(expectedIndex, noteData.number)
+            assertEquals(expectedString.numberedName, noteData.numberedName)
             assertTrue { noteData.delta in (-100..-99) }
         }
     }

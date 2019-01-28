@@ -13,9 +13,11 @@ class TunerStringView
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
-    fun setStringName(name: Char) {
-        string_name_text.text = name.toString()
-    }
+    var numberedName: String = ""
+        set(numberedName: String) {
+            string_name_text.text = numberedName.first().toString()
+            field = numberedName
+        }
 
     fun setSelected() {
         string_name_outline.setImageResource(R.drawable.ic_string_name_box_selected)

@@ -50,5 +50,5 @@ object InstrumentFactory {
     private fun InstrumentFactoryModel.buildStringList(): List<InstrumentString> = numberedNotes
         .map { numberedNote ->
             notes.firstOrNull { it.numberedName == numberedNote } ?: throw Exception("Invalid note")
-        }.map { InstrumentString(it.name, it.floatFreq, it.numberedName) }
+        }.map { InstrumentString(it.name, it.floatFreq, it.number, it.numberedName) }
 }

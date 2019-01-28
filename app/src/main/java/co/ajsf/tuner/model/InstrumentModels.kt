@@ -3,7 +3,8 @@ package co.ajsf.tuner.model
 data class InstrumentString(
     val name: String,
     val freq: Float,
-    val numberedName: String = ""
+    val noteNumber: Int,
+    val numberedName: String
 )
 
 data class Instrument(

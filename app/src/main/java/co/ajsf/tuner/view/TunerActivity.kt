@@ -42,10 +42,10 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
     private fun initViewModel(): Unit = with(viewModel) {
 
         selectedInstrumentInfo
-            .onUpdate { (name, stringNames) ->
+            .onUpdate { (name, numberedNames) ->
                 val appName = resources.getString(R.string.app_name)
                 title = "$appName - $name"
-                tuner_view.selectInstrument(stringNames)
+                tuner_view.selectInstrument(numberedNames)
             }
 
         mostRecentFrequency.onUpdate { tuner_view.setFreq(it) }

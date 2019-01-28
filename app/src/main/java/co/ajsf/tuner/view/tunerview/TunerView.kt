@@ -51,11 +51,11 @@ class TunerView
         chevronView.setColorFilter(color)
     }
 
-    fun selectInstrument(stringNames: List<Char>): Unit = strings_view.setStringNames(stringNames)
+    fun selectInstrument(numberedNames: List<String>): Unit = strings_view.setStrings(numberedNames)
 
-    private fun selectString(stringNumber: Int) {
-        if (stringNumber != -1) {
-            strings_view.selectString(stringNumber)
+    private fun selectString(numberedName: String) {
+        if (numberedName.isNotBlank()) {
+            strings_view.selectString(numberedName)
             tuner_vu_view.setIndicatorVisibility(true)
         } else {
             tuner_vu_view.setIndicatorVisibility(false)
@@ -66,7 +66,7 @@ class TunerView
     fun setSelectedStringLiveData(stringLiveData: LiveData<SelectedStringInfo>) = stringLiveData
         .observeForever {
             tuner_vu_view.setIndicatorDelta(it.delta)
-            selectString(it.number)
+            selectString(it.numberedName)
         }
 
     fun setChromaticDelta(deltaLiveData: LiveData<Int>) = observers

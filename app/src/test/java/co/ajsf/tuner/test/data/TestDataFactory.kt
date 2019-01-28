@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom
 internal object TestDataFactory {
 
     fun randomFloat(): Float = Math.random().toFloat()
-    fun randomInt(maxNumber: Int, minNumber: Int = 1): Int =
+    fun randomInt(maxNumber: Int = 50, minNumber: Int = 1): Int =
         ThreadLocalRandom.current().nextInt(minNumber, maxNumber + 1)
 
     fun randomBoolean(): Boolean = Math.random() < 0.5

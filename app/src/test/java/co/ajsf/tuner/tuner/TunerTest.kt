@@ -71,7 +71,7 @@ class TunerTest {
     }
 
     @Test
-    fun `it returns each string number with a delta of 0 when the freq for each string of an instrument is sent`() {
+    fun `it returns each numberedName with a delta of 0 when the freq for each string of an instrument is sent`() {
 
         val instrument = InstrumentDataFactory.randomInstrument()
 
@@ -84,7 +84,7 @@ class TunerTest {
         val testSubscriber = tuner.instrumentTuning.test()
 
         val expectedResults = instrument.strings
-            .indices.map { SelectedStringInfo(it, 0f) }
+            .map { SelectedStringInfo(it.numberedName, 0f) }
 
         testSubscriber.assertValueSequence(expectedResults)
     }
