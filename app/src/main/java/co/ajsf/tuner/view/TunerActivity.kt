@@ -40,13 +40,6 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun initViewModel(): Unit = with(viewModel) {
-        selectedStringInfo
-            .onUpdate {
-                tuner_view.selectString(it.number)
-                if (it.number != -1) {
-                    tuner_view.setInstrumentDelta(it.delta)
-                }
-            }
 
         selectedInstrumentInfo
             .onUpdate { (name, stringNames) ->
@@ -55,13 +48,11 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
                 tuner_view.selectInstrument(stringNames)
             }
 
-        mostRecentFrequency.onUpdate {
-            tuner_view.setFreq(it)
-        }
-        mostRecentNoteName.onUpdate {
-            tuner_view.setNoteName(it)
-        }
+        mostRecentFrequency.onUpdate { tuner_view.setFreq(it) }
+        mostRecentNoteName.onUpdate { tuner_view.setNoteName(it) }
+
         tuner_view.setChromaticDelta(mostRecentNoteDelta)
+        tuner_view.setSelectedStringLiveData(selectedStringInfo)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

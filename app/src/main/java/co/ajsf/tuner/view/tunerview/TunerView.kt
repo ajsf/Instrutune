@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import co.ajsf.tuner.R
+import co.ajsf.tuner.tuner.SelectedStringInfo
 import kotlinx.android.synthetic.main.tuner_view.view.*
 
 class TunerView
@@ -52,7 +53,7 @@ class TunerView
 
     fun selectInstrument(stringNames: List<Char>): Unit = strings_view.setStringNames(stringNames)
 
-    fun selectString(stringNumber: Int) {
+    private fun selectString(stringNumber: Int) {
         if (stringNumber != -1) {
             strings_view.selectString(stringNumber)
             tuner_vu_view.setIndicatorVisibility(true)
@@ -62,7 +63,11 @@ class TunerView
         }
     }
 
-    fun setInstrumentDelta(delta: Float) = tuner_vu_view.setIndicatorDelta(delta)
+    fun setSelectedStringLiveData(stringLiveData: LiveData<SelectedStringInfo>) = stringLiveData
+        .observeForever {
+            tuner_vu_view.setIndicatorDelta(it.delta)
+            selectString(it.number)
+        }
 
     fun setChromaticDelta(deltaLiveData: LiveData<Int>) = observers
         .onEach { deltaLiveData.observeForever(it) }
