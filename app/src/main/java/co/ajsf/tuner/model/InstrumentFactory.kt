@@ -1,118 +1,54 @@
 package co.ajsf.tuner.model
 
+import co.ajsf.tuner.tuner.notefinder.model.ChromaticOctave
+
+private data class InstrumentFactoryModel(
+    val name: String,
+    val numberedNotes: List<String>
+)
+
 object InstrumentFactory {
-    val GUITAR = Instrument(
-        "Guitar", listOf(
-            InstrumentString(name = "E", freq = 82.407f),
-            InstrumentString(name = "A", freq = 110f),
-            InstrumentString(name = "D", freq = 146.832f),
-            InstrumentString(name = "G", freq = 195.998f),
-            InstrumentString(name = "B", freq = 246.942f),
-            InstrumentString(name = "E", freq = 329.628f)
-        )
-    )
 
-    val GUITAR_DROP_D = Instrument(
-        "Guitar - Drop D", listOf(
-            InstrumentString(name = "E", freq = 82.407f),
-            InstrumentString(name = "A", freq = 110f),
-            InstrumentString(name = "D", freq = 146.832f),
-            InstrumentString(name = "G", freq = 195.998f),
-            InstrumentString(name = "B", freq = 246.942f),
-            InstrumentString(name = "E", freq = 329.628f)
-        )
-    )
+    private val notes = ChromaticOctave.createFullRange()
 
-    val GUITAR_OPEN_D = Instrument(
-        "Guitar - Open D", listOf(
-            InstrumentString(name = "D", freq = 73.416f),
-            InstrumentString(name = "A", freq = 110f),
-            InstrumentString(name = "D", freq = 146.832f),
-            InstrumentString(name = "F#", freq = 184.997f),
-            InstrumentString(name = "A", freq = 220f),
-            InstrumentString(name = "D", freq = 293.665f)
-        )
-    )
+    private val GUITAR = InstrumentFactoryModel("Guitar", listOf("E2", "A2", "D3", "G3", "B3", "E4"))
+    private val GUITAR_DROP_D = InstrumentFactoryModel("Guitar - Drop D", listOf("D2", "A2", "D3", "G3", "B3", "E4"))
+    private val GUITAR_OPEN_D = InstrumentFactoryModel("Guitar - Open D", listOf("D2", "A2", "D3", "F#3", "A3", "D4"))
+    private val GUITAR_OPEN_G = InstrumentFactoryModel("Guitar - Open G", listOf("D2", "G2", "D3", "G3", "B3", "D4"))
 
-    val GUITAR_OPEN_G = Instrument(
-        "Guitar - Open G", listOf(
-            InstrumentString(name = "D", freq = 73.416f),
-            InstrumentString(name = "G", freq = 97.999f),
-            InstrumentString(name = "D", freq = 146.832f),
-            InstrumentString(name = "G", freq = 195.998f),
-            InstrumentString(name = "B", freq = 246.942f),
-            InstrumentString(name = "D", freq = 293.665f)
-        )
-    )
+    private val BASS = InstrumentFactoryModel("Bass", listOf("E1", "A1", "D2", "G2"))
+    private val BASS_5_LOW = InstrumentFactoryModel("Bass (5 String Low B)", listOf("B0", "E1", "A1", "D2", "G2"))
+    private val BASS_5_HIGH = InstrumentFactoryModel("Bass (5 String High C)", listOf("E1", "A1", "D2", "G2", "C3"))
+    private val BASS_6 = InstrumentFactoryModel("Bass (6 String)", listOf("B0", "E1", "A1", "D2", "G2", "C3"))
 
-    val BASS = Instrument(
-        "Bass", listOf(
-            InstrumentString(name = "E", freq = 41.203f),
-            InstrumentString(name = "A", freq = 55f),
-            InstrumentString(name = "D", freq = 73.416f),
-            InstrumentString(name = "G", freq = 97.999f)
-        )
-    )
+    private val UKULELE = InstrumentFactoryModel("Ukulele", listOf("G4", "C4", "E4", "A4"))
+    private val BARITONE_UKULELE = InstrumentFactoryModel("Ukulele (Baritone)", listOf("D3", "G3", "B3", "E4"))
 
-    val BASS_5_LOW = Instrument(
-        "Bass (5 String Low B)", listOf(
-            InstrumentString(name = "B", freq = 30.868f),
-            InstrumentString(name = "E", freq = 41.203f),
-            InstrumentString(name = "A", freq = 55f),
-            InstrumentString(name = "D", freq = 73.416f),
-            InstrumentString(name = "G", freq = 97.999f)
-        )
-    )
-
-    val BASS_5_HI = Instrument(
-        "Bass (5 String High C)", listOf(
-            InstrumentString(name = "E", freq = 41.203f),
-            InstrumentString(name = "A", freq = 55f),
-            InstrumentString(name = "D", freq = 73.416f),
-            InstrumentString(name = "G", freq = 97.999f),
-            InstrumentString(name = "C", freq = 130.813f)
-        )
-    )
-
-    val BASS_6 = Instrument(
-        "Bass (6 String)", listOf(
-            InstrumentString(name = "B", freq = 30.868f),
-            InstrumentString(name = "E", freq = 41.203f),
-            InstrumentString(name = "A", freq = 55f),
-            InstrumentString(name = "D", freq = 73.416f),
-            InstrumentString(name = "G", freq = 97.999f),
-            InstrumentString(name = "C", freq = 130.813f)
-        )
-    )
-
-    val UKULELE = Instrument(
-        "Ukulele (Standard)", listOf(
-            InstrumentString(name = "G", freq = 391.995f),
-            InstrumentString(name = "C", freq = 261.626f),
-            InstrumentString(name = "E", freq = 329.628f),
-            InstrumentString(name = "A", freq = 440f)
-        )
-    )
-
-    val BARITONE_UKULELE = Instrument(
-        "Ukulele (Baritone)", listOf(
-            InstrumentString(name = "D", freq = 146.832f),
-            InstrumentString(name = "G", freq = 195.998f),
-            InstrumentString(name = "B", freq = 246.942f),
-            InstrumentString(name = "E", freq = 329.628f)
-        )
-    )
-
-    fun getAllInstruments() = listOf(
+    private val instrumentModels: List<InstrumentFactoryModel> = listOf(
         GUITAR,
         GUITAR_DROP_D,
         GUITAR_OPEN_D,
         GUITAR_OPEN_G,
         BASS,
         BASS_5_LOW,
-        BASS_5_HI,
+        BASS_5_HIGH,
         BASS_6,
         UKULELE,
         BARITONE_UKULELE
     )
+
+    fun getAllInstruments(): List<Instrument> = instrumentModels
+        .map { it.buildInstrument() }
+
+    fun guitar() = GUITAR.buildInstrument()
+    fun bass() = BASS.buildInstrument()
+    fun ukulele() = UKULELE.buildInstrument()
+
+    private fun InstrumentFactoryModel.buildInstrument(): Instrument =
+        Instrument(name, buildStringList())
+
+    private fun InstrumentFactoryModel.buildStringList(): List<InstrumentString> = numberedNotes
+        .map { numberedNote ->
+            notes.firstOrNull { it.numberedName == numberedNote } ?: throw Exception("Invalid note")
+        }.map { InstrumentString(it.name, it.floatFreq, it.numberedName) }
 }

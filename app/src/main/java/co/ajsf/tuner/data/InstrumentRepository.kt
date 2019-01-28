@@ -19,7 +19,7 @@ class InstrumentRepository(private val prefs: SharedPreferences) {
 
     fun getSelectedInstrument(): Instrument {
         val instrumentName = prefs.getString(SELECTED_INSTRUMENT, "")
-        return getInstrumentByName(instrumentName) ?: InstrumentFactory.GUITAR
+        return getInstrumentByName(instrumentName) ?: InstrumentFactory.guitar()
     }
 
     private fun getInstrumentByName(instrumentName: String?): Instrument? = instruments

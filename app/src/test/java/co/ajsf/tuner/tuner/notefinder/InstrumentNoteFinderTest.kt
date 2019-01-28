@@ -9,17 +9,17 @@ internal class InstrumentNoteFinderTest {
 
     @Nested
     inner class GuitarTest : AbstractInstrumentNoteFinderTests() {
-        override val instrument: Instrument = InstrumentFactory.GUITAR
+        override val instrument: Instrument = InstrumentFactory.guitar()
     }
 
     @Nested
     inner class BassTest : AbstractInstrumentNoteFinderTests() {
-        override val instrument: Instrument = InstrumentFactory.BASS
+        override val instrument: Instrument = InstrumentFactory.bass()
     }
 
     @Nested
     inner class UkuleleTest : AbstractInstrumentNoteFinderTests() {
-        override val instrument: Instrument = InstrumentFactory.UKULELE
+        override val instrument: Instrument = InstrumentFactory.ukulele()
     }
 
     @Nested
