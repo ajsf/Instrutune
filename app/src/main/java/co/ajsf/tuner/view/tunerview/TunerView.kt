@@ -67,11 +67,9 @@ class TunerView
     fun setChromaticDeltaLiveData(deltaLiveData: LiveData<Int>) = observers
         .onEach { deltaLiveData.observeForever(it) }
 
-    fun setFreq(freq: String) {
-        recent_freq_text.text = freq
-    }
+    fun setFreqLiveData(freqLiveData: LiveData<String>) = freqLiveData
+        .observeForever { recent_freq_text.text = it }
 
-    fun setNoteName(noteName: String) {
-        note_name_text.text = noteName
-    }
+    fun setNoteNameLiveData(noteNameLiveData: LiveData<String>) = noteNameLiveData
+        .observeForever { note_name_text.text = it }
 }

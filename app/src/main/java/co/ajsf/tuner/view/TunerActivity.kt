@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import co.ajsf.tuner.R
 import co.ajsf.tuner.RecordAudioPermissionHandler
@@ -41,15 +40,13 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
 
     private fun initViewModel(): Unit = with(viewModel) {
 
-        selectedInstrumentInfo
-            .onUpdate { (name, numberedNames) ->
-                title = "${resources.getString(R.string.app_name)} - $name"
-                tuner_view.selectInstrument(numberedNames, selectedStringInfo)
-            }
+        selectedInstrumentInfo.observe(this@TunerActivity, Observer { (name, numberedNames) ->
+            title = "${resources.getString(R.string.app_name)} - $name"
+            tuner_view.selectInstrument(numberedNames, selectedStringInfo)
+        })
 
-        mostRecentFrequency.onUpdate { tuner_view.setFreq(it) }
-        mostRecentNoteName.onUpdate { tuner_view.setNoteName(it) }
-
+        tuner_view.setFreqLiveData(mostRecentFrequency)
+        tuner_view.setNoteNameLiveData(mostRecentNoteName)
         tuner_view.setChromaticDeltaLiveData(mostRecentNoteDelta)
     }
 
@@ -74,9 +71,6 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
         }
     }
 
-    private fun <T> LiveData<T>.onUpdate(action: (T) -> Unit) =
-        observe(this@TunerActivity, Observer { action.invoke(it) })
-
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ): Unit = when {
@@ -87,5 +81,3 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
         else -> recordAudioPermission.requestPermission()
     }
 }
-
-
