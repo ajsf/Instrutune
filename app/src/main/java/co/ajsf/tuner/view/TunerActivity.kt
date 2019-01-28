@@ -43,16 +43,14 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
 
         selectedInstrumentInfo
             .onUpdate { (name, numberedNames) ->
-                val appName = resources.getString(R.string.app_name)
-                title = "$appName - $name"
-                tuner_view.selectInstrument(numberedNames)
+                title = "${resources.getString(R.string.app_name)} - $name"
+                tuner_view.selectInstrument(numberedNames, selectedStringInfo)
             }
 
         mostRecentFrequency.onUpdate { tuner_view.setFreq(it) }
         mostRecentNoteName.onUpdate { tuner_view.setNoteName(it) }
 
-        tuner_view.setChromaticDelta(mostRecentNoteDelta)
-        tuner_view.setSelectedStringLiveData(selectedStringInfo)
+        tuner_view.setChromaticDeltaLiveData(mostRecentNoteDelta)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.Transformations
 import co.ajsf.tuner.R
 import co.ajsf.tuner.tuner.SelectedStringInfo
 import kotlinx.android.synthetic.main.tuner_view.view.*
@@ -51,25 +52,19 @@ class TunerView
         chevronView.setColorFilter(color)
     }
 
-    fun selectInstrument(numberedNames: List<String>): Unit = strings_view.setStrings(numberedNames)
-
-    private fun selectString(numberedName: String) {
-        if (numberedName.isNotBlank()) {
-            strings_view.selectString(numberedName)
-            tuner_vu_view.setIndicatorVisibility(true)
-        } else {
-            tuner_vu_view.setIndicatorVisibility(false)
-            strings_view.unselectStrings()
+    fun selectInstrument(numberedNames: List<String>, stringLiveData: LiveData<SelectedStringInfo>) {
+        stringLiveData.observeForever {
+            if (it.numberedName.isNotBlank()) {
+                tuner_vu_view.setIndicatorVisibility(true)
+                tuner_vu_view.setIndicatorDelta(it.delta)
+            } else {
+                tuner_vu_view.setIndicatorVisibility(false)
+            }
         }
+        strings_view.setStrings(numberedNames, Transformations.map(stringLiveData) { it.numberedName })
     }
 
-    fun setSelectedStringLiveData(stringLiveData: LiveData<SelectedStringInfo>) = stringLiveData
-        .observeForever {
-            tuner_vu_view.setIndicatorDelta(it.delta)
-            selectString(it.numberedName)
-        }
-
-    fun setChromaticDelta(deltaLiveData: LiveData<Int>) = observers
+    fun setChromaticDeltaLiveData(deltaLiveData: LiveData<Int>) = observers
         .onEach { deltaLiveData.observeForever(it) }
 
     fun setFreq(freq: String) {
