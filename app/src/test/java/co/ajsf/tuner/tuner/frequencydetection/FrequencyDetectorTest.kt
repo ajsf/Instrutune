@@ -1,8 +1,8 @@
 package co.ajsf.tuner.tuner.frequencydetection
 
-import co.ajsf.tuner.tuner.frequencydetection.model.DetectionResult
 import co.ajsf.tuner.test.data.TestDataFactory
 import co.ajsf.tuner.tuner.frequencydetection.detector.DetectionEngine
+import co.ajsf.tuner.tuner.frequencydetection.model.DetectionResult
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
@@ -82,16 +82,6 @@ internal class FrequencyDetectorTest {
     }
 
     @Test
-    fun `when the detectionEngine sends less than two sounds, only the first -1 is sent`() {
-        whenever(mockDetectionEngine.listen())
-            .thenReturn(createRandomResults(2).toFlowable())
-
-        val testSubscriber = detector.listen().test()
-
-        testSubscriber.assertValueSequence(listOf(-1f))
-    }
-
-    @Test
     fun `when the detectionEngine sends three sounds, three sounds are sent`() {
         val results = createRandomResults(3)
         whenever(mockDetectionEngine.listen())
@@ -103,19 +93,6 @@ internal class FrequencyDetectorTest {
     }
 
     @Test
-    fun `when the detectionEngine sends three sounds, the sound with the highest probability is sent, between two -1s`() {
-        val results = createRandomResults(3)
-        val max = results.maxBy { it.probability }
-
-        whenever(mockDetectionEngine.listen())
-            .thenReturn(results.toFlowable())
-
-        val testSubscriber = detector.listen().test()
-
-        testSubscriber.assertValueSequence(listOf(-1f, max?.pitch, -1f))
-    }
-
-    @Test
     fun `when the detectionEngine sends ten sounds, three sounds are sent`() {
         val results = createRandomResults(10)
         whenever(mockDetectionEngine.listen())
@@ -124,18 +101,5 @@ internal class FrequencyDetectorTest {
         val testSubscriber = detector.listen().test()
 
         testSubscriber.assertValueCount(3)
-    }
-
-    @Test
-    fun `when the detectionEngine sends ten sounds, the sound with the highest probability is sent, between two -1s`() {
-        val results = createRandomResults(10)
-        val max = results.maxBy { it.probability }
-
-        whenever(mockDetectionEngine.listen())
-            .thenReturn(results.toFlowable())
-
-        val testSubscriber = detector.listen().test()
-
-        testSubscriber.assertValueSequence(listOf(-1f, max?.pitch, -1f))
     }
 }
