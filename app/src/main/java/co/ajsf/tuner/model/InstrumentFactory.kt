@@ -12,6 +12,39 @@ object InstrumentFactory {
         )
     )
 
+    val GUITAR_DROP_D = Instrument(
+        "Guitar - Drop D", listOf(
+            InstrumentString(name = "E", freq = 82.407f),
+            InstrumentString(name = "A", freq = 110f),
+            InstrumentString(name = "D", freq = 146.832f),
+            InstrumentString(name = "G", freq = 195.998f),
+            InstrumentString(name = "B", freq = 246.942f),
+            InstrumentString(name = "E", freq = 329.628f)
+        )
+    )
+
+    val GUITAR_OPEN_D = Instrument(
+        "Guitar - Open D", listOf(
+            InstrumentString(name = "D", freq = 73.416f),
+            InstrumentString(name = "A", freq = 110f),
+            InstrumentString(name = "D", freq = 146.832f),
+            InstrumentString(name = "F#", freq = 184.997f),
+            InstrumentString(name = "A", freq = 220f),
+            InstrumentString(name = "D", freq = 293.665f)
+        )
+    )
+
+    val GUITAR_OPEN_G = Instrument(
+        "Guitar - Open G", listOf(
+            InstrumentString(name = "D", freq = 73.416f),
+            InstrumentString(name = "G", freq = 97.999f),
+            InstrumentString(name = "D", freq = 146.832f),
+            InstrumentString(name = "G", freq = 195.998f),
+            InstrumentString(name = "B", freq = 246.942f),
+            InstrumentString(name = "D", freq = 293.665f)
+        )
+    )
+
     val BASS = Instrument(
         "Bass", listOf(
             InstrumentString(name = "E", freq = 41.203f),
@@ -71,6 +104,15 @@ object InstrumentFactory {
     )
 
     fun getAllInstruments() = listOf(
-        GUITAR, BASS, BASS_5_LOW, BASS_5_HI, BASS_6, UKULELE, BARITONE_UKULELE
+        GUITAR,
+        GUITAR_DROP_D,
+        GUITAR_OPEN_D,
+        GUITAR_OPEN_G,
+        BASS,
+        BASS_5_LOW,
+        BASS_5_HI,
+        BASS_6,
+        UKULELE,
+        BARITONE_UKULELE
     )
 }
