@@ -6,6 +6,11 @@ data class InstrumentNote(
 )
 
 data class Instrument(
-    val name: String,
+    val category: InstrumentCategory,
+    val tuningName: String,
     val notes: List<InstrumentNote>
 )
+
+enum class InstrumentCategory {
+    Guitar, Bass, Ukulele, Tres
+}

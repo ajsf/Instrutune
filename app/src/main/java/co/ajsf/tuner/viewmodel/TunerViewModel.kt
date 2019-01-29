@@ -31,23 +31,32 @@ class TunerViewModel(tuner: Tuner, private val instrumentRepository: InstrumentR
     init {
         selectedInstrument.observeForever { instrument ->
             tuner.setInstrument(instrument)
-            val info = instrument.name to instrument.notes.map { it.numberedName }
+            val info = "${instrument.category} (${instrument.tuningName})" to instrument.notes.map { it.numberedName }
             _selectedInstrumentInfo.postValue(info)
         }
         getSelectedInstrument()
     }
 
-    fun getInstruments(): List<Instrument> {
-        return instrumentRepository.getInstruments()
+    fun getInstruments(): List<String> {
+        return instrumentRepository.getInstrumentList()
     }
 
-    fun saveSelectedInstrument(instrumentName: String) {
-        instrumentRepository.saveSelectedInstrument(instrumentName)
+    fun getTunings(): List<Instrument> {
+        val category = instrumentRepository.getSelectedCategory()
+        return instrumentRepository.getTunings(category)
+    }
+
+    fun saveSelectedCategory(categoryName: String) {
+        instrumentRepository.saveSelectedCategory(categoryName)
+    }
+
+    fun saveSelectedTuning(tuningName: String) {
+        instrumentRepository.saveSelectedTuning(tuningName)
         getSelectedInstrument()
     }
 
     private fun getSelectedInstrument() {
-        val instrument = instrumentRepository.getSelectedInstrument()
+        val instrument = instrumentRepository.getSelectedTuning()
         selectedInstrument.postValue(instrument)
     }
 }

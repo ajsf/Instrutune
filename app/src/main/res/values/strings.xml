@@ -15,5 +15,7 @@
         Hit CANCEL to exit.
     </string>
     <string name="select_instrument">Select Instrument</string>
+    <string name="select_tuning">Select Tuning</string>
     <string name="select_instrument_title">Select an instrument:</string>
+    <string name="select_tuning_title">Select a tuning:</string>
 </resources>

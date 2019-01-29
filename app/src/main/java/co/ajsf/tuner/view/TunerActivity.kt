@@ -60,14 +60,27 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
             showSelectInstrumentDialog()
             true
         }
+        R.id.select_tuning -> {
+            showSelectTuningDialog()
+            true
+        }
         else -> super.onOptionsItemSelected(item)
     }
 
     private fun showSelectInstrumentDialog() {
-        val instrumentNames = viewModel.getInstruments().map { it.name }
+        val instrumentNames = viewModel.getInstruments()
         val title = getString(R.string.select_instrument_title)
         selector(title, instrumentNames) { _, i ->
-            viewModel.saveSelectedInstrument(instrumentNames[i])
+            viewModel.saveSelectedCategory(instrumentNames[i])
+            showSelectTuningDialog()
+        }
+    }
+
+    private fun showSelectTuningDialog() {
+        val tunings = viewModel.getTunings().map { it.tuningName }
+        val title = getString(R.string.select_tuning_title)
+        selector(title, tunings) { _, i ->
+            viewModel.saveSelectedTuning(tunings[i])
         }
     }
 
