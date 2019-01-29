@@ -12,11 +12,11 @@ internal class ChromaticOctaveTest {
     )
 
     @Test
-    fun `it creates a list of notes with the correct names from C through B`() {
+    fun `it creates a list of notes with the correct names from C through B, defaulting to octave 4`() {
         val octave = ChromaticOctave()
-        val names = octave.notes.map { it.name }
-
-        assertEquals(notesNames, names)
+        val names = octave.notes.map { it.numberedName }
+        val expectedNames = notesNames.map { it + "4" }
+        assertEquals(expectedNames, names)
     }
 
     @Test
@@ -29,15 +29,6 @@ internal class ChromaticOctaveTest {
             369994, 391995, 415305, 440000, 466164, 493883
         )
         assertEquals(expectedFreqs, freqs)
-    }
-
-    @Test
-    fun `the default middle C range contains the numbers corresponding to the keys of a piano 40-51`() {
-        val octave = ChromaticOctave()
-        val numbers = octave.notes.map { it.number }
-
-        val expectedNumbers = (40..51).map { it }
-        assertEquals(expectedNumbers, numbers)
     }
 
     @Test
@@ -71,13 +62,12 @@ internal class ChromaticOctaveTest {
     }
 
     @Test
-    fun `the note with number 1 is A0, the low  A on a piano - 27_5 Hz`() {
+    fun `the note with numberedName A0 is the low  A on a piano - 27_5 Hz`() {
         val octave = ChromaticOctave(0)
-        val noteOne = octave.notes.find { it.number == 1 }!!
+        val noteOne = octave.notes.find { it.numberedName == "A0" }!!
 
-        val expectedNote = MusicalNote(27500, "A", 1)
+        val expectedNote = MusicalNote(27500, "A0")
         assertEquals(expectedNote, noteOne)
-        assertEquals("A0", noteOne.numberedName)
     }
 
     @Test
@@ -94,22 +84,21 @@ internal class ChromaticOctaveTest {
     }
 
     @Test
-    fun `passing 8 returns note numbers 88 - 99`() {
+    fun `passing 8 returns notes C8 - B8`() {
         val octave = ChromaticOctave(8)
-        val numbers = octave.notes.map { it.number }
+        val names = octave.notes.map { it.numberedName }
 
-        val expectedNumbers = (88..99).map { it }
-        assertEquals(expectedNumbers, numbers)
+        val expectedNames = notesNames.map { it + "8" }
+        assertEquals(names, expectedNames)
     }
 
     @Test
-    fun `the note with number 88 is C8 on a piano - 4186_009 Hz`() {
+    fun `the note with numberedName C8 has frequency 4186_009 Hz`() {
         val octave = ChromaticOctave(8)
-        val noteOne = octave.notes.find { it.number == 88 }!!
+        val noteOne = octave.notes.find { it.numberedName == "C8" }!!
 
-        val expectedNote = MusicalNote(4186009, "C", 88)
+        val expectedNote = MusicalNote(4186009, "C8")
         assertEquals(expectedNote, noteOne)
-        assertEquals("C8", noteOne.numberedName)
     }
 
     @Test
@@ -127,26 +116,23 @@ internal class ChromaticOctaveTest {
     }
 
     @Test
-    fun `the createFullRange companion function creates a list of notes ranging from numbers -8 to 99`() {
-        val numbers = ChromaticOctave.createFullRange()
-            .map { it.number }
-        val expectedNumbers = (-8..99).map { it }
-        assertEquals(expectedNumbers, numbers)
+    fun `the createFullRange companion function creates a list of notes ranging from C0 to B8`() {
+        val names = ChromaticOctave.createFullRange().map { it.numberedName }
+        val expectedNames = (0..8).map { n -> notesNames.map { it + "$n" } }.flatten()
+        assertEquals(expectedNames, names)
     }
 
     @Test
     fun `the lowest note from createFullRange range is C0 - 16_352`() {
         val first = ChromaticOctave.createFullRange().first()
-        assertEquals(16352, first.freq)
-        assertEquals("C", first.name)
-        assertEquals("C0", first.numberedName)
+        val expectedNote = MusicalNote(16352, "C0")
+        assertEquals(expectedNote, first)
     }
 
     @Test
     fun `the highest note from createFullRange range is B8 - 7902_133`() {
         val last = ChromaticOctave.createFullRange().last()
-        assertEquals(7902133, last.freq)
-        assertEquals("B", last.name)
-        assertEquals("B8", last.numberedName)
+        val expectedNote = MusicalNote(7902133, "B8")
+        assertEquals(expectedNote, last)
     }
 }

@@ -31,7 +31,7 @@ class TunerViewModel(tuner: Tuner, private val instrumentRepository: InstrumentR
     init {
         selectedInstrument.observeForever { instrument ->
             tuner.setInstrument(instrument)
-            val info = instrument.name to instrument.strings.map { it.numberedName }
+            val info = instrument.name to instrument.notes.map { it.numberedName }
             _selectedInstrumentInfo.postValue(info)
         }
         getSelectedInstrument()

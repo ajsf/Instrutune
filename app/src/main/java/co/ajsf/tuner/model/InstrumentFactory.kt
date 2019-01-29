@@ -57,10 +57,11 @@ object InstrumentFactory {
     fun ukulele() = UKULELE.buildInstrument()
 
     private fun InstrumentFactoryModel.buildInstrument(): Instrument =
-        Instrument(name, buildStringList())
+        Instrument(name, buildNoteList())
 
-    private fun InstrumentFactoryModel.buildStringList(): List<InstrumentString> = numberedNotes
-        .map { numberedNote ->
-            notes.firstOrNull { it.numberedName == numberedNote } ?: throw Exception("Invalid note")
-        }.map { InstrumentString(it.name, it.floatFreq, it.number, it.numberedName) }
+    private fun InstrumentFactoryModel.buildNoteList(): List<InstrumentNote> =
+        numberedNotes.map { numberedNote ->
+            notes.firstOrNull { it.numberedName == numberedNote }
+                ?: throw Exception("Invalid note")
+        }.map { InstrumentNote(it.numberedName, it.freq) }
 }

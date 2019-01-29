@@ -8,14 +8,14 @@ internal class InstrumentFactoryTest {
     @Test
     fun `it creates a guitar with the correct note frequencies`() {
         val guitar = InstrumentFactory.guitar()
-        val freqs = guitar.strings.map { it.freq }
+        val freqs = guitar.notes.map { it.freq }
         val expectedFreqs = listOf(
-            82.407f,
-            110f,
-            146.832f,
-            195.998f,
-            246.942f,
-            329.628f
+            82407,
+            110000,
+            146832,
+            195998,
+            246942,
+            329628
         )
         assertEquals(expectedFreqs, freqs)
     }
@@ -23,9 +23,9 @@ internal class InstrumentFactoryTest {
     @Test
     fun `it creates a guitar with the correct note names`() {
         val guitar = InstrumentFactory.guitar()
-        val names = guitar.strings.map { it.name }
+        val names = guitar.notes.map { it.numberedName }
         val expectedNames = listOf(
-            "E", "A", "D", "G", "B", "E"
+            "E2", "A2", "D3", "G3", "B3", "E4"
         )
         assertEquals(expectedNames, names)
     }
@@ -33,12 +33,12 @@ internal class InstrumentFactoryTest {
     @Test
     fun `it creates a bass with the correct note frequencies`() {
         val bass = InstrumentFactory.bass()
-        val freqs = bass.strings.map { it.freq }
+        val freqs = bass.notes.map { it.freq }
         val expectedFreqs = listOf(
-            41.203f,
-            55f,
-            73.416f,
-            97.999f
+            41203,
+            55000,
+            73416,
+            97999
         )
         assertEquals(expectedFreqs, freqs)
     }
@@ -46,9 +46,9 @@ internal class InstrumentFactoryTest {
     @Test
     fun `it creates a bass with the correct note names`() {
         val bass = InstrumentFactory.bass()
-        val names = bass.strings.map { it.name }
+        val names = bass.notes.map { it.numberedName }
         val expectedNames = listOf(
-            "E", "A", "D", "G"
+            "E1", "A1", "D2", "G2"
         )
         assertEquals(expectedNames, names)
     }

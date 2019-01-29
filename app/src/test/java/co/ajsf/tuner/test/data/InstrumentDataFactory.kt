@@ -1,7 +1,7 @@
 package co.ajsf.tuner.test.data
 
 import co.ajsf.tuner.model.Instrument
-import co.ajsf.tuner.model.InstrumentString
+import co.ajsf.tuner.model.InstrumentNote
 import co.ajsf.tuner.tuner.notefinder.model.MusicalNote
 
 internal object InstrumentDataFactory {
@@ -11,19 +11,17 @@ internal object InstrumentDataFactory {
 
     fun randomInstrument() = Instrument(
         name = TestDataFactory.randomString(),
-        strings = (0..TestDataFactory.randomInt(3, 3))
-            .map { randomInstrumentString() }
+        notes = (0..TestDataFactory.randomInt(3, 3))
+            .map { randomInstrumentNote() }
     )
 
-    private fun randomNote() = MusicalNote.fromFloat(randomFreq(), randomStringName(), TestDataFactory.randomInt())
+    private fun randomNote() = MusicalNote.fromFloat(randomFreq(), randomStringName())
 
-    private fun randomInstrumentString(): InstrumentString {
+    private fun randomInstrumentNote(): InstrumentNote {
         val note = randomNote()
-        return InstrumentString(
-            note.name,
-            note.floatFreq,
-            note.number,
-            note.numberedName
+        return InstrumentNote(
+            note.numberedName,
+            note.freq
         )
     }
 }

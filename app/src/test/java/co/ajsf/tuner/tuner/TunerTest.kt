@@ -76,14 +76,14 @@ class TunerTest {
         val instrument = InstrumentDataFactory.randomInstrument()
 
         whenever(mockDetector.listen())
-            .thenReturn(instrument.strings.map { it.freq }.toFlowable())
+            .thenReturn(instrument.notes.map { it.freq / 1000f }.toFlowable())
 
         tuner = Tuner(mockDetector)
         tuner.setInstrument(instrument)
 
         val testSubscriber = tuner.instrumentTuning.test()
 
-        val expectedResults = instrument.strings
+        val expectedResults = instrument.notes
             .map { SelectedStringInfo(it.numberedName, 0f) }
 
         testSubscriber.assertValueSequence(expectedResults)

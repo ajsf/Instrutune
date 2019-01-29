@@ -1,11 +1,13 @@
 package co.ajsf.tuner.tuner.notefinder
 
+import co.ajsf.tuner.model.Instrument
 import co.ajsf.tuner.tuner.notefinder.model.ChromaticOctave
 import co.ajsf.tuner.tuner.notefinder.model.MusicalNote
+import co.ajsf.tuner.tuner.notefinder.model.mapToMusicalNoteList
 
-data class NoteData(val name: String, val numberedName: String, val delta: Int)
+data class NoteData(val numberedName: String, val delta: Int)
 
-val NO_NOTE = NoteData("", "", 0)
+val NO_NOTE = NoteData("", 0)
 
 class NoteFinder private constructor(private val notes: List<MusicalNote>) {
 
@@ -27,13 +29,13 @@ class NoteFinder private constructor(private val notes: List<MusicalNote>) {
     private fun returnLowNote(freq: Int): NoteData {
         val note = notes.first()
         val delta = calculateNegativeDelta(freq, lowRange, note.freq)
-        return NoteData(note.name, note.numberedName, delta)
+        return NoteData(note.numberedName, delta)
     }
 
     private fun returnHighNote(freq: Int): NoteData {
         val note = notes.last()
         val delta = calculatePositiveDelta(freq, highRange, note.freq)
-        return NoteData(note.name, note.numberedName, delta)
+        return NoteData(note.numberedName, delta)
     }
 
     private fun calculatePositiveDelta(freq: Int, midPoint: Int, noteFreq: Int): Int =
@@ -56,16 +58,18 @@ class NoteFinder private constructor(private val notes: List<MusicalNote>) {
         val midPoint = lowNote.freq + ((highNote.freq - lowNote.freq) / 2)
         return if (freq <= midPoint) {
             val delta = calculatePositiveDelta(freq, midPoint, lowNote.freq)
-            NoteData(lowNote.name, lowNote.numberedName, delta)
+            NoteData(lowNote.numberedName, delta)
         } else {
             val delta = calculateNegativeDelta(freq, midPoint, highNote.freq)
-            NoteData(highNote.name, highNote.numberedName, delta)
+            NoteData(highNote.numberedName, delta)
         }
     }
 
     companion object {
-        fun chromaticNoteFinder(): NoteFinder = NoteFinder(ChromaticOctave.createFullRange())
+        fun chromaticNoteFinder(): NoteFinder =
+            NoteFinder(ChromaticOctave.createFullRange())
 
-        fun instrumentNoteFinder(notes: List<MusicalNote>) = NoteFinder(notes)
+        fun instrumentNoteFinder(instrument: Instrument) =
+            NoteFinder(instrument.mapToMusicalNoteList())
     }
 }
