@@ -24,6 +24,14 @@ object InstrumentFactory {
     private val UKULELE = InstrumentFactoryModel("Ukulele", listOf("G4", "C4", "E4", "A4"))
     private val BARITONE_UKULELE = InstrumentFactoryModel("Ukulele (Baritone)", listOf("D3", "G3", "B3", "E4"))
 
+    private val TRES = InstrumentFactoryModel("Tres", listOf("G4", "G3", "C4", "C4", "E4", "E4"))
+    private val TRES_ORIENTE = InstrumentFactoryModel("Tres - Oriente", listOf("G4", "G3", "C4", "C4", "E3", "E4"))
+
+    private val TRES_D = InstrumentFactoryModel("Tres (D)", listOf("A4", "A3", "D4", "D4", "F#4", "F#4"))
+    private val TRES_D_ORIENTE =
+        InstrumentFactoryModel("Tres - Oriente (D)", listOf("A4", "A3", "D4", "D4", "F#3", "F#4"))
+
+
     private val instrumentModels: List<InstrumentFactoryModel> = listOf(
         GUITAR,
         GUITAR_DROP_D,
@@ -34,7 +42,11 @@ object InstrumentFactory {
         BASS_5_HIGH,
         BASS_6,
         UKULELE,
-        BARITONE_UKULELE
+        BARITONE_UKULELE,
+        TRES,
+        TRES_ORIENTE,
+        TRES_D,
+        TRES_D_ORIENTE
     )
 
     fun getAllInstruments(): List<Instrument> = instrumentModels
