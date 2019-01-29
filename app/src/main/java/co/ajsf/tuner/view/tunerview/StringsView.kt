@@ -2,6 +2,7 @@ package co.ajsf.tuner.view.tunerview
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.Gravity
 import android.widget.LinearLayout
 import androidx.lifecycle.LiveData
 import co.ajsf.tuner.R
@@ -13,6 +14,7 @@ class StringsView
 
     init {
         orientation = LinearLayout.HORIZONTAL
+        gravity = Gravity.CENTER
         setPadding(16, 8, 16, 0)
         setBackgroundResource(R.color.backgroundColor)
     }

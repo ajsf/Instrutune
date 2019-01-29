@@ -3,6 +3,7 @@ package co.ajsf.tuner.view.tunerview
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import androidx.lifecycle.LiveData
@@ -15,13 +16,13 @@ class TunerStringView
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     init {
-        layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, 1f)
         LayoutInflater.from(context).inflate(R.layout.tuner_string, this)
+        layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
     }
 
     var numberedName: String = ""
         set(numberedName) {
-            string_name_text.text = numberedName.first().toString()
+            string_name_text.text = numberedName
             field = numberedName
         }
 

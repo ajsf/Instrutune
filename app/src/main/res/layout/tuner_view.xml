@@ -42,6 +42,8 @@
         android:layout_height="0dp"
         android:layout_margin="4dp"
         app:layout_constraintBottom_toTopOf="@+id/note_name_text"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tuner_vu_view" />
 
     <ImageView
