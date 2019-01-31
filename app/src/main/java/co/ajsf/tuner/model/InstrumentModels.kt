@@ -12,5 +12,5 @@ data class Instrument(
 )
 
 enum class InstrumentCategory {
-    Guitar, Bass, Ukulele, Tres
+    Guitar, Bass, Ukulele, Tres, Strings
 }

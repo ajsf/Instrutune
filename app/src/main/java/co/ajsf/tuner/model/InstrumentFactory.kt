@@ -35,11 +35,18 @@ object InstrumentFactory {
         InstrumentFactoryModel("Oriente - D", listOf("A4", "A3", "D4", "D4", "F#3", "F#4"))
     )
 
+    private val strings: List<InstrumentFactoryModel> = listOf(
+        InstrumentFactoryModel("Violin", listOf("G3", "D4", "A4", "E5")),
+        InstrumentFactoryModel("Viola", listOf("C3", "G3", "D4", "A4")),
+        InstrumentFactoryModel("Cello", listOf("C2", "G2", "D3", "A3"))
+    )
+
     fun getAllInstruments(offset: Int = 0): List<Instrument> = listOf(
         guitars.map { it.buildInstrument(InstrumentCategory.Guitar, offset) },
         basses.map { it.buildInstrument(InstrumentCategory.Bass, offset) },
         ukuleles.map { it.buildInstrument(InstrumentCategory.Ukulele, offset) },
-        tres.map { it.buildInstrument(InstrumentCategory.Tres, offset) }
+        tres.map { it.buildInstrument(InstrumentCategory.Tres, offset) },
+        strings.map { it.buildInstrument(InstrumentCategory.Strings, offset) }
     ).flatten()
 
     fun guitar(offset: Int = 0) = guitars.first().buildInstrument(InstrumentCategory.Guitar, offset)
