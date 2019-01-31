@@ -42,12 +42,12 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
 
         selectedInstrumentInfo.observe(this@TunerActivity, Observer { (name, numberedNames) ->
             title = "${resources.getString(R.string.app_name)} - $name"
-            tuner_view.selectInstrument(numberedNames, selectedStringInfo)
+            tuner_view.selectInstrument(numberedNames, selectedStringInfo, this@TunerActivity)
         })
 
-        tuner_view.setFreqLiveData(mostRecentFrequency)
-        tuner_view.setNoteNameLiveData(mostRecentNoteName)
-        tuner_view.setChromaticDeltaLiveData(mostRecentNoteDelta)
+        tuner_view.setFreqLiveData(mostRecentFrequency, this@TunerActivity)
+        tuner_view.setNoteNameLiveData(mostRecentNoteName, this@TunerActivity)
+        tuner_view.setChromaticDeltaLiveData(mostRecentNoteDelta, this@TunerActivity)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

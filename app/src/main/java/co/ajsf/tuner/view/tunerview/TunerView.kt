@@ -5,9 +5,9 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.Transformations
 import co.ajsf.tuner.R
 import co.ajsf.tuner.tuner.SelectedStringInfo
 import kotlinx.android.synthetic.main.tuner_view.view.*
@@ -52,24 +52,25 @@ class TunerView
         chevronView.setColorFilter(color)
     }
 
-    fun selectInstrument(numberedNames: List<String>, stringLiveData: LiveData<SelectedStringInfo>) {
-        stringLiveData.observeForever {
+    fun selectInstrument(names: List<String>, stringData: LiveData<SelectedStringInfo>, owner: LifecycleOwner) {
+        stringData.observe(owner, Observer {
             if (it.numberedName.isNotBlank()) {
                 tuner_vu_view.setIndicatorVisibility(true)
                 tuner_vu_view.setIndicatorDelta(it.delta)
+                strings_view.setSelectedString(it.numberedName)
             } else {
                 tuner_vu_view.setIndicatorVisibility(false)
             }
-        }
-        strings_view.setStrings(numberedNames, Transformations.map(stringLiveData) { it.numberedName })
+        })
+        strings_view.setStrings(names)
     }
 
-    fun setChromaticDeltaLiveData(deltaLiveData: LiveData<Int>) = observers
-        .onEach { deltaLiveData.observeForever(it) }
+    fun setChromaticDeltaLiveData(deltaLiveData: LiveData<Int>, owner: LifecycleOwner) = observers
+        .onEach { deltaLiveData.observe(owner, it) }
 
-    fun setFreqLiveData(freqLiveData: LiveData<String>) = freqLiveData
-        .observeForever { recent_freq_text.text = it }
+    fun setFreqLiveData(freqLiveData: LiveData<String>, owner: LifecycleOwner) = freqLiveData
+        .observe(owner, Observer { recent_freq_text.text = it })
 
-    fun setNoteNameLiveData(noteNameLiveData: LiveData<String>) = noteNameLiveData
-        .observeForever { note_name_text.text = it }
+    fun setNoteNameLiveData(noteNameLiveData: LiveData<String>, owner: LifecycleOwner) = noteNameLiveData
+        .observe(owner, Observer { note_name_text.text = it })
 }

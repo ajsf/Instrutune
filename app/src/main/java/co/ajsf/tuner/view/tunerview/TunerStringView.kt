@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
-import androidx.lifecycle.LiveData
 import co.ajsf.tuner.R
 import kotlinx.android.synthetic.main.tuner_string.view.*
 
@@ -20,22 +19,21 @@ class TunerStringView
         layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
     }
 
+    private var stringIsSelected = false
+
     var numberedName: String = ""
         set(numberedName) {
             string_name_text.text = numberedName
             field = numberedName
         }
 
-    fun setSelectedNameLiveData(selectedNameLiveData: LiveData<String>) {
-        var selected = false
-        selectedNameLiveData.observeForever {
-            if (it == numberedName) {
-                selected = true
-                setSelected()
-            } else if (selected) {
-                selected = false
-                unselect()
-            }
+    fun updateSelectedString(selectedString: String) {
+        if (selectedString == numberedName) {
+            stringIsSelected = true
+            setSelected()
+        } else if (stringIsSelected) {
+            stringIsSelected = false
+            unselect()
         }
     }
 

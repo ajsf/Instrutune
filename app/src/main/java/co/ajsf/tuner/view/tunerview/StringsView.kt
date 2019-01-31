@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.LinearLayout
-import androidx.lifecycle.LiveData
 import co.ajsf.tuner.R
 
 class StringsView
@@ -19,13 +18,17 @@ class StringsView
         setBackgroundResource(R.color.backgroundColor)
     }
 
-    fun setStrings(numberedNames: List<String>, numberedNameLiveData: LiveData<String>) {
+    private var stringViews = listOf<TunerStringView>()
+
+    fun setStrings(numberedNames: List<String>) {
         removeAllViews()
-        numberedNames.map {
+        stringViews = numberedNames.map {
             TunerStringView(context).apply {
                 numberedName = it
-                setSelectedNameLiveData(numberedNameLiveData)
             }
         }.onEach { addView(it) }
     }
+
+    fun setSelectedString(selectedStringName: String): Unit = stringViews
+        .forEach { it.updateSelectedString(selectedStringName) }
 }
