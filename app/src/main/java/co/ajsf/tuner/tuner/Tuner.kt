@@ -5,13 +5,17 @@ import co.ajsf.tuner.tuner.frequencydetection.FrequencyDetector
 import co.ajsf.tuner.tuner.notefinder.NoteFinder
 import co.ajsf.tuner.tuner.notefinder.model.MusicalNote
 import io.reactivex.Flowable
+import io.reactivex.Scheduler
+import io.reactivex.schedulers.Schedulers
 
 data class SelectedStringInfo(val numberedName: String, val delta: Float)
 data class SelectedNoteInfo(val name: String, val delta: Int)
 
-class Tuner(frequencyDetector: FrequencyDetector) {
+class Tuner(frequencyDetector: FrequencyDetector, scheduler: Scheduler = Schedulers.computation()) {
 
-    private val audioFeed: Flowable<Float> = frequencyDetector.listen()
+    private val audioFeed: Flowable<Float> = frequencyDetector
+        .listen().observeOn(scheduler)
+
     private var chromaticNoteFinder: NoteFinder? = null
     private var instrumentNoteFinder: NoteFinder? = null
 

@@ -6,6 +6,7 @@ import co.ajsf.tuner.tuner.frequencydetection.FrequencyDetector
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.rxkotlin.toFlowable
+import io.reactivex.schedulers.TestScheduler
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
@@ -18,6 +19,8 @@ internal class TunerTest {
 
     private lateinit var tuner: Tuner
     private lateinit var floatList: List<Float>
+
+    private val scheduler = TestScheduler()
 
     private fun randomFloatList(): List<Float> =
         (0..TestDataFactory.randomInt(10))
@@ -32,7 +35,7 @@ internal class TunerTest {
         floatList = randomFloatList()
         whenever(mockDetector.listen())
             .thenReturn(floatList.toFlowable())
-        tuner = Tuner(mockDetector)
+        tuner = Tuner(mockDetector, scheduler)
     }
 
     @Test
@@ -45,6 +48,7 @@ internal class TunerTest {
     fun `mostRecentFrequency sends no items if an offset hasn't been sent`() {
         stubRandomResponse()
         val testSubscriber = tuner.mostRecentFrequency.test()
+        scheduler.triggerActions()
         testSubscriber.assertValueCount(0)
     }
 
@@ -53,6 +57,7 @@ internal class TunerTest {
         stubRandomResponse()
         tuner.setOffset(0)
         val testSubscriber = tuner.mostRecentFrequency.test()
+        scheduler.triggerActions()
         testSubscriber.assertValueCount(floatList.size)
     }
 
@@ -60,6 +65,7 @@ internal class TunerTest {
     fun `mostRecentNoteName sends no items if no offset has been sent`() {
         stubRandomResponse()
         val testSubscriber = tuner.mostRecentNoteInfo.test()
+        scheduler.triggerActions()
         testSubscriber.assertValueCount(0)
     }
 
@@ -68,6 +74,7 @@ internal class TunerTest {
         stubRandomResponse()
         tuner.setOffset(0)
         val testSubscriber = tuner.mostRecentNoteInfo.test()
+        scheduler.triggerActions()
         testSubscriber.assertValueCount(floatList.size)
     }
 
@@ -75,6 +82,7 @@ internal class TunerTest {
     fun `instrumentTuning sends nothing if no instrument has been set`() {
         stubRandomResponse()
         val testSubscriber = tuner.instrumentTuning.test()
+        scheduler.triggerActions()
         testSubscriber.assertValueCount(0)
     }
 
@@ -83,6 +91,7 @@ internal class TunerTest {
         stubRandomResponse()
         tuner.setInstrument(InstrumentDataFactory.randomInstrument())
         val testSubscriber = tuner.instrumentTuning.test()
+        scheduler.triggerActions()
         testSubscriber.assertValueCount(floatList.size)
     }
 
@@ -94,10 +103,11 @@ internal class TunerTest {
         whenever(mockDetector.listen())
             .thenReturn(instrument.notes.map { it.freq / 1000f }.toFlowable())
 
-        tuner = Tuner(mockDetector)
+        tuner = Tuner(mockDetector, scheduler)
         tuner.setInstrument(instrument)
 
         val testSubscriber = tuner.instrumentTuning.test()
+        scheduler.triggerActions()
 
         val expectedResults = instrument.notes
             .map { SelectedStringInfo(it.numberedName, 0f) }
