@@ -33,7 +33,8 @@ data class MusicalNote(val freq: Int, val numberedName: String = "") {
         fun nameFromNumberedName(numberedName: String): String = numberedName
             .split(("""\d""").toRegex()).first()
 
-        private fun createNumberedName(name: String, number: Int): String = (name + ((number + 8) / 12).toString())
+        private fun createNumberedName(name: String, number: Int): String =
+            (name + ((number + 8) / 12).toString())
     }
 }
 

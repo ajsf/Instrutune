@@ -57,10 +57,10 @@ class TunerView
             if (it.numberedName.isNotBlank()) {
                 tuner_vu_view.setIndicatorVisibility(true)
                 tuner_vu_view.setIndicatorDelta(it.delta)
-                strings_view.setSelectedString(it.numberedName)
             } else {
                 tuner_vu_view.setIndicatorVisibility(false)
             }
+            strings_view.setSelectedString(it.numberedName)
         })
         strings_view.setStrings(names)
     }

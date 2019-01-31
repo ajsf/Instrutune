@@ -9,7 +9,7 @@ data class ChromaticOctave(private val number: Int = 4, private val centerA: Int
         .fromFloatAndName(aFreq, "A", (number * 12) + 1)
 
     init {
-        if ((number in (0..8)).not()) throw IllegalArgumentException("Invalid number: $number. It must be in the range of 0 to 8.")
+        if ((number in (0..8)).not()) throw IllegalArgumentException("Invalid octave number: $number. It must be in the range of 0 to 8.")
     }
 
     val notes = listOf(
