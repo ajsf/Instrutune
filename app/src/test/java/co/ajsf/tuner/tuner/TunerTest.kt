@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 
-class TunerTest {
+internal class TunerTest {
 
     @Mock
     lateinit var mockDetector: FrequencyDetector
@@ -42,15 +42,31 @@ class TunerTest {
     }
 
     @Test
-    fun `mostRecentFrequency sends the same number of items as it receives`() {
+    fun `mostRecentFrequency sends no items if an offset hasn't been sent`() {
         stubRandomResponse()
+        val testSubscriber = tuner.mostRecentFrequency.test()
+        testSubscriber.assertValueCount(0)
+    }
+
+    @Test
+    fun `mostRecentFrequency sends the same number of items as it receives once an offset has been set`() {
+        stubRandomResponse()
+        tuner.setOffset(0)
         val testSubscriber = tuner.mostRecentFrequency.test()
         testSubscriber.assertValueCount(floatList.size)
     }
 
     @Test
-    fun `mostRecentNoteName sends the same number of items as it receives`() {
+    fun `mostRecentNoteName sends no items if no offset has been sent`() {
         stubRandomResponse()
+        val testSubscriber = tuner.mostRecentNoteInfo.test()
+        testSubscriber.assertValueCount(0)
+    }
+
+    @Test
+    fun `mostRecentNoteName sends the same number of items as it receives once an offset has been set`() {
+        stubRandomResponse()
+        tuner.setOffset(0)
         val testSubscriber = tuner.mostRecentNoteInfo.test()
         testSubscriber.assertValueCount(floatList.size)
     }

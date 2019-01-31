@@ -3,6 +3,8 @@ package co.ajsf.tuner.view
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.NumberPicker
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import co.ajsf.tuner.R
@@ -64,6 +66,10 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
             showSelectTuningDialog()
             true
         }
+        R.id.set_center_a -> {
+            showSetMiddleADialog()
+            true
+        }
         else -> super.onOptionsItemSelected(item)
     }
 
@@ -82,6 +88,33 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
         selector(title, tunings) { _, i ->
             viewModel.saveSelectedTuning(tunings[i])
         }
+    }
+
+    private fun showSetMiddleADialog() {
+        var newOffset = viewModel.getOffset()
+        val maxVariance = 10
+
+        val picker = NumberPicker(this).apply {
+            maxValue = maxVariance * 2
+            minValue = 0
+            wrapSelectorWheel = false
+            displayedValues = (440 - maxVariance..440 + maxVariance)
+                .map { it.toString() }.toTypedArray()
+            setOnValueChangedListener { numPicker, _, _ ->
+                newOffset = numPicker.value - maxVariance
+            }
+            value = newOffset + maxVariance
+        }
+
+        with(AlertDialog.Builder(this)) {
+            setView(picker)
+            setTitle(getString(R.string.select_center_freq))
+            setPositiveButton(getString(R.string.btn_select_text)) { _, _ -> viewModel.saveOffset(newOffset) }
+            setNegativeButton(getString(R.string.btn_cancel_text)) { _, _ -> }
+            setNeutralButton(getString(R.string.btn_reset_text)) { _, _ -> viewModel.saveOffset(0) }
+            setCancelable(true)
+            create()
+        }.show()
     }
 
     override fun onRequestPermissionsResult(

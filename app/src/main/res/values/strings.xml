@@ -18,4 +18,9 @@
     <string name="select_tuning">Select Tuning</string>
     <string name="select_instrument_title">Select an instrument:</string>
     <string name="select_tuning_title">Select a tuning:</string>
+    <string name="set_center_freq">Set A4 Frequency</string>
+    <string name="select_center_freq">Select a frequency for Middle A:</string>
+    <string name="btn_select_text">Select</string>
+    <string name="btn_cancel_text">Cancel</string>
+    <string name="btn_reset_text">Reset To Default</string>
 </resources>

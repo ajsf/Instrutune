@@ -11,7 +11,7 @@ import co.ajsf.tuner.tuner.Tuner
 
 typealias SelectedInstrumentInfo = Pair<String, List<String>>
 
-class TunerViewModel(tuner: Tuner, private val instrumentRepository: InstrumentRepository) :
+class TunerViewModel(private val tuner: Tuner, private val instrumentRepository: InstrumentRepository) :
     ViewModel() {
 
     val selectedInstrumentInfo: LiveData<SelectedInstrumentInfo>
@@ -34,7 +34,7 @@ class TunerViewModel(tuner: Tuner, private val instrumentRepository: InstrumentR
             val info = "${instrument.category} (${instrument.tuningName})" to instrument.notes.map { it.numberedName }
             _selectedInstrumentInfo.postValue(info)
         }
-        getSelectedInstrument()
+        setupTuner()
     }
 
     fun getInstruments(): List<String> {
@@ -52,6 +52,18 @@ class TunerViewModel(tuner: Tuner, private val instrumentRepository: InstrumentR
 
     fun saveSelectedTuning(tuningName: String) {
         instrumentRepository.saveSelectedTuning(tuningName)
+        getSelectedInstrument()
+    }
+
+    fun saveOffset(offset: Int) {
+        instrumentRepository.saveOffset(offset)
+        setupTuner()
+    }
+
+    fun getOffset() = instrumentRepository.getOffset()
+
+    private fun setupTuner() {
+        tuner.setOffset(instrumentRepository.getOffset())
         getSelectedInstrument()
     }
 

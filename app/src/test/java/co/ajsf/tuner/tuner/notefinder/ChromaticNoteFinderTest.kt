@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 
 internal class ChromaticNoteFinderTest {
 
-    private val noteFinder = NoteFinder.chromaticNoteFinder()
+    private val noteFinder = NoteFinder.chromaticNoteFinder(0)
 
     @Test
     fun `440 returns A4 with delta of 0`() {
@@ -212,5 +212,21 @@ internal class ChromaticNoteFinderTest {
             assertEquals(0, note.delta)
             freq *= 2
         }
+    }
+
+    @Test
+    fun `when offset is set to -8, 432 returns A4 with a delta of 0`() {
+        val offsetNoteFinder = NoteFinder.chromaticNoteFinder(-8)
+        val note = offsetNoteFinder.findNote(432f)
+        assertEquals("A4", note.numberedName)
+        assertEquals(0, note.delta)
+    }
+
+    @Test
+    fun `when offset is set to -8, 256_87 returns C4 with a delta of 0`() {
+        val offsetNoteFinder = NoteFinder.chromaticNoteFinder(-8)
+        val note = offsetNoteFinder.findNote(256.87f)
+        assertEquals("C4", note.numberedName)
+        assertEquals(0, note.delta)
     }
 }

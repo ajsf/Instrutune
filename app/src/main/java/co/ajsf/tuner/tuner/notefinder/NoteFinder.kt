@@ -38,12 +38,6 @@ class NoteFinder private constructor(private val notes: List<MusicalNote>) {
         return NoteData(note.numberedName, delta)
     }
 
-    private fun calculatePositiveDelta(freq: Int, midPoint: Int, noteFreq: Int): Int =
-        (freq - noteFreq) * 100 / (midPoint - noteFreq)
-
-    private fun calculateNegativeDelta(freq: Int, midPoint: Int, noteFreq: Int): Int =
-        -calculatePositiveDelta(freq, midPoint, noteFreq)
-
     private fun scanNotes(freq: Int, notes: List<MusicalNote>): NoteData {
         (1 until notes.size).forEach { i ->
             val lowNote = notes[i - 1]
@@ -65,9 +59,15 @@ class NoteFinder private constructor(private val notes: List<MusicalNote>) {
         }
     }
 
+    private fun calculatePositiveDelta(freq: Int, midPoint: Int, noteFreq: Int): Int =
+        (freq - noteFreq) * 100 / (midPoint - noteFreq)
+
+    private fun calculateNegativeDelta(freq: Int, midPoint: Int, noteFreq: Int): Int =
+        -calculatePositiveDelta(freq, midPoint, noteFreq)
+
     companion object {
-        fun chromaticNoteFinder(): NoteFinder =
-            NoteFinder(ChromaticOctave.createFullRange())
+        fun chromaticNoteFinder(offset: Int): NoteFinder =
+            NoteFinder(ChromaticOctave.createFullRange(offset))
 
         fun instrumentNoteFinder(instrument: Instrument) =
             NoteFinder(instrument.mapToMusicalNoteList())

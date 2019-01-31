@@ -9,8 +9,6 @@ private data class InstrumentFactoryModel(
 
 object InstrumentFactory {
 
-    private val notes = ChromaticOctave.createFullRange()
-
     private val guitars: List<InstrumentFactoryModel> = listOf(
         InstrumentFactoryModel("Standard", listOf("E2", "A2", "D3", "G3", "B3", "E4")),
         InstrumentFactoryModel("Drop D", listOf("D2", "A2", "D3", "G3", "B3", "E4")),
@@ -37,28 +35,30 @@ object InstrumentFactory {
         InstrumentFactoryModel("Oriente - D", listOf("A4", "A3", "D4", "D4", "F#3", "F#4"))
     )
 
-    fun getAllInstruments(): List<Instrument> = listOf(
-        guitars.map { it.buildInstrument(InstrumentCategory.Guitar) },
-        basses.map { it.buildInstrument(InstrumentCategory.Bass) },
-        ukuleles.map { it.buildInstrument(InstrumentCategory.Ukulele) },
-        tres.map { it.buildInstrument(InstrumentCategory.Tres) }
+    fun getAllInstruments(offset: Int = 0): List<Instrument> = listOf(
+        guitars.map { it.buildInstrument(InstrumentCategory.Guitar, offset) },
+        basses.map { it.buildInstrument(InstrumentCategory.Bass, offset) },
+        ukuleles.map { it.buildInstrument(InstrumentCategory.Ukulele, offset) },
+        tres.map { it.buildInstrument(InstrumentCategory.Tres, offset) }
     ).flatten()
 
-    fun guitar() = guitars.first().buildInstrument(InstrumentCategory.Guitar)
-    fun bass() = basses.first().buildInstrument(InstrumentCategory.Bass)
-    fun ukulele() = ukuleles.first().buildInstrument(InstrumentCategory.Ukulele)
+    fun guitar(offset: Int = 0) = guitars.first().buildInstrument(InstrumentCategory.Guitar, offset)
+    fun bass(offset: Int = 0) = basses.first().buildInstrument(InstrumentCategory.Bass, offset)
+    fun ukulele(offset: Int = 0) = ukuleles.first().buildInstrument(InstrumentCategory.Ukulele, offset)
 
-    fun getDefaultInstrumentForCategory(category: String): Instrument = getAllInstruments()
+    fun getDefaultInstrumentForCategory(category: String, offset: Int): Instrument = getAllInstruments(offset)
         .asSequence()
         .filter { it.category.toString() == category }
         .first { it.tuningName == "Standard" }
 
-    private fun InstrumentFactoryModel.buildInstrument(category: InstrumentCategory): Instrument =
-        Instrument(category, tuningName, buildNoteList())
+    private fun InstrumentFactoryModel.buildInstrument(category: InstrumentCategory, offset: Int): Instrument =
+        Instrument(category, tuningName, buildNoteList(offset))
 
-    private fun InstrumentFactoryModel.buildNoteList(): List<InstrumentNote> =
-        numberedNotes.map { numberedNote ->
+    private fun InstrumentFactoryModel.buildNoteList(offset: Int): List<InstrumentNote> {
+        val notes = ChromaticOctave.createFullRange(offset)
+        return numberedNotes.map { numberedNote ->
             notes.firstOrNull { it.numberedName == numberedNote }
                 ?: throw Exception("Invalid note")
         }.map { InstrumentNote(it.numberedName, it.freq) }
+    }
 }

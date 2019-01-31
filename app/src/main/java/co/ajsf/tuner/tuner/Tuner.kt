@@ -12,7 +12,7 @@ data class SelectedNoteInfo(val name: String, val delta: Int)
 class Tuner(frequencyDetector: FrequencyDetector) {
 
     private val audioFeed: Flowable<Float> = frequencyDetector.listen()
-    private val chromaticNoteFinder: NoteFinder = NoteFinder.chromaticNoteFinder()
+    private var chromaticNoteFinder: NoteFinder? = null
     private var instrumentNoteFinder: NoteFinder? = null
 
     val instrumentTuning: Flowable<SelectedStringInfo> = audioFeed
@@ -21,15 +21,21 @@ class Tuner(frequencyDetector: FrequencyDetector) {
         .map { SelectedStringInfo(it.numberedName, it.delta.toFloat()) }
 
     val mostRecentFrequency: Flowable<String> = audioFeed
+        .filter { chromaticNoteFinder != null }
         .filter { it != -1f }
         .map { String.format("%.2f", it) }
 
     val mostRecentNoteInfo: Flowable<SelectedNoteInfo> = audioFeed
+        .filter { chromaticNoteFinder != null }
         .filter { it != -1f }
-        .map { chromaticNoteFinder.findNote(it) }
+        .map { chromaticNoteFinder?.findNote(it) }
         .map { SelectedNoteInfo(MusicalNote.nameFromNumberedName(it.numberedName), it.delta) }
 
     fun setInstrument(instrument: Instrument) {
         instrumentNoteFinder = NoteFinder.instrumentNoteFinder(instrument)
+    }
+
+    fun setOffset(offset: Int) {
+        chromaticNoteFinder = NoteFinder.chromaticNoteFinder(offset)
     }
 }
