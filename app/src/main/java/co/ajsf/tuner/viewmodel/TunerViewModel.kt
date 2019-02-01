@@ -9,7 +9,7 @@ import co.ajsf.tuner.model.Instrument
 import co.ajsf.tuner.tuner.SelectedStringInfo
 import co.ajsf.tuner.tuner.Tuner
 
-typealias SelectedInstrumentInfo = Pair<String, List<String>>
+data class SelectedInstrumentInfo(val name: String, val noteNames: List<String>, val middleA: String)
 
 class TunerViewModel(private val tuner: Tuner, private val instrumentRepository: InstrumentRepository) :
     ViewModel() {
@@ -31,7 +31,9 @@ class TunerViewModel(private val tuner: Tuner, private val instrumentRepository:
     init {
         selectedInstrument.observeForever { instrument ->
             tuner.setInstrument(instrument)
-            val info = "${instrument.category} (${instrument.tuningName})" to instrument.notes.map { it.numberedName }
+            val name = "${instrument.category} (${instrument.tuningName})"
+            val noteNames = instrument.notes.map { it.numberedName }
+            val info = SelectedInstrumentInfo(name, noteNames, getMiddleAFreq())
             _selectedInstrumentInfo.postValue(info)
         }
         setupTuner()
@@ -71,4 +73,6 @@ class TunerViewModel(private val tuner: Tuner, private val instrumentRepository:
         val instrument = instrumentRepository.getSelectedTuning()
         selectedInstrument.postValue(instrument)
     }
+
+    private fun getMiddleAFreq(): String = "${440 + getOffset()}Hz"
 }

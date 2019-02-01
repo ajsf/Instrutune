@@ -9,6 +9,38 @@
     android:paddingBottom="8dp">
 
     <TextView
+        android:id="@+id/instrument_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:textColor="@color/textColor"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Guitar (Standard)" />
+
+    <TextView
+        android:id="@+id/middlea_freq_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A4="
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:textColor="@color/textColor"
+        app:layout_constraintRight_toLeftOf="@id/middlea_freq_text"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/middlea_freq_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="16dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:textColor="@color/textColor"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="440Hz" />
+
+    <TextView
         android:id="@+id/recent_freq_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +49,7 @@
         android:textColor="@color/textColor"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/instrument_name_text" />
 
     <TextView
         android:id="@+id/hz"

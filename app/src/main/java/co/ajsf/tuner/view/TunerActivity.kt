@@ -12,6 +12,7 @@ import co.ajsf.tuner.RecordAudioPermissionHandler
 import co.ajsf.tuner.di.tunerActivityModule
 import co.ajsf.tuner.viewmodel.TunerViewModel
 import kotlinx.android.synthetic.main.activity_tuner.*
+import kotlinx.android.synthetic.main.tuner_view.*
 import org.jetbrains.anko.selector
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -42,8 +43,9 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
 
     private fun initViewModel(): Unit = with(viewModel) {
 
-        selectedInstrumentInfo.observe(this@TunerActivity, Observer { (name, numberedNames) ->
-            title = "${resources.getString(R.string.app_name)} - $name"
+        selectedInstrumentInfo.observe(this@TunerActivity, Observer { (name, numberedNames, middleA) ->
+            instrument_name_text.text = name
+            middlea_freq_text.text = middleA
             tuner_view.selectInstrument(numberedNames, selectedStringInfo, this@TunerActivity)
         })
 
