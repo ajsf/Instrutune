@@ -12,7 +12,8 @@ class FrequencyDetector(private val engine: DetectionEngine) {
             .filter { it.pitch > -1.0 }
 
         val noise = micInput
-            .buffer(300, TimeUnit.MILLISECONDS)
+            .filter { it.isSilence.not() }
+            .buffer(200, TimeUnit.MILLISECONDS)
             .filter { it.isNotEmpty() }
             .map { it.groupBy { result -> result.pitch } }
             .map { it.maxBy { result -> result.value.size } }
@@ -21,7 +22,7 @@ class FrequencyDetector(private val engine: DetectionEngine) {
             .map { it.pitch }
 
         val silence = noise
-            .debounce(300, TimeUnit.MILLISECONDS)
+            .debounce(400, TimeUnit.MILLISECONDS)
             .map { -1f }
 
         return noise.mergeWith(silence).startWith(-1f)

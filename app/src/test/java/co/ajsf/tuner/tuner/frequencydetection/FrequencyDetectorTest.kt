@@ -8,6 +8,7 @@ import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.rxkotlin.toFlowable
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
@@ -82,7 +83,7 @@ internal class FrequencyDetectorTest {
     }
 
     @Test
-    fun `when the detectionEngine sends three sounds, three sounds are sent`() {
+    fun `when the detectionEngine sends three sounds, it sends -1, a sound, and -1`() {
         val results = createRandomResults(3)
         whenever(mockDetectionEngine.listen())
             .thenReturn(results.toFlowable())
@@ -90,16 +91,40 @@ internal class FrequencyDetectorTest {
         val testSubscriber = detector.listen().test()
 
         testSubscriber.assertValueCount(3)
+        testSubscriber.assertValueAt(0, -1f)
+        assertNotEquals(testSubscriber.values()[1], -1f)
+        testSubscriber.assertValueAt(2, -1f)
     }
 
     @Test
-    fun `when the detectionEngine sends ten sounds, three sounds are sent`() {
+    fun `when the detectionEngine sends ten sounds, it sends -1, a sound, and -1`() {
         val results = createRandomResults(10)
         whenever(mockDetectionEngine.listen())
             .thenReturn(results.toFlowable())
 
         val testSubscriber = detector.listen().test()
 
-        testSubscriber.assertValueCount(3)
+        testSubscriber.assertValueAt(0, -1f)
+        assertNotEquals(testSubscriber.values()[1], -1f)
+        testSubscriber.assertValueAt(2, -1f)
+    }
+
+    @Test
+    fun `when the detectionEngine sends silence, it only sends the first -1f`() {
+        val silence = listOf(
+            DetectionResult(
+                TestDataFactory.randomFloat(),
+                true,
+                true,
+                TestDataFactory.randomFloat(),
+                50f
+            )
+        )
+
+        whenever(mockDetectionEngine.listen())
+            .thenReturn(silence.toFlowable())
+
+        val testSubscriber = detector.listen().test()
+        testSubscriber.assertValueCount(1)
     }
 }
