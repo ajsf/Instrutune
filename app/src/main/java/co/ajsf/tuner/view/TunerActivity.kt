@@ -38,6 +38,9 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
             recordAudioPermission.requestPermission()
         } else {
             initViewModel()
+            instrument_name_text.setOnClickListener { showSelectInstrumentDialog() }
+            middlea_freq_label.setOnClickListener { showSetMiddleADialog() }
+            middlea_freq_text.setOnClickListener { showSetMiddleADialog() }
         }
     }
 
