@@ -24,27 +24,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:src="@drawable/ic_string_name_box"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_string_name_box" />
 
     <ImageView
         android:id="@+id/string_name_outline_selected"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:src="@drawable/ic_string_name_box_selected"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_string_name_box_selected" />
 
     <TextView
         android:id="@+id/string_name_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
-        android:textColor="@color/textColor"
         app:layout_constraintBottom_toBottomOf="@id/string_name_outline"
         app:layout_constraintLeft_toLeftOf="@id/string_name_outline"
         app:layout_constraintRight_toRightOf="@id/string_name_outline"
