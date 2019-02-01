@@ -1,5 +1,6 @@
 package co.ajsf.tuner.view.tunerview
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ class TunerStringView
     init {
         LayoutInflater.from(context).inflate(R.layout.tuner_string, this)
         layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
+        string_name_outline_selected.imageAlpha = 0
     }
 
     private var stringIsSelected = false
@@ -38,15 +40,21 @@ class TunerStringView
     }
 
     private fun setSelected() {
-        string_name_outline.setImageResource(R.drawable.ic_string_name_box_selected)
         val stringShakeAnimation = AnimationUtils.loadAnimation(context, R.anim.string_shake)
         string_image.startAnimation(stringShakeAnimation)
+        ObjectAnimator.ofInt(string_name_outline_selected, "imageAlpha", 255).apply {
+            duration = 200
+            start()
+        }
     }
 
     private fun unselect() {
         string_image.clearAnimation()
         val shakeEndAnimation = AnimationUtils.loadAnimation(context, R.anim.string_shake_end)
         string_image.startAnimation(shakeEndAnimation)
-        string_name_outline.setImageResource(R.drawable.ic_string_name_box)
+        ObjectAnimator.ofInt(string_name_outline_selected, "imageAlpha", 0).apply {
+            duration = 600
+            start()
+        }
     }
 }
