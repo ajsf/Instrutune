@@ -8,7 +8,7 @@ fun mapTarsosResponseToDetectionResult(response: TarsosResponse): DetectionResul
     val (res, event) = response
     return DetectionResult(
         res.pitch,
-        event.isSilence(-75.0),
+        event.isSilence(-78.0),
         res.isPitched,
         res.probability,
         event.getdBSPL().toFloat()
