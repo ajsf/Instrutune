@@ -53,6 +53,8 @@ dependencies {
 
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
 
+    testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
+
     androidTestImplementation "androidx.test:runner:$android_test_runner_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
 }

@@ -15,7 +15,10 @@ class InstrumentRepository(private val prefs: SharedPreferences) {
     private var tuningOffset: Int = prefs.getInt(OFFSET, 0)
     private var instruments: List<Instrument> = InstrumentFactory.getAllInstruments(tuningOffset)
 
-    fun getTunings(instrument: String): List<Instrument> = instruments.filter { it.category.toString() == instrument }
+    fun getTunings(): List<Instrument> {
+        val category = getSelectedCategory()
+        return instruments.filter { it.category.toString() == category }
+    }
 
     fun getInstrumentList(): List<String> = InstrumentCategory.values().map { it.toString() }
 

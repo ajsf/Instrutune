@@ -2,7 +2,7 @@ package co.ajsf.tuner.test.data
 
 import co.ajsf.tuner.tuner.frequencydetection.model.DetectionResult
 
-internal object DetectionDataFactory {
+object DetectionDataFactory {
 
     fun makeDetectionResult(): DetectionResult =
         DetectionResult(

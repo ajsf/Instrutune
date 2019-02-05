@@ -3,7 +3,7 @@ package co.ajsf.tuner.test.data
 import java.util.*
 import java.util.concurrent.ThreadLocalRandom
 
-internal object TestDataFactory {
+object TestDataFactory {
 
     fun randomFloat(): Float = Math.random().toFloat()
     fun randomInt(maxNumber: Int = 50, minNumber: Int = 1): Int =

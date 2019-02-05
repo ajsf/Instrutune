@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
 import co.ajsf.tuner.data.InstrumentRepository
 import co.ajsf.tuner.model.Instrument
+import co.ajsf.tuner.model.toInstrumentInfo
 import co.ajsf.tuner.tuner.SelectedStringInfo
 import co.ajsf.tuner.tuner.Tuner
 
@@ -29,12 +30,11 @@ class TunerViewModel(private val tuner: Tuner, private val instrumentRepository:
     private val _selectedInstrumentInfo = MutableLiveData<SelectedInstrumentInfo>()
 
     init {
-        selectedInstrument.observeForever { instrument ->
-            tuner.setInstrument(instrument)
-            val name = "${instrument.category} (${instrument.tuningName})"
-            val noteNames = instrument.notes.map { it.numberedName }
-            val info = SelectedInstrumentInfo(name, noteNames, getMiddleAFreq())
-            _selectedInstrumentInfo.postValue(info)
+        selectedInstrument.observeForever {
+            it?.let { instrument ->
+                tuner.setInstrument(instrument)
+                _selectedInstrumentInfo.postValue(instrument.toInstrumentInfo(getMiddleAFreq()))
+            }
         }
         setupTuner()
     }
@@ -44,8 +44,7 @@ class TunerViewModel(private val tuner: Tuner, private val instrumentRepository:
     }
 
     fun getTunings(): List<Instrument> {
-        val category = instrumentRepository.getSelectedCategory()
-        return instrumentRepository.getTunings(category)
+        return instrumentRepository.getTunings()
     }
 
     fun saveSelectedCategory(categoryName: String) {
@@ -74,5 +73,5 @@ class TunerViewModel(private val tuner: Tuner, private val instrumentRepository:
         selectedInstrument.postValue(instrument)
     }
 
-    private fun getMiddleAFreq(): String = "${440 + getOffset()}Hz"
+    private fun getMiddleAFreq(): Int = 440 + getOffset()
 }
