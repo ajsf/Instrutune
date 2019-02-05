@@ -10,36 +10,45 @@ private const val SELECTED_CATEGORY = "SELECTED_CATEGORY"
 private const val SELECTED_TUNING = "SELECTED_TUNING"
 private const val OFFSET = "OFFSET"
 
-class InstrumentRepository(private val prefs: SharedPreferences) {
+interface InstrumentRepository {
+    fun getTunings(): List<Instrument>
+    fun getInstrumentList(): List<String> = InstrumentCategory.values().map { it.toString() }
+    fun saveSelectedTuning(tuningName: String)
+    fun saveSelectedCategory(categoryName: String)
+    fun getSelectedTuning(): Instrument
+    fun getSelectedCategory(): String
+    fun saveOffset(offset: Int)
+    fun getOffset(): Int
+}
+
+class InstrumentRepositoryImpl(private val prefs: SharedPreferences) : InstrumentRepository {
 
     private var tuningOffset: Int = prefs.getInt(OFFSET, 0)
     private var instruments: List<Instrument> = InstrumentFactory.getAllInstruments(tuningOffset)
 
-    fun getTunings(): List<Instrument> {
+    override fun getTunings(): List<Instrument> {
         val category = getSelectedCategory()
         return instruments.filter { it.category.toString() == category }
     }
 
-    fun getInstrumentList(): List<String> = InstrumentCategory.values().map { it.toString() }
-
-    fun saveSelectedTuning(tuningName: String) = prefs.edit {
+    override fun saveSelectedTuning(tuningName: String) = prefs.edit {
         putString(SELECTED_TUNING, tuningName)
     }
 
-    fun saveSelectedCategory(categoryName: String) = prefs.edit {
+    override fun saveSelectedCategory(categoryName: String) = prefs.edit {
         putString(SELECTED_CATEGORY, categoryName)
     }
 
-    fun getSelectedTuning(): Instrument {
+    override fun getSelectedTuning(): Instrument {
         val category = getSelectedCategory()
         val tuningName = prefs.getString(SELECTED_TUNING, "")
         return getInstrument(category, tuningName) ?: InstrumentFactory
             .getDefaultInstrumentForCategory(category, tuningOffset)
     }
 
-    fun getSelectedCategory(): String = prefs.getString(SELECTED_CATEGORY, "Guitar") ?: "Guitar"
+    override fun getSelectedCategory(): String = prefs.getString(SELECTED_CATEGORY, "Guitar") ?: "Guitar"
 
-    fun saveOffset(offset: Int) {
+    override fun saveOffset(offset: Int) {
         prefs.edit {
             putInt(OFFSET, offset)
         }
@@ -47,7 +56,7 @@ class InstrumentRepository(private val prefs: SharedPreferences) {
         instruments = InstrumentFactory.getAllInstruments(tuningOffset)
     }
 
-    fun getOffset() = tuningOffset
+    override fun getOffset() = tuningOffset
 
     private fun getInstrument(category: String, tuningName: String?): Instrument? = instruments
         .find { it.category.toString() == category && it.tuningName == tuningName }
