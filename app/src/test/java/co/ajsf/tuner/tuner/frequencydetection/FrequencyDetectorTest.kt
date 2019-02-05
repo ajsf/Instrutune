@@ -36,7 +36,7 @@ internal class FrequencyDetectorTest {
     @BeforeEach
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        detector = FrequencyDetector(mockDetectionEngine)
+        detector = FrequencyDetectorImpl(mockDetectionEngine)
     }
 
     @Test

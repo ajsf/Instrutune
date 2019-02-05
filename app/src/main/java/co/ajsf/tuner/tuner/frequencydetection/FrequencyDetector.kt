@@ -4,9 +4,13 @@ import co.ajsf.tuner.tuner.frequencydetection.detector.DetectionEngine
 import io.reactivex.Flowable
 import java.util.concurrent.TimeUnit
 
-class FrequencyDetector(private val engine: DetectionEngine) {
+interface FrequencyDetector {
+    fun listen(): Flowable<Float>
+}
 
-    fun listen(): Flowable<Float> {
+class FrequencyDetectorImpl(private val engine: DetectionEngine) : FrequencyDetector {
+
+    override fun listen(): Flowable<Float> {
 
         val micInput = engine.listen()
             .filter { it.pitch > -1.0 }
