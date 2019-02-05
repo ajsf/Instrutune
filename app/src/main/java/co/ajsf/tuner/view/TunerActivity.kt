@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import co.ajsf.tuner.R
 import co.ajsf.tuner.RecordAudioPermissionHandler
+import co.ajsf.tuner.TunerApp
 import co.ajsf.tuner.di.tunerActivityModule
 import co.ajsf.tuner.viewmodel.TunerViewModel
 import kotlinx.android.synthetic.main.activity_tuner.*
@@ -25,6 +26,7 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
     override val kodein = Kodein.lazy {
         extend(_parentKodein)
         import(tunerActivityModule())
+        ((applicationContext as TunerApp).overrideBindings)()
     }
 
     private val viewModel: TunerViewModel by buildViewModel()
