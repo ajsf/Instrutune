@@ -4,8 +4,6 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
-apply plugin: "de.mannodermaus.android-junit5"
-
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -21,6 +19,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 }
 
@@ -55,6 +56,13 @@ dependencies {
 
     testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
 
+    androidTestImplementation "androidx.test:core:1.1.0"
     androidTestImplementation "androidx.test:runner:$android_test_runner_version"
+    androidTestImplementation "androidx.test:rules:$android_test_runner_version"
+    androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso_version"
+    androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
+    androidTestImplementation "org.mockito:mockito-core:$mockito_version"
+    androidTestImplementation "org.mockito:mockito-android:$mockito_version"
 }
