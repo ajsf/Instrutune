@@ -12,6 +12,7 @@ import com.nhaarman.mockitokotlin2.reset
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.rxkotlin.toFlowable
+import io.reactivex.schedulers.Schedulers
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -31,6 +32,7 @@ class TunerViewModelTest {
 
     private lateinit var stringInfo: List<SelectedStringInfo>
     private lateinit var noteInfo: List<SelectedNoteInfo>
+    private lateinit var freqs: List<String>
 
     @Rule
     @JvmField
@@ -41,8 +43,10 @@ class TunerViewModelTest {
         MockitoAnnotations.initMocks(this)
         stringInfo = InstrumentDataFactory.randomStringInfoList()
         noteInfo = InstrumentDataFactory.randomNoteInfoList()
+        freqs = InstrumentDataFactory.randomFreqList()
         whenever(mockTuner.instrumentTuning).thenReturn(stringInfo.toFlowable())
         whenever(mockTuner.mostRecentNoteInfo).thenReturn(noteInfo.toFlowable())
+        whenever(mockTuner.mostRecentFrequency).thenReturn(freqs.toFlowable())
     }
 
     @Test
@@ -253,9 +257,6 @@ class TunerViewModelTest {
 
     @Test
     fun `mostRecentFrequency converts the tuner's mostRecentFrequency Flowable to LiveData`() {
-        val freqs = InstrumentDataFactory.randomFreqList()
-        whenever(mockTuner.mostRecentFrequency).thenReturn(freqs.toFlowable())
-
         viewModel = buildViewModel()
         var count = 0
 
@@ -296,5 +297,5 @@ class TunerViewModelTest {
         assertEquals(info.size, count)
     }
 
-    private fun buildViewModel() = TunerViewModel(mockTuner, mockRepository)
+    private fun buildViewModel() = TunerViewModel(mockTuner, mockRepository, Schedulers.trampoline())
 }

@@ -9,22 +9,36 @@ import co.ajsf.tuner.model.Instrument
 import co.ajsf.tuner.model.toInstrumentInfo
 import co.ajsf.tuner.tuner.SelectedStringInfo
 import co.ajsf.tuner.tuner.Tuner
+import io.reactivex.Flowable
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 data class SelectedInstrumentInfo(val name: String, val noteNames: List<String>, val middleA: String)
 
-class TunerViewModel(private val tuner: Tuner, private val instrumentRepository: InstrumentRepository) :
+class TunerViewModel(
+    private val tuner: Tuner,
+    private val instrumentRepository: InstrumentRepository,
+    private val uiScheduler: Scheduler = AndroidSchedulers.mainThread()
+) :
     ViewModel() {
 
     val selectedInstrumentInfo: LiveData<SelectedInstrumentInfo>
         get() = _selectedInstrumentInfo
 
-    val selectedStringInfo: LiveData<SelectedStringInfo> = tuner.instrumentTuning.toLiveData()
+    val selectedStringInfo: LiveData<SelectedStringInfo> =
+        tuner.instrumentTuning.toUiThreadLiveData()
 
-    val mostRecentFrequency: LiveData<String> = tuner.mostRecentFrequency.toLiveData()
+    val mostRecentFrequency: LiveData<String> =
+        tuner.mostRecentFrequency.toUiThreadLiveData()
 
-    val mostRecentNoteName: LiveData<String> = tuner.mostRecentNoteInfo.map { it.name }.toLiveData()
+    val mostRecentNoteName: LiveData<String> =
+        tuner.mostRecentNoteInfo.map { it.name }.toUiThreadLiveData()
 
-    val mostRecentNoteDelta: LiveData<Int> = tuner.mostRecentNoteInfo.map { it.delta }.toLiveData()
+    val mostRecentNoteDelta: LiveData<Int> =
+        tuner.mostRecentNoteInfo.map { it.delta }.toUiThreadLiveData()
+
+    private fun <T> Flowable<T>.toUiThreadLiveData() =
+        this.observeOn(uiScheduler).toLiveData()
 
     private val selectedInstrument = MutableLiveData<Instrument>()
     private val _selectedInstrumentInfo = MutableLiveData<SelectedInstrumentInfo>()
