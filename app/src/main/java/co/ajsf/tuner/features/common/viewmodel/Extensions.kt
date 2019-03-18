@@ -1,4 +1,4 @@
-package co.ajsf.tuner.features.tuner.view
+package co.ajsf.tuner.features.common.viewmodel
 
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel

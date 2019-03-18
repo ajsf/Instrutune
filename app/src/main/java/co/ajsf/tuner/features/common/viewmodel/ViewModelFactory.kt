@@ -1,4 +1,4 @@
-package co.ajsf.tuner.features.tuner.viewmodel
+package co.ajsf.tuner.features.common.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

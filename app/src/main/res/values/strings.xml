@@ -4,7 +4,8 @@
     <string name="vu_indicator">Vu Indicator</string>
     <string name="guitar">Guitar</string>
     <string name="record_audio_permission_title">Notice</string>
-    <string name="record_audio_permission_message">Hi, we will request the Record Audio permission. This is required for pitch detection. Please grant it.
+    <string name="record_audio_permission_message">Hi, we will request the Record Audio permission. This is required for
+        pitch detection. Please grant it.
     </string>
     <string name="show_settings_title">Permissions Denied</string>
     <string name="show_settings_message">We noticed you have disabled the Record Audio permission.

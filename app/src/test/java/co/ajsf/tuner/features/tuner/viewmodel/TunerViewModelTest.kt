@@ -2,6 +2,7 @@ package co.ajsf.tuner.features.tuner.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import co.ajsf.tuner.data.InstrumentRepository
+import co.ajsf.tuner.features.tuner.TunerViewModel
 import co.ajsf.tuner.model.toInstrumentInfo
 import co.ajsf.tuner.test.data.InstrumentDataFactory
 import co.ajsf.tuner.test.data.TestDataFactory
@@ -297,5 +298,6 @@ class TunerViewModelTest {
         assertEquals(info.size, count)
     }
 
-    private fun buildViewModel() = TunerViewModel(mockTuner, mockRepository, Schedulers.trampoline())
+    private fun buildViewModel() =
+        TunerViewModel(mockTuner, mockRepository, Schedulers.trampoline())
 }

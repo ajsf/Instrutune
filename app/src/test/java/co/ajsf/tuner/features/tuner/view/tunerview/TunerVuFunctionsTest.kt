@@ -1,5 +1,6 @@
 package co.ajsf.tuner.features.tuner.view.tunerview
 
+import co.ajsf.tuner.features.tuner.view.calculateVuMeterXTranslation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

@@ -13,6 +13,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import co.ajsf.tuner.R
+import co.ajsf.tuner.features.tuner.TunerActivity
 import co.ajsf.tuner.model.InstrumentFactory
 import co.ajsf.tuner.rules.OverridesRule
 import co.ajsf.tuner.rules.RepeatRule

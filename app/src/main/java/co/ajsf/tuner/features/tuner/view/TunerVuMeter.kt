@@ -1,4 +1,4 @@
-package co.ajsf.tuner.features.tuner.view.tunerview
+package co.ajsf.tuner.features.tuner.view
 
 import android.animation.ObjectAnimator
 import android.content.Context

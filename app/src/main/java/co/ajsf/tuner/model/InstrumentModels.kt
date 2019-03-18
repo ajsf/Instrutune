@@ -1,6 +1,6 @@
 package co.ajsf.tuner.model
 
-import co.ajsf.tuner.features.tuner.viewmodel.SelectedInstrumentInfo
+import co.ajsf.tuner.features.tuner.SelectedInstrumentInfo
 
 data class InstrumentNote(
     val numberedName: String,

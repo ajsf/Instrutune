@@ -1,4 +1,4 @@
-package co.ajsf.tuner.features.tuner.view
+package co.ajsf.tuner.features.tuner
 
 import android.os.Bundle
 import android.view.Menu
@@ -10,8 +10,7 @@ import androidx.lifecycle.Observer
 import co.ajsf.tuner.R
 import co.ajsf.tuner.TunerApp
 import co.ajsf.tuner.di.tunerActivityModule
-import co.ajsf.tuner.features.tuner.RecordAudioPermissionHandler
-import co.ajsf.tuner.features.tuner.viewmodel.TunerViewModel
+import co.ajsf.tuner.features.common.viewmodel.buildViewModel
 import kotlinx.android.synthetic.main.activity_tuner.*
 import kotlinx.android.synthetic.main.tuner_view.*
 import org.jetbrains.anko.selector

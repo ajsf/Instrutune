@@ -1,4 +1,4 @@
-package co.ajsf.tuner.features.tuner.viewmodel
+package co.ajsf.tuner.features.tuner
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
