@@ -1,4 +1,4 @@
-package co.ajsf.tuner.viewmodel
+package co.ajsf.tuner.features.tuner.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import co.ajsf.tuner.data.InstrumentRepository

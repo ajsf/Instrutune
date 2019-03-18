@@ -1,4 +1,4 @@
-package co.ajsf.tuner.view.tunerview
+package co.ajsf.tuner.features.tuner.view.tunerview
 
 fun calculateVuMeterXTranslation(viewWidth: Int, delta: Float): Float {
     val midPoint = viewWidth / 2

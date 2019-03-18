@@ -132,13 +132,13 @@
         app:layout_constraintTop_toTopOf="@id/chevron_left_one"
         app:srcCompat="@drawable/ic_chevron_right_24dp" />
 
-    <co.ajsf.tuner.view.tunerview.TunerVuMeter
+    <co.ajsf.tuner.features.tuner.view.tunerview.TunerVuMeter
         android:id="@+id/tuner_vu_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/recent_freq_text" />
 
-    <co.ajsf.tuner.view.tunerview.StringsView
+    <co.ajsf.tuner.features.tuner.view.tunerview.StringsView
         android:id="@+id/strings_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"

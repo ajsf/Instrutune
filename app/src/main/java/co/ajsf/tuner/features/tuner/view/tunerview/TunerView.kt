@@ -1,4 +1,4 @@
-package co.ajsf.tuner.view.tunerview
+package co.ajsf.tuner.features.tuner.view.tunerview
 
 import android.content.Context
 import android.util.AttributeSet

@@ -56,7 +56,7 @@ object InstrumentFactory {
     fun getDefaultInstrumentForCategory(category: String, offset: Int): Instrument = getAllInstruments(offset)
         .asSequence()
         .filter { it.category.toString() == category }
-        .first { it.tuningName == "Standard" }
+        .firstOrNull { it.tuningName == "Standard" } ?: guitar()
 
     private fun InstrumentFactoryModel.buildInstrument(category: InstrumentCategory, offset: Int): Instrument =
         Instrument(category, tuningName, buildNoteList(offset))

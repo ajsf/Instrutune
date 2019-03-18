@@ -1,4 +1,4 @@
-package co.ajsf.tuner.view
+package co.ajsf.tuner.features.tuner.view
 
 import android.content.Context
 import android.content.SharedPreferences

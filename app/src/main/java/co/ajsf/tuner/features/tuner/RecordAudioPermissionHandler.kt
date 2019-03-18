@@ -1,4 +1,4 @@
-package co.ajsf.tuner
+package co.ajsf.tuner.features.tuner
 
 import android.Manifest
 import android.content.Intent
@@ -8,6 +8,7 @@ import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import co.ajsf.tuner.R
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.yesButton
