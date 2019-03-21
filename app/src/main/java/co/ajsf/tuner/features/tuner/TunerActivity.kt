@@ -1,6 +1,7 @@
 package co.ajsf.tuner.features.tuner
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.NumberPicker
@@ -13,7 +14,6 @@ import co.ajsf.tuner.di.tunerActivityModule
 import co.ajsf.tuner.features.common.viewmodel.buildViewModel
 import kotlinx.android.synthetic.main.activity_tuner.*
 import kotlinx.android.synthetic.main.tuner_view.*
-import org.jetbrains.anko.selector
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
@@ -38,15 +38,16 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
         if (recordAudioPermission.isPermissionGranted().not()) {
             recordAudioPermission.requestPermission()
         } else {
-            initViewModel()
-            instrument_name_text.setOnClickListener { showSelectInstrumentDialog() }
-            middlea_freq_label.setOnClickListener { showSetMiddleADialog() }
-            middlea_freq_text.setOnClickListener { showSetMiddleADialog() }
+            setupUi()
         }
     }
 
-    private fun initViewModel(): Unit = with(viewModel) {
+    private fun setupUi() {
+        initViewModel()
+        initButtons()
+    }
 
+    private fun initViewModel(): Unit = with(viewModel) {
         selectedInstrumentInfo.observe(this@TunerActivity, Observer { (name, numberedNames, middleA) ->
             instrument_name_text.text = name
             middlea_freq_text.text = middleA
@@ -56,6 +57,12 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
         tuner_view.setFreqLiveData(mostRecentFrequency, this@TunerActivity)
         tuner_view.setNoteNameLiveData(mostRecentNoteName, this@TunerActivity)
         tuner_view.setChromaticDeltaLiveData(mostRecentNoteDelta, this@TunerActivity)
+    }
+
+    private fun initButtons() {
+        instrument_name_text.setOnClickListener { showSelectInstrumentDialog() }
+        middlea_freq_label.setOnClickListener { showSetMiddleADialog() }
+        middlea_freq_text.setOnClickListener { showSetMiddleADialog() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -80,27 +87,38 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun showSelectInstrumentDialog() {
-        val instrumentNames = viewModel.getInstruments()
         val title = getString(R.string.select_instrument_title)
-        selector(title, instrumentNames) { _, i ->
-            viewModel.saveSelectedCategory(instrumentNames[i])
+        val instrumentNames = viewModel.getInstruments().toTypedArray()
+
+        showSelectorDialog(title, instrumentNames) {
+            viewModel.saveSelectedCategory(instrumentNames[it])
             showSelectTuningDialog()
         }
     }
 
     private fun showSelectTuningDialog() {
-        val tunings = viewModel.getTunings().map { it.tuningName }
         val title = getString(R.string.select_tuning_title)
-        selector(title, tunings) { _, i ->
-            viewModel.saveSelectedTuning(tunings[i])
-        }
+        val tunings = viewModel.getTunings().map { it.tuningName }.toTypedArray()
+
+        showSelectorDialog(title, tunings) { viewModel.saveSelectedTuning(tunings[it]) }
+    }
+
+    private fun showSelectorDialog(title: String, items: Array<String>, onClick: (Int) -> Unit) {
+        with(AlertDialog.Builder(this)) {
+            setTitle(title)
+            setItems(items) { _, i -> onClick(i) }
+            create()
+        }.show()
     }
 
     private fun showSetMiddleADialog() {
         var newOffset = viewModel.getOffset()
         val maxVariance = 10
 
-        val picker = NumberPicker(this).apply {
+        val inflater = LayoutInflater.from(applicationContext)
+
+        val picker = inflater.inflate(R.layout.freq_picker, null) as NumberPicker
+        picker.apply {
             maxValue = maxVariance * 2
             minValue = 0
             wrapSelectorWheel = false
@@ -127,7 +145,7 @@ class TunerActivity : AppCompatActivity(), KodeinAware {
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ): Unit = when {
         requestCode != recordAudioPermission.requestCode -> Unit
-        recordAudioPermission.isPermissionGranted() -> initViewModel()
+        recordAudioPermission.isPermissionGranted() -> setupUi()
         recordAudioPermission.userCheckedNeverAskAgain() ->
             recordAudioPermission.showSettingsReasonAndRequest()
         else -> recordAudioPermission.requestPermission()

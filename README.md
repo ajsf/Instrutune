@@ -13,7 +13,6 @@ An Android app written in Kotlin for tuning stringed instruments. The app curren
 * [Kotlin](https://kotlinlang.org/) - Kotlin programing language
 * [TarsosDsp](https://github.com/JorenSix/TarsosDSP) - A Real-Time Audio Processing Framework in Java
 * [Kodein](https://github.com/Kodein-Framework/Kodein-DI) - Painless Kotlin Dependency Injection
-* [Anko](https://github.com/Kotlin/anko) - Kotlin extensions and utilities for Android
 * [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html) - For managing Android UI lifecycle
 * [RxJava](https://github.com/ReactiveX/RxJava) - Reactive Extensions for the JVM
 * [RxKotlin](https://github.com/ReactiveX/RxKotlin) - Kotlin Extensions for RxJava

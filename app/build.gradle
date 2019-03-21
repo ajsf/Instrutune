@@ -39,7 +39,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$androidx_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
 
-    implementation "org.jetbrains.anko:anko-commons:$anko_version"
+    implementation "com.google.android.material:material:1.1.0-alpha04"
 
     implementation "org.kodein.di:kodein-di-generic-jvm:$kodein_version"
     implementation "org.kodein.di:kodein-di-framework-android-x:$kodein_version"

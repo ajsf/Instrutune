@@ -5,49 +5,51 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import co.ajsf.tuner.R
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.noButton
-import org.jetbrains.anko.yesButton
 
 class RecordAudioPermissionHandler(private val activity: AppCompatActivity) {
 
     val requestCode = 202
 
-    fun requestPermission(): Unit = with(activity) {
+    fun requestPermission() {
+        val resources = activity.resources
         val requestRecordAudioPermissionTitle = resources.getString(R.string.record_audio_permission_title)
         val requestRecordAudioPermissionMessage = resources.getString(R.string.record_audio_permission_message)
-        alert {
-            title = requestRecordAudioPermissionTitle
-            message = requestRecordAudioPermissionMessage
-            yesButton {
+
+        with(AlertDialog.Builder(activity)) {
+            setTitle(requestRecordAudioPermissionTitle)
+            setMessage(requestRecordAudioPermissionMessage)
+            setPositiveButton("OK") { _, _ ->
                 ActivityCompat.requestPermissions(
                     activity,
                     arrayOf(Manifest.permission.RECORD_AUDIO),
                     requestCode
                 )
             }
-            noButton { finishAndRemoveTask() }
+            setNegativeButton("Cancel") { _, _ -> activity.finishAndRemoveTask() }
         }.show()
     }
 
-    fun showSettingsReasonAndRequest(): Unit = with(activity) {
+    fun showSettingsReasonAndRequest() {
+        val resources = activity.resources
         val showSettingsTitle = resources.getString(R.string.show_settings_title)
         val showSettingsMessage = resources.getString(R.string.show_settings_message)
-        alert {
-            title = showSettingsTitle
-            message = showSettingsMessage
-            yesButton {
-                startActivity(
-                    Intent(
-                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.fromParts("package", packageName, null)
-                    ).apply { addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) })
+
+        with(AlertDialog.Builder(activity)) {
+            setTitle(showSettingsTitle)
+            setMessage(showSettingsMessage)
+            setPositiveButton("OK") { _, _ ->
+                val intent = Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.fromParts("package", activity.packageName, null)
+                ).apply { addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }
+                activity.startActivity(intent)
             }
-            noButton { finish() }
+            setNegativeButton("Cancel") { _, _ -> activity.finish() }
         }.show()
     }
 
