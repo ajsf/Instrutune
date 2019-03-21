@@ -1,6 +1,15 @@
 # String Tuner
 
-An Android app written in Kotlin for tuning stringed instruments. The app currently has multiple tunings for guitar, bass, violin, viola, cello and tres, and allows you to adjust the the middle A frequency, allowing you to tune to A = 432 Hz and other tunings.
+An Android app written in Kotlin for tuning stringed instruments.  
+The app currently supports multiple tunings for:
+* Guitar
+* Bass
+* Violin
+* Viola
+* Cello
+* Tres
+
+The tuner allows you to adjust the middle A frequency, allowing you to tune to A = 432 Hz and other tunings.
 
 ![Screenshot](./.github/screenshot1.png)&nbsp;&nbsp;&nbsp;&nbsp;![Screenshot](./.github/screenshot4.png)
 
