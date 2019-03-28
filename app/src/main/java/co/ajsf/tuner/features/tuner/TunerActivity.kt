@@ -6,26 +6,19 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.NumberPicker
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import co.ajsf.tuner.R
-import co.ajsf.tuner.TunerApp
 import co.ajsf.tuner.di.tunerActivityModule
+import co.ajsf.tuner.features.common.view.InjectedActivity
 import co.ajsf.tuner.features.common.viewmodel.buildViewModel
 import kotlinx.android.synthetic.main.activity_tuner.*
 import kotlinx.android.synthetic.main.tuner_view.*
 import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.closestKodein
 
-class TunerActivity : AppCompatActivity(), KodeinAware {
+class TunerActivity : InjectedActivity() {
 
-    private val _parentKodein: Kodein by closestKodein()
-
-    override val kodein = Kodein.lazy {
-        extend(_parentKodein)
+    override fun activityModule() = Kodein.Module("tuner") {
         import(tunerActivityModule())
-        ((applicationContext as TunerApp).overrideBindings)()
     }
 
     private val viewModel: TunerViewModel by buildViewModel()
