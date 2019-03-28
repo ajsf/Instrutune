@@ -1,11 +1,12 @@
-package co.ajsf.tuner.di
+package co.ajsf.tuner.features.tuner.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import co.ajsf.tuner.data.InstrumentRepository
 import co.ajsf.tuner.data.InstrumentRepositoryImpl
-import co.ajsf.tuner.features.tuner.TunerViewModel
+import co.ajsf.tuner.di.frequencyDetectionModule
 import co.ajsf.tuner.features.common.viewmodel.ViewModelFactory
+import co.ajsf.tuner.features.tuner.TunerViewModel
 import org.kodein.di.Kodein
 import org.kodein.di.direct
 import org.kodein.di.generic.bind
@@ -19,9 +20,7 @@ fun tunerActivityModule() = Kodein
             TunerViewModel(instance(), instance())
         }
         bind<ViewModelProvider.Factory>() with singleton {
-            ViewModelFactory(
-                kodein.direct
-            )
+            ViewModelFactory(kodein.direct)
         }
         bind<InstrumentRepository>() with singleton { InstrumentRepositoryImpl(instance()) }
 
