@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="0dp"
+    android:id="@+id/string_content"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:layout_weight="1"
     android:orientation="vertical">
 
     <ImageView
@@ -21,7 +21,7 @@
 
     <ImageView
         android:id="@+id/string_name_outline"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -31,7 +31,7 @@
 
     <ImageView
         android:id="@+id/string_name_outline_selected"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         app:layout_constraintLeft_toLeftOf="parent"

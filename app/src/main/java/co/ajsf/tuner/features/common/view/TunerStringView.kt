@@ -3,6 +3,7 @@ package co.ajsf.tuner.features.common.view
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -19,6 +20,7 @@ class TunerStringView
         LayoutInflater.from(context).inflate(R.layout.tuner_string, this)
         layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f)
         string_name_outline_selected.imageAlpha = 0
+        gravity = Gravity.CENTER
     }
 
     private var stringIsSelected = false
