@@ -67,7 +67,10 @@ class TunerStringView
     private fun imageAlphaAnimation(fromValue: Int, toValue: Int): ObjectAnimator = ObjectAnimator
         .ofInt(string_name_outline_selected, "imageAlpha", fromValue, toValue)
         .apply {
-            doOnEnd { currentAnimation = null }
+            doOnEnd {
+                currentAnimation = null
+                string_name_outline_selected.imageAlpha = toValue
+            }
         }
 
     private fun clearAnimations() {

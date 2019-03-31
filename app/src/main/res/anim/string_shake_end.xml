@@ -5,6 +5,6 @@
         android:duration="60"
         android:fromXDelta="-6%"
         android:interpolator="@android:anim/decelerate_interpolator"
-        android:repeatCount="2"
+        android:repeatCount="8"
         android:toXDelta="6%" />
 </set>
