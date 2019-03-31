@@ -37,5 +37,7 @@ data class ChromaticOctave(private val number: Int = 4, private val centerA: Int
         fun createFullRange(offset: Int = 0): List<MusicalNote> = (0..8)
             .map { ChromaticOctave(it, 440 + offset) }
             .flatMap { it.notes }
+
+        fun noteNames() = ChromaticOctave().notes.map { MusicalNote.nameFromNumberedName(it.numberedName) }
     }
 }
