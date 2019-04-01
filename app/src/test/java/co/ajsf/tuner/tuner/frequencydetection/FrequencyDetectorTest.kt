@@ -1,8 +1,10 @@
 package co.ajsf.tuner.tuner.frequencydetection
 
+import co.ajsf.tuner.common.tuner.frequencydetection.FrequencyDetector
+import co.ajsf.tuner.common.tuner.frequencydetection.FrequencyDetectorImpl
 import co.ajsf.tuner.test.data.TestDataFactory
-import co.ajsf.tuner.tuner.frequencydetection.detector.DetectionEngine
-import co.ajsf.tuner.tuner.frequencydetection.model.DetectionResult
+import co.ajsf.tuner.common.tuner.frequencydetection.detector.DetectionEngine
+import co.ajsf.tuner.common.tuner.frequencydetection.model.DetectionResult
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever

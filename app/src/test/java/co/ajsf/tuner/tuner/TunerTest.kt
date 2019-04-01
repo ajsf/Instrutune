@@ -1,8 +1,10 @@
 package co.ajsf.tuner.tuner
 
+import co.ajsf.tuner.common.tuner.SelectedStringInfo
+import co.ajsf.tuner.common.tuner.Tuner
 import co.ajsf.tuner.test.data.InstrumentDataFactory
 import co.ajsf.tuner.test.data.TestDataFactory
-import co.ajsf.tuner.tuner.frequencydetection.FrequencyDetector
+import co.ajsf.tuner.common.tuner.frequencydetection.FrequencyDetector
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.rxkotlin.toFlowable

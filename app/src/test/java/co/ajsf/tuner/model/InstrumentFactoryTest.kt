@@ -1,5 +1,6 @@
 package co.ajsf.tuner.model
 
+import co.ajsf.tuner.common.data.InstrumentFactory
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

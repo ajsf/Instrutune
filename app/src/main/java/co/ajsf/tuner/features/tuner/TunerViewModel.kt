@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
-import co.ajsf.tuner.data.InstrumentRepository
-import co.ajsf.tuner.model.Instrument
-import co.ajsf.tuner.model.toInstrumentInfo
-import co.ajsf.tuner.tuner.SelectedStringInfo
-import co.ajsf.tuner.tuner.Tuner
+import co.ajsf.tuner.common.data.InstrumentRepository
+import co.ajsf.tuner.common.model.Instrument
+import co.ajsf.tuner.common.model.toInstrumentInfo
+import co.ajsf.tuner.common.tuner.SelectedStringInfo
+import co.ajsf.tuner.common.tuner.Tuner
 import io.reactivex.Flowable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers

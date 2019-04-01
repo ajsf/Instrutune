@@ -1,6 +1,6 @@
 package co.ajsf.tuner.test.data
 
-import co.ajsf.tuner.tuner.frequencydetection.model.DetectionResult
+import co.ajsf.tuner.common.tuner.frequencydetection.model.DetectionResult
 
 object DetectionDataFactory {
 

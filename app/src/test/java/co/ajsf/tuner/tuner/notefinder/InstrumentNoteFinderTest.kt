@@ -1,7 +1,7 @@
 package co.ajsf.tuner.tuner.notefinder
 
-import co.ajsf.tuner.model.Instrument
-import co.ajsf.tuner.model.InstrumentFactory
+import co.ajsf.tuner.common.model.Instrument
+import co.ajsf.tuner.common.data.InstrumentFactory
 import co.ajsf.tuner.test.data.InstrumentDataFactory
 import org.junit.jupiter.api.Nested
 

@@ -1,5 +1,7 @@
 package co.ajsf.tuner.tuner.notefinder
 
+import co.ajsf.tuner.common.tuner.notefinder.NO_NOTE
+import co.ajsf.tuner.common.tuner.notefinder.NoteFinder
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

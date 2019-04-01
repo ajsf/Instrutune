@@ -1,6 +1,9 @@
 package co.ajsf.tuner.tuner.frequencydetection.tarsos
 
-import co.ajsf.tuner.tuner.frequencydetection.model.TarsosResponseToModelMapper
+import co.ajsf.tuner.common.tuner.frequencydetection.model.TarsosResponseToModelMapper
+import co.ajsf.tuner.common.tuner.frequencydetection.tarsos.TarsosDetectionEngine
+import co.ajsf.tuner.common.tuner.frequencydetection.tarsos.TarsosResponse
+import co.ajsf.tuner.common.tuner.frequencydetection.tarsos.TarsosResponseStream
 import co.ajsf.tuner.test.data.DetectionDataFactory
 import co.ajsf.tuner.test.data.TestDataFactory
 import com.nhaarman.mockitokotlin2.mock
@@ -27,7 +30,8 @@ internal class TarsosDetectionEngineTest {
     @BeforeEach
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        tarsosDetectionEngine = TarsosDetectionEngine(mockTarsosFlowable, mockMapper)
+        tarsosDetectionEngine =
+            TarsosDetectionEngine(mockTarsosFlowable, mockMapper)
         val numberOfResponses = TestDataFactory.randomInt(10)
         repeat(numberOfResponses) {
             responseList.add(mock())

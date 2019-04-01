@@ -1,5 +1,7 @@
 package co.ajsf.tuner.tuner.frequencydetection.tarsos
 
+import co.ajsf.tuner.common.tuner.frequencydetection.tarsos.TarsosDispatcher
+import co.ajsf.tuner.common.tuner.frequencydetection.tarsos.TarsosFlowable
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.schedulers.TestScheduler

@@ -14,12 +14,12 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import co.ajsf.tuner.R
 import co.ajsf.tuner.features.tuner.TunerActivity
-import co.ajsf.tuner.model.InstrumentFactory
+import co.ajsf.tuner.common.data.InstrumentFactory
 import co.ajsf.tuner.rules.OverridesRule
 import co.ajsf.tuner.rules.RepeatRule
-import co.ajsf.tuner.tuner.frequencydetection.FrequencyDetector
-import co.ajsf.tuner.tuner.notefinder.model.MusicalNote
-import co.ajsf.tuner.tuner.notefinder.model.mapToMusicalNoteList
+import co.ajsf.tuner.common.tuner.frequencydetection.FrequencyDetector
+import co.ajsf.tuner.common.tuner.notefinder.model.MusicalNote
+import co.ajsf.tuner.common.tuner.notefinder.model.mapToMusicalNoteList
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.BackpressureStrategy
 import io.reactivex.subjects.PublishSubject

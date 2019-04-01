@@ -2,6 +2,7 @@ package co.ajsf.tuner.tuner.frequencydetection.model
 
 import be.tarsos.dsp.AudioEvent
 import be.tarsos.dsp.pitch.PitchDetectionResult
+import co.ajsf.tuner.common.tuner.frequencydetection.model.mapTarsosResponseToDetectionResult
 import co.ajsf.tuner.test.data.DetectionDataFactory
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever

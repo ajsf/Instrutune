@@ -9,7 +9,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import co.ajsf.tuner.R
-import co.ajsf.tuner.tuner.SelectedStringInfo
+import co.ajsf.tuner.common.tuner.SelectedStringInfo
 import kotlinx.android.synthetic.main.tuner_view.view.*
 
 class TunerView

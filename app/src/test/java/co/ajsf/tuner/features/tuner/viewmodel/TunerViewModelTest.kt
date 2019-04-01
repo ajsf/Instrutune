@@ -1,14 +1,14 @@
 package co.ajsf.tuner.features.tuner.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import co.ajsf.tuner.data.InstrumentRepository
+import co.ajsf.tuner.common.data.InstrumentRepository
 import co.ajsf.tuner.features.tuner.TunerViewModel
-import co.ajsf.tuner.model.toInstrumentInfo
+import co.ajsf.tuner.common.model.toInstrumentInfo
 import co.ajsf.tuner.test.data.InstrumentDataFactory
 import co.ajsf.tuner.test.data.TestDataFactory
-import co.ajsf.tuner.tuner.SelectedNoteInfo
-import co.ajsf.tuner.tuner.SelectedStringInfo
-import co.ajsf.tuner.tuner.Tuner
+import co.ajsf.tuner.common.tuner.SelectedNoteInfo
+import co.ajsf.tuner.common.tuner.SelectedStringInfo
+import co.ajsf.tuner.common.tuner.Tuner
 import com.nhaarman.mockitokotlin2.reset
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever

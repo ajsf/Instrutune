@@ -2,6 +2,10 @@ package co.ajsf.tuner.tuner.frequencydetection.tarsos
 
 import be.tarsos.dsp.AudioDispatcher
 import be.tarsos.dsp.pitch.PitchProcessor
+import co.ajsf.tuner.common.tuner.frequencydetection.tarsos.CurrentlyListeningException
+import co.ajsf.tuner.common.tuner.frequencydetection.tarsos.NotListeningException
+import co.ajsf.tuner.common.tuner.frequencydetection.tarsos.TarsosDispatcherImpl
+import co.ajsf.tuner.common.tuner.frequencydetection.tarsos.TarsosListener
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.jupiter.api.Assertions
@@ -26,7 +30,9 @@ internal class TarsosDispatcherImplTest {
     @BeforeEach
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        tarsosDispatcherImpl = TarsosDispatcherImpl({ mockDispatcher }, { mockPitchProcessor })
+        tarsosDispatcherImpl =
+            TarsosDispatcherImpl({ mockDispatcher },
+                { mockPitchProcessor })
     }
 
     @Test

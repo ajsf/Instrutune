@@ -2,7 +2,7 @@ package co.ajsf.tuner
 
 import android.app.Application
 import androidx.annotation.VisibleForTesting
-import co.ajsf.tuner.di.appModule
+import co.ajsf.tuner.common.di.appModule
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 

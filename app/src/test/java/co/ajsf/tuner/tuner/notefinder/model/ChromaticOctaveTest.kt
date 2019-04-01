@@ -1,5 +1,7 @@
 package co.ajsf.tuner.tuner.notefinder.model
 
+import co.ajsf.tuner.common.tuner.notefinder.model.ChromaticOctave
+import co.ajsf.tuner.common.tuner.notefinder.model.MusicalNote
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

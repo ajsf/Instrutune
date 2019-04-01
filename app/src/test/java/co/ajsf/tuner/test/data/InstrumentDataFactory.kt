@@ -1,11 +1,11 @@
 package co.ajsf.tuner.test.data
 
-import co.ajsf.tuner.model.Instrument
-import co.ajsf.tuner.model.InstrumentCategory
-import co.ajsf.tuner.model.InstrumentNote
-import co.ajsf.tuner.tuner.SelectedNoteInfo
-import co.ajsf.tuner.tuner.SelectedStringInfo
-import co.ajsf.tuner.tuner.notefinder.model.MusicalNote
+import co.ajsf.tuner.common.model.Instrument
+import co.ajsf.tuner.common.model.InstrumentCategory
+import co.ajsf.tuner.common.model.InstrumentNote
+import co.ajsf.tuner.common.tuner.SelectedNoteInfo
+import co.ajsf.tuner.common.tuner.SelectedStringInfo
+import co.ajsf.tuner.common.tuner.notefinder.model.MusicalNote
 
 object InstrumentDataFactory {
 

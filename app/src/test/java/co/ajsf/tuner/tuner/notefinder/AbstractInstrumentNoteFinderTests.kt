@@ -1,7 +1,10 @@
 package co.ajsf.tuner.tuner.notefinder
 
-import co.ajsf.tuner.model.Instrument
-import co.ajsf.tuner.tuner.notefinder.model.MusicalNote
+import co.ajsf.tuner.common.model.Instrument
+import co.ajsf.tuner.common.tuner.notefinder.NO_NOTE
+import co.ajsf.tuner.common.tuner.notefinder.NoteData
+import co.ajsf.tuner.common.tuner.notefinder.NoteFinder
+import co.ajsf.tuner.common.tuner.notefinder.model.MusicalNote
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach

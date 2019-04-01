@@ -9,8 +9,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import co.ajsf.tuner.R
 import co.ajsf.tuner.features.tuner.di.tunerActivityModule
-import co.ajsf.tuner.features.common.view.InjectedActivity
-import co.ajsf.tuner.features.common.viewmodel.buildViewModel
+import co.ajsf.tuner.common.view.InjectedActivity
+import co.ajsf.tuner.common.viewmodel.buildViewModel
 import kotlinx.android.synthetic.main.activity_tuner.*
 import kotlinx.android.synthetic.main.tuner_view.*
 import org.kodein.di.Kodein
