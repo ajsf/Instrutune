@@ -31,35 +31,35 @@ class TunerStringView
         }
 
     fun updateSelectedString(selectedString: String, shakeString: Boolean = true) {
-        clearAnimations()
         if (selectedString == numberedName) {
-            stringIsSelected = true
-            selectString(shakeString)
+            if (!stringIsSelected) selectString()
+            if (shakeString) shakeString()
         } else if (stringIsSelected) {
-            stringIsSelected = false
+            clearAnimations()
             unselect()
         }
     }
 
-    private fun selectString(shakeString: Boolean = true) {
-        if (shakeString) {
-            val stringShakeAnimation = AnimationUtils.loadAnimation(context, R.anim.string_shake)
-            string_image.startAnimation(stringShakeAnimation)
-        }
-
+    private fun selectString() {
+        stringIsSelected = true
         currentAnimation = imageAlphaAnimation(0, 255).apply {
             duration = 200
             start()
         }
     }
 
+    private fun shakeString() {
+        val stringShakeAnimation = AnimationUtils.loadAnimation(context, R.anim.string_shake)
+        string_image.startAnimation(stringShakeAnimation)
+    }
+
     private fun unselect() {
+        stringIsSelected = false
         val shakeEndAnimation = AnimationUtils.loadAnimation(context, R.anim.string_shake_end)
         string_image.startAnimation(shakeEndAnimation)
 
         currentAnimation = imageAlphaAnimation(255, 0).apply {
-            duration = 1800
-            startDelay = 400
+            duration = 1000
             start()
         }
     }
