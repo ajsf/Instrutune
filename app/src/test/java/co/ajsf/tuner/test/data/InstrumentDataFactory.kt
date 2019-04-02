@@ -57,7 +57,6 @@ object InstrumentDataFactory {
         )
     }
 
-
     private fun <T> randomList(size: Int, creator: () -> T) = (0 until size).map {
         creator.invoke()
     }

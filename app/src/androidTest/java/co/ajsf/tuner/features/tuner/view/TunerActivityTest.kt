@@ -13,13 +13,14 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import co.ajsf.tuner.R
-import co.ajsf.tuner.features.tuner.TunerActivity
 import co.ajsf.tuner.common.data.InstrumentFactory
-import co.ajsf.tuner.rules.OverridesRule
-import co.ajsf.tuner.rules.RepeatRule
+import co.ajsf.tuner.common.model.InstrumentCategory
 import co.ajsf.tuner.common.tuner.frequencydetection.FrequencyDetector
 import co.ajsf.tuner.common.tuner.notefinder.model.MusicalNote
 import co.ajsf.tuner.common.tuner.notefinder.model.mapToMusicalNoteList
+import co.ajsf.tuner.features.tuner.TunerActivity
+import co.ajsf.tuner.rules.OverridesRule
+import co.ajsf.tuner.rules.RepeatRule
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.BackpressureStrategy
 import io.reactivex.subjects.PublishSubject
@@ -75,7 +76,7 @@ internal class TunerActivityTest {
     fun the_default_view_shows_standard_guitar_and_middleA_equals_440Hz() {
         onView(withText("440Hz")).check(matches(isDisplayed()))
         onView(withText("Guitar (Standard)")).check(matches(isDisplayed()))
-        val stringNames = InstrumentFactory.guitar().notes.map { it.numberedName }
+        val stringNames = getInstrument(InstrumentCategory.Guitar).notes.map { it.numberedName }
         stringNames.forEach {
             onView(withText(it)).check(matches(isDisplayed()))
         }
@@ -106,7 +107,7 @@ internal class TunerActivityTest {
         onView(withText("Bass (Standard)"))
             .check(matches(isDisplayed()))
 
-        val stringNames = InstrumentFactory.bass().notes.map { it.numberedName }
+        val stringNames = getInstrument(InstrumentCategory.Bass).notes.map { it.numberedName }
         stringNames.forEach {
             onView(withText(it)).check(matches(isDisplayed()))
         }
@@ -160,7 +161,7 @@ internal class TunerActivityTest {
         onView(withText("Bass (Standard)"))
             .check(matches(isDisplayed()))
 
-        val stringNames = InstrumentFactory.bass().notes.map { it.numberedName }
+        val stringNames = getInstrument(InstrumentCategory.Bass).notes.map { it.numberedName }
         stringNames.forEach {
             onView(withText(it)).check(matches(isDisplayed()))
         }
@@ -186,15 +187,14 @@ internal class TunerActivityTest {
 
     @Test
     fun it_displays_the_correct_frequency_and_note_number_for_each_guitar_string() {
-        InstrumentFactory.guitar()
-            .mapToMusicalNoteList().forEach {
-                freqSubject.onNext(it.floatFreq)
-                Thread.sleep(15)
-                onView(withId(R.id.recent_freq_text))
-                    .check(matches(withText(it.floatFreq.formatForView())))
-                onView(withId(R.id.note_name_text))
-                    .check(matches(withText(MusicalNote.nameFromNumberedName(it.numberedName))))
-            }
+        getInstrument(InstrumentCategory.Guitar).mapToMusicalNoteList().forEach {
+            freqSubject.onNext(it.floatFreq)
+            Thread.sleep(15)
+            onView(withId(R.id.recent_freq_text))
+                .check(matches(withText(it.floatFreq.formatForView())))
+            onView(withId(R.id.note_name_text))
+                .check(matches(withText(MusicalNote.nameFromNumberedName(it.numberedName))))
+        }
     }
 
     @Test
@@ -222,6 +222,15 @@ internal class TunerActivityTest {
             commit()
         }
     }
+
+    private fun getInstrument(category: InstrumentCategory) = InstrumentFactory
+        .buildInstrumentsFromEntities(getInstrumentEntity(category)).first()
+
+    private fun getInstrumentEntity(category: InstrumentCategory, name: String = "Standard") = listOf(
+        InstrumentFactory
+            .getDefaultEntities()
+            .find { it.category == category.toString() && it.tuningName == name }!!
+    )
 
     private fun randomFreq() = Math.random().toFloat() * 111
 

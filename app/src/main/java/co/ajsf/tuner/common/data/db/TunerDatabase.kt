@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import co.ajsf.tuner.common.data.InstrumentFactory
-import java.util.concurrent.Executors
+import io.reactivex.schedulers.Schedulers
 
 @Database(
     entities = [InstrumentEntity::class],
@@ -38,11 +38,13 @@ abstract class TunerDatabase : RoomDatabase() {
             })
             .build()
 
-        private fun createInitialInstruments(context: Context) = Executors
-            .newSingleThreadExecutor().execute {
-                getInstance(context)
-                    .instrumentDao()
-                    .insertAll(InstrumentFactory.getInstrumentEntities())
-            }
+        private fun createInitialInstruments(context: Context) {
+            val entities = InstrumentFactory.getDefaultEntities()
+            getInstance(context)
+                .instrumentDao()
+                .insertAll(entities)
+                .subscribeOn(Schedulers.io())
+                .subscribe()
+        }
     }
 }

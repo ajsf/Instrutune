@@ -1,14 +1,25 @@
 package co.ajsf.tuner.model
 
 import co.ajsf.tuner.common.data.InstrumentFactory
+import co.ajsf.tuner.common.model.InstrumentCategory
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+
 
 internal class InstrumentFactoryTest {
 
     @Test
-    fun `it creates a guitar with the correct note frequencies`() {
-        val guitar = InstrumentFactory.guitar()
+    fun `the standard guitar entity contains the correct note names`() {
+        val guitarEntity = getInstrumentEntity(InstrumentCategory.Guitar).first()
+        val expectedNotes = listOf("E2", "A2", "D3", "G3", "B3", "E4")
+        assertEquals(expectedNotes, guitarEntity.numberedNotes)
+    }
+
+    @Test
+    fun `the buildInstrumentFromEntityFunction returns the correct frequencies for guitar`() {
+        val entity = getInstrumentEntity(InstrumentCategory.Guitar)
+        val guitar = InstrumentFactory.buildInstrumentsFromEntities(entity).first()
+
         val freqs = guitar.notes.map { it.freq }
         val expectedFreqs = listOf(
             82407,
@@ -23,7 +34,9 @@ internal class InstrumentFactoryTest {
 
     @Test
     fun `when an offset of -8 is sent, it creates a guitar with frequencies tuned to A4 = 432`() {
-        val guitar = InstrumentFactory.guitar(-8)
+        val entity = getInstrumentEntity(InstrumentCategory.Guitar)
+        val guitar = InstrumentFactory.buildInstrumentsFromEntities(entity, -8).first()
+
         val freqs = guitar.notes.map { it.freq }
         val expectedFreqs = listOf(
             80909,
@@ -38,7 +51,9 @@ internal class InstrumentFactoryTest {
 
     @Test
     fun `when an offset of 6 is sent, it creates a guitar with frequencies tuned to A4 = 446`() {
-        val guitar = InstrumentFactory.guitar(6)
+        val entity = getInstrumentEntity(InstrumentCategory.Guitar)
+        val guitar = InstrumentFactory.buildInstrumentsFromEntities(entity, 6).first()
+
         val freqs = guitar.notes.map { it.freq }
         val expectedFreqs = listOf(
             83531,
@@ -52,18 +67,17 @@ internal class InstrumentFactoryTest {
     }
 
     @Test
-    fun `it creates a guitar with the correct note names`() {
-        val guitar = InstrumentFactory.guitar()
-        val names = guitar.notes.map { it.numberedName }
-        val expectedNames = listOf(
-            "E2", "A2", "D3", "G3", "B3", "E4"
-        )
-        assertEquals(expectedNames, names)
+    fun `the standard bass contains the correct notes`() {
+        val bassEntity = getInstrumentEntity(InstrumentCategory.Bass).first()
+        val expectedNotes = listOf("E1", "A1", "D2", "G2")
+        assertEquals(expectedNotes, bassEntity.numberedNotes)
     }
 
     @Test
-    fun `it creates a bass with the correct note frequencies`() {
-        val bass = InstrumentFactory.bass()
+    fun `the buildInstrumentFromEntityFunction returns the correct frequencies for bass`() {
+        val entity = getInstrumentEntity(InstrumentCategory.Bass)
+        val bass = InstrumentFactory.buildInstrumentsFromEntities(entity).first()
+
         val freqs = bass.notes.map { it.freq }
         val expectedFreqs = listOf(
             41203,
@@ -74,13 +88,9 @@ internal class InstrumentFactoryTest {
         assertEquals(expectedFreqs, freqs)
     }
 
-    @Test
-    fun `it creates a bass with the correct note names`() {
-        val bass = InstrumentFactory.bass()
-        val names = bass.notes.map { it.numberedName }
-        val expectedNames = listOf(
-            "E1", "A1", "D2", "G2"
-        )
-        assertEquals(expectedNames, names)
-    }
+    private fun getInstrumentEntity(category: InstrumentCategory, name: String = "Standard") = listOf(
+        InstrumentFactory
+            .getDefaultEntities()
+            .find { it.category == category.toString() && it.tuningName == name }!!
+    )
 }

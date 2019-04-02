@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import co.ajsf.tuner.common.data.InstrumentRepository
 import co.ajsf.tuner.common.data.InstrumentRepositoryImpl
-import co.ajsf.tuner.common.di.dbModule
 import co.ajsf.tuner.common.di.frequencyDetectionModule
 import co.ajsf.tuner.common.viewmodel.ViewModelFactory
 import co.ajsf.tuner.features.tuner.TunerViewModel
@@ -33,5 +32,4 @@ fun tunerActivityModule() = Kodein
         }
 
         import(frequencyDetectionModule())
-        import(dbModule())
     }
