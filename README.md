@@ -1,13 +1,17 @@
-# String Tuner
+# Instrutune
 
-An Android app written in Kotlin for tuning stringed instruments.  
+An Android app written in Kotlin for tuning instruments.
 The app currently supports multiple tunings for:
 * Guitar
 * Bass
+* Tres
+* Ukulele
+
+As well as tunings for:
 * Violin
 * Viola
 * Cello
-* Tres
+* Chromatic
 
 The tuner allows you to adjust the middle A frequency, allowing you to tune to A = 432 Hz and other tunings.
 
