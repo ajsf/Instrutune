@@ -17,9 +17,9 @@ The tuner allows you to adjust the middle A frequency, allowing you to tune to A
 
 ![Screenshot](./.github/screenshot1.png)&nbsp;&nbsp;&nbsp;&nbsp;![Screenshot](./.github/screenshot4.png)
 
-![Screenshot](./.github/screenshot2.png)&nbsp;&nbsp;&nbsp;&nbsp;![Screenshot](./.github/screenshot3.png)
+![Screenshot](./.github/screenshot3.png)
 
-![Screenshot](./.github/screenshot5.png)
+![Screenshot](./.github/screenshot2.png)
 
 ## Built With
 
