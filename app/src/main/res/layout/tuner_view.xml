@@ -56,14 +56,14 @@
         app:layout_constraintBaseline_toBaselineOf="@id/recent_freq_text"
         app:layout_constraintLeft_toRightOf="@id/recent_freq_text" />
 
-    <co.ajsf.tuner.features.tuner.view.TunerVuMeter
+    <tech.ajsf.instrutune.features.tuner.view.TunerVuMeter
         android:id="@+id/tuner_vu_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         app:layout_constraintTop_toBottomOf="@id/recent_freq_text" />
 
-    <co.ajsf.tuner.common.view.StringsView
+    <tech.ajsf.instrutune.common.view.StringsView
         android:id="@+id/strings_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<co.ajsf.tuner.features.tuner.view.TunerView xmlns:android="http://schemas.android.com/apk/res/android"
+<tech.ajsf.instrutune.features.tuner.view.TunerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tuner_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="co.ajsf.tuner.features.tuner.TunerActivity">
+    tools:context="tech.ajsf.instrutune.features.tuner.TunerActivity">
 
-</co.ajsf.tuner.features.tuner.view.TunerView>
+</tech.ajsf.instrutune.features.tuner.view.TunerView>
