@@ -13,4 +13,8 @@
         android:id="@+id/set_center_a"
         android:title="@string/set_center_freq"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/create_tuning"
+        android:title="@string/create_tuning"
+        app:showAsAction="never" />
 </menu>

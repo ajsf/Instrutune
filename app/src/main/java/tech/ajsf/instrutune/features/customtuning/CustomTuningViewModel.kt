@@ -3,6 +3,7 @@ package tech.ajsf.instrutune.features.customtuning
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import tech.ajsf.instrutune.common.data.InstrumentRepository
 import tech.ajsf.instrutune.common.tuner.notefinder.model.ChromaticOctave
 
 data class CustomTuningViewState(
@@ -10,7 +11,7 @@ data class CustomTuningViewState(
     val tuningName: String = ""
 )
 
-class CustomTuningViewModel : ViewModel() {
+class CustomTuningViewModel(private val instrumentRepository: InstrumentRepository) : ViewModel() {
 
     val viewStateLiveDate: LiveData<CustomTuningViewState>
         get() = _viewState
@@ -44,6 +45,12 @@ class CustomTuningViewModel : ViewModel() {
     }
 
     fun getNoteRange(): List<String> = ChromaticOctave.noteNames()
+
+    fun saveTuningAndGetName(): String {
+        val viewState = getViewState()
+        instrumentRepository.saveTuning(viewState.tuningName, viewState.notes)
+        return viewState.tuningName
+    }
 
     private fun updateNotes(newNotes: List<String>) {
         val viewState = getViewState()

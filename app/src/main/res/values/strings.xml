@@ -24,4 +24,5 @@
     <string name="btn_select_text">Select</string>
     <string name="btn_cancel_text">Cancel</string>
     <string name="btn_reset_text">Reset To Default</string>
+    <string name="create_tuning">Create Tuning</string>
 </resources>

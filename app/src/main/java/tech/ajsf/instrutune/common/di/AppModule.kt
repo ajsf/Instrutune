@@ -12,5 +12,5 @@ fun appModule(appContext: Context) = Kodein.Module("appModule") {
         appContext
             .getSharedPreferences(appContext.packageName, Context.MODE_PRIVATE)
     }
-    import(dbModule())
+    import(dataModule())
 }

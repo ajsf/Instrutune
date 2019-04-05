@@ -1,5 +1,7 @@
 package tech.ajsf.instrutune.features.tuner
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -7,13 +9,16 @@ import android.view.MenuItem
 import android.widget.NumberPicker
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
-import tech.ajsf.instrutune.R
-import tech.ajsf.instrutune.common.view.InjectedActivity
-import tech.ajsf.instrutune.common.viewmodel.buildViewModel
-import tech.ajsf.instrutune.features.tuner.di.tunerActivityModule
 import kotlinx.android.synthetic.main.activity_tuner.*
 import kotlinx.android.synthetic.main.tuner_view.*
 import org.kodein.di.Kodein
+import tech.ajsf.instrutune.R
+import tech.ajsf.instrutune.common.model.InstrumentCategory
+import tech.ajsf.instrutune.common.view.InjectedActivity
+import tech.ajsf.instrutune.common.viewmodel.buildViewModel
+import tech.ajsf.instrutune.features.customtuning.CUSTOM_TUNING_EXTRA
+import tech.ajsf.instrutune.features.customtuning.CustomTuningActivity
+import tech.ajsf.instrutune.features.tuner.di.tunerActivityModule
 
 class TunerActivity : InjectedActivity() {
 
@@ -76,7 +81,28 @@ class TunerActivity : InjectedActivity() {
             showSetMiddleADialog()
             true
         }
+        R.id.create_tuning -> {
+            createTuning()
+            true
+        }
         else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun createTuning() {
+        val intent = Intent(this, CustomTuningActivity::class.java)
+        startActivityForResult(intent, 1)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                val name = data?.getStringExtra(CUSTOM_TUNING_EXTRA)
+                name?.let {
+                    viewModel.saveSelectedCategory(InstrumentCategory.Custom.toString())
+                    viewModel.saveSelectedTuning(it)
+                }
+            }
+        }
     }
 
     private fun showSelectInstrumentDialog() {

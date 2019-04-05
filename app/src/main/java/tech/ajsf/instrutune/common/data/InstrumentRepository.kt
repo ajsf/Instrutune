@@ -2,10 +2,11 @@ package tech.ajsf.instrutune.common.data
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import io.reactivex.Scheduler
 import tech.ajsf.instrutune.common.data.db.InstrumentDao
+import tech.ajsf.instrutune.common.data.db.InstrumentEntity
 import tech.ajsf.instrutune.common.model.Instrument
 import tech.ajsf.instrutune.common.model.InstrumentCategory
-import io.reactivex.Scheduler
 
 private const val SELECTED_CATEGORY = "SELECTED_CATEGORY"
 private const val SELECTED_TUNING = "SELECTED_TUNING"
@@ -13,6 +14,7 @@ private const val OFFSET = "OFFSET"
 
 interface InstrumentRepository {
     fun getTunings(): List<Instrument>
+    fun saveTuning(tuningName: String, numberedNotes: List<String>)
     fun getInstrumentList(): List<String> = InstrumentCategory.values().map { it.toString() }
     fun saveSelectedTuning(tuningName: String)
     fun saveSelectedCategory(categoryName: String)
@@ -35,10 +37,16 @@ class InstrumentRepositoryImpl(
         return fetchAndMapInstruments().filter { it.category.toString() == category }
     }
 
+    override fun saveTuning(tuningName: String, numberedNotes: List<String>) {
+        instrumentDao
+            .insert(InstrumentEntity(tuningName, InstrumentCategory.Custom.toString(), numberedNotes))
+            .subscribeOn(scheduler)
+            .subscribe()
+    }
+
     private fun fetchAndMapInstruments(): List<Instrument> = instrumentDao
         .getAllInstruments()
         .map {
-            println("--------------Entity: $it------------")
             InstrumentFactory.buildInstrumentsFromEntities(it, tuningOffset)
         }
         .subscribeOn(scheduler)
@@ -55,9 +63,8 @@ class InstrumentRepositoryImpl(
     override fun getSelectedTuning(): Instrument {
         val category = getSelectedCategory()
         val tuningName = prefs.getString(SELECTED_TUNING, "Standard")
-        println("------------_Getting: $category, $tuningName")
         return getInstrument(category, tuningName)
-            ?: throw RuntimeException("Tuning Not Available. Category: $category, Name: $tuningName")
+            ?: fetchAndMapInstruments().first()
     }
 
     override fun getSelectedCategory(): String = prefs.getString(SELECTED_CATEGORY, "Guitar") ?: "Guitar"
@@ -70,6 +77,5 @@ class InstrumentRepositoryImpl(
     override fun getOffset() = tuningOffset
 
     private fun getInstrument(category: String, tuningName: String?): Instrument? = fetchAndMapInstruments()
-        .onEach { println(it) }
         .find { it.category.toString() == category && it.tuningName == tuningName }
 }

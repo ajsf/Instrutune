@@ -1,7 +1,11 @@
 package tech.ajsf.instrutune.features.customtuning
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.activity_custom_tuning.*
+import org.kodein.di.Kodein
 import tech.ajsf.instrutune.R
 import tech.ajsf.instrutune.common.view.InjectedActivity
 import tech.ajsf.instrutune.common.viewmodel.buildViewModel
@@ -9,8 +13,8 @@ import tech.ajsf.instrutune.features.customtuning.di.customTuningActivityModule
 import tech.ajsf.instrutune.features.customtuning.view.ConfirmDeleteDialog
 import tech.ajsf.instrutune.features.customtuning.view.SelectNoteDialog
 import tech.ajsf.instrutune.features.customtuning.view.TextUpdateWatcher
-import kotlinx.android.synthetic.main.activity_custom_tuning.*
-import org.kodein.di.Kodein
+
+const val CUSTOM_TUNING_EXTRA = "CUSTOM_TUNING_NAME"
 
 class CustomTuningActivity : InjectedActivity() {
 
@@ -33,6 +37,13 @@ class CustomTuningActivity : InjectedActivity() {
         val textWatcher = TextUpdateWatcher { viewModel.updateTitle(it) }
         tuning_name_edit_text.addTextChangedListener(textWatcher)
         add_string_fab.setOnClickListener { showSelectNoteDialog() }
+        btn_save.setOnClickListener {
+            val name = viewModel.saveTuningAndGetName()
+            val data = Intent()
+            data.putExtra(CUSTOM_TUNING_EXTRA, name)
+            setResult(Activity.RESULT_OK, data)
+            finish()
+        }
     }
 
     private fun initViewModel() {

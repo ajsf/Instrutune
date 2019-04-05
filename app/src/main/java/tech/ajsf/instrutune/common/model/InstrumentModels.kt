@@ -20,5 +20,5 @@ fun Instrument.toInstrumentInfo(middleA: Int = 440): SelectedInstrumentInfo {
 }
 
 enum class InstrumentCategory {
-    Guitar, Bass, Ukulele, Tres, Strings
+    Guitar, Bass, Ukulele, Tres, Strings, Custom
 }
