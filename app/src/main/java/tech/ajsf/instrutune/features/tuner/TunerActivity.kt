@@ -19,6 +19,7 @@ import tech.ajsf.instrutune.common.viewmodel.buildViewModel
 import tech.ajsf.instrutune.features.customtuning.CUSTOM_TUNING_EXTRA
 import tech.ajsf.instrutune.features.customtuning.CustomTuningActivity
 import tech.ajsf.instrutune.features.tuner.di.tunerActivityModule
+import tech.ajsf.instrutune.features.tuner.view.TunerOnboarding
 
 class TunerActivity : InjectedActivity() {
 
@@ -40,9 +41,10 @@ class TunerActivity : InjectedActivity() {
         }
     }
 
-    private fun setupUi() {
+    private fun setupUi(requestOnboarding: Boolean = false) {
         initViewModel()
         initButtons()
+        if (requestOnboarding) TunerOnboarding(this).requestOnboarding()
     }
 
     private fun initViewModel(): Unit = with(viewModel) {
@@ -59,7 +61,6 @@ class TunerActivity : InjectedActivity() {
 
     private fun initButtons() {
         instrument_name_text.setOnClickListener { showSelectInstrumentDialog() }
-        middlea_freq_label.setOnClickListener { showSetMiddleADialog() }
         middlea_freq_text.setOnClickListener { showSetMiddleADialog() }
     }
 
@@ -82,13 +83,13 @@ class TunerActivity : InjectedActivity() {
             true
         }
         R.id.create_tuning -> {
-            createTuning()
+            launchCustomTuning()
             true
         }
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun createTuning() {
+    private fun launchCustomTuning() {
         val intent = Intent(this, CustomTuningActivity::class.java)
         startActivityForResult(intent, 1)
     }
@@ -143,9 +144,11 @@ class TunerActivity : InjectedActivity() {
             wrapSelectorWheel = false
             displayedValues = (440 - maxVariance..440 + maxVariance)
                 .map { it.toString() }.toTypedArray()
+
             setOnValueChangedListener { numPicker, _, _ ->
                 newOffset = numPicker.value - maxVariance
             }
+
             value = newOffset + maxVariance
         }
 
@@ -164,7 +167,7 @@ class TunerActivity : InjectedActivity() {
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ): Unit = when {
         requestCode != recordAudioPermission.requestCode -> Unit
-        recordAudioPermission.isPermissionGranted() -> setupUi()
+        recordAudioPermission.isPermissionGranted() -> setupUi(true)
         recordAudioPermission.userCheckedNeverAskAgain() ->
             recordAudioPermission.showSettingsReasonAndRequest()
         else -> recordAudioPermission.requestPermission()

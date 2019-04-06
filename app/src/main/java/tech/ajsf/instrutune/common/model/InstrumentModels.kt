@@ -16,7 +16,7 @@ data class Instrument(
 fun Instrument.toInstrumentInfo(middleA: Int = 440): SelectedInstrumentInfo {
     val name = "$category ($tuningName)"
     val noteNames = notes.map { note -> note.numberedName }
-    return SelectedInstrumentInfo(name, noteNames, "${middleA}Hz")
+    return SelectedInstrumentInfo(name, noteNames, "A4=${middleA}Hz")
 }
 
 enum class InstrumentCategory {

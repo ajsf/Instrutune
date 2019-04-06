@@ -3,9 +3,9 @@
     <string name="tuner_view">Tuner View</string>
     <string name="vu_indicator">Vu Indicator</string>
     <string name="guitar">Guitar</string>
-    <string name="record_audio_permission_title">Notice</string>
-    <string name="record_audio_permission_message">Hi, we will request the Record Audio permission. This is required for
-        pitch detection. Please grant it.
+    <string name="record_audio_permission_title">Welcome to Instrutune!</string>
+    <string name="record_audio_permission_message">To get started, we need to request the Record Audio permission.
+        This is required for pitch detection, but we don\'t record or transmit audio in any way.
     </string>
     <string name="show_settings_title">Permissions Denied</string>
     <string name="show_settings_message">We noticed you have disabled the Record Audio permission.
@@ -25,4 +25,13 @@
     <string name="btn_cancel_text">Cancel</string>
     <string name="btn_reset_text">Reset To Default</string>
     <string name="create_tuning">Create Tuning</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="request_onboarding">Thanks for granting the permission. Would you like a brief intro?</string>
+    <string name="vu_showcase_text">This indicator lights up when you are close to an instrument note, and shows how sharp or flat you are in relation to that note.</string>
+    <string name="chromatic_showcase_text">This is the note you are closest to chromatically, and the indicators show how sharp or flat you are in relation to that note.</string>
+    <string name="instrument_showcase_text">You can tap here (or in the settings menu) to select an instrument.</string>
+    <string name="middleA_showcase_text">You can tap here (or in the settings menu) to change the middle A frequency.</string>
 </resources>
