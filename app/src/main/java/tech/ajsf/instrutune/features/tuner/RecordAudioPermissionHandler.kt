@@ -16,9 +16,9 @@ class RecordAudioPermissionHandler(private val activity: AppCompatActivity) {
     val requestCode = 202
 
     fun requestPermission() {
-        val resources = activity.resources
-        val requestRecordAudioPermissionTitle = resources.getString(R.string.record_audio_permission_title)
-        val requestRecordAudioPermissionMessage = resources.getString(R.string.record_audio_permission_message)
+        val requestRecordAudioPermissionTitle = getString(R.string.record_audio_permission_title)
+        val requestRecordAudioPermissionMessage =
+            getString(R.string.record_audio_permission_message)
 
         with(AlertDialog.Builder(activity)) {
             setTitle(requestRecordAudioPermissionTitle)
@@ -31,13 +31,13 @@ class RecordAudioPermissionHandler(private val activity: AppCompatActivity) {
                 )
             }
             setNegativeButton("Cancel") { _, _ -> activity.finishAndRemoveTask() }
+            setCancelable(false)
         }.show()
     }
 
     fun showSettingsReasonAndRequest() {
-        val resources = activity.resources
-        val showSettingsTitle = resources.getString(R.string.show_settings_title)
-        val showSettingsMessage = resources.getString(R.string.show_settings_message)
+        val showSettingsTitle = getString(R.string.show_settings_title)
+        val showSettingsMessage = getString(R.string.show_settings_message)
 
         with(AlertDialog.Builder(activity)) {
             setTitle(showSettingsTitle)
@@ -50,12 +50,18 @@ class RecordAudioPermissionHandler(private val activity: AppCompatActivity) {
                 activity.startActivity(intent)
             }
             setNegativeButton("Cancel") { _, _ -> activity.finish() }
+            setCancelable(false)
         }.show()
     }
 
     fun isPermissionGranted(): Boolean = ContextCompat
-        .checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
+        .checkSelfPermission(
+            activity,
+            Manifest.permission.RECORD_AUDIO
+        ) == PackageManager.PERMISSION_GRANTED
 
     fun userCheckedNeverAskAgain(): Boolean = !ActivityCompat
         .shouldShowRequestPermissionRationale(activity, Manifest.permission.RECORD_AUDIO)
+
+    private fun getString(id: Int) = activity.resources.getString(id)
 }

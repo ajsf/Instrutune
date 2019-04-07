@@ -1,5 +1,7 @@
 package tech.ajsf.instrutune.common.di
 
+import android.content.Context
+import android.content.SharedPreferences
 import io.reactivex.schedulers.Schedulers
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
@@ -19,5 +21,9 @@ fun dataModule() = Kodein.Module("dataModule") {
             instance(),
             Schedulers.io()
         )
+    }
+    bind<SharedPreferences>() with provider {
+        val context: Context = instance()
+        context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
     }
 }

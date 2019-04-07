@@ -23,6 +23,6 @@ class InstrutuneApp : Application(), KodeinAware {
     }
 
     override val kodein = Kodein.lazy {
-        import(appModule(this@InstrutuneApp))
+        import(appModule(applicationContext))
     }
 }

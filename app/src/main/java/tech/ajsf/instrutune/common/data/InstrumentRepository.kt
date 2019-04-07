@@ -13,7 +13,8 @@ private const val SELECTED_TUNING = "SELECTED_TUNING"
 private const val OFFSET = "OFFSET"
 
 interface InstrumentRepository {
-    fun getTunings(): List<Instrument>
+    fun getTuningsForSelectedCategory(): List<Instrument>
+    fun getAllTunings(): Map<InstrumentCategory, List<Instrument>>
     fun saveTuning(tuningName: String, numberedNotes: List<String>)
     fun getInstrumentList(): List<String> = InstrumentCategory.values().map { it.toString() }
     fun saveSelectedTuning(tuningName: String)
@@ -32,14 +33,25 @@ class InstrumentRepositoryImpl(
 
     private var tuningOffset: Int = prefs.getInt(OFFSET, 0)
 
-    override fun getTunings(): List<Instrument> {
+    override fun getTuningsForSelectedCategory(): List<Instrument> {
         val category = getSelectedCategory()
         return fetchAndMapInstruments().filter { it.category.toString() == category }
     }
 
+    override fun getAllTunings(): Map<InstrumentCategory, List<Instrument>> {
+        val instruments = fetchAndMapInstruments()
+        return instruments.groupBy { it.category }
+    }
+
     override fun saveTuning(tuningName: String, numberedNotes: List<String>) {
         instrumentDao
-            .insert(InstrumentEntity(tuningName, InstrumentCategory.Custom.toString(), numberedNotes))
+            .insert(
+                InstrumentEntity(
+                    tuningName,
+                    InstrumentCategory.Custom.toString(),
+                    numberedNotes
+                )
+            )
             .subscribeOn(scheduler)
             .subscribe()
     }
@@ -67,7 +79,8 @@ class InstrumentRepositoryImpl(
             ?: fetchAndMapInstruments().first()
     }
 
-    override fun getSelectedCategory(): String = prefs.getString(SELECTED_CATEGORY, "Guitar") ?: "Guitar"
+    override fun getSelectedCategory(): String =
+        prefs.getString(SELECTED_CATEGORY, "Guitar") ?: "Guitar"
 
     override fun saveOffset(offset: Int) {
         prefs.edit { putInt(OFFSET, offset) }
@@ -76,6 +89,7 @@ class InstrumentRepositoryImpl(
 
     override fun getOffset() = tuningOffset
 
-    private fun getInstrument(category: String, tuningName: String?): Instrument? = fetchAndMapInstruments()
-        .find { it.category.toString() == category && it.tuningName == tuningName }
+    private fun getInstrument(category: String, tuningName: String?): Instrument? =
+        fetchAndMapInstruments()
+            .find { it.category.toString() == category && it.tuningName == tuningName }
 }

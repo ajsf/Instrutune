@@ -58,7 +58,7 @@ class TunerViewModel(
     }
 
     fun getTunings(): List<Instrument> {
-        return instrumentRepository.getTunings()
+        return instrumentRepository.getTuningsForSelectedCategory()
     }
 
     fun saveSelectedCategory(categoryName: String) {
@@ -88,4 +88,8 @@ class TunerViewModel(
     }
 
     private fun getMiddleAFreq(): Int = 440 + getOffset()
+
+    private fun selectInstrument() {
+
+    }
 }

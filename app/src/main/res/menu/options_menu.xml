@@ -15,6 +15,6 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/create_tuning"
-        android:title="@string/create_tuning"
+        android:title="@string/custom_tunings"
         app:showAsAction="never" />
 </menu>

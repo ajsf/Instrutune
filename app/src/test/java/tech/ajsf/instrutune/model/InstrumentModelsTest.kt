@@ -1,11 +1,11 @@
 package tech.ajsf.instrutune.model
 
+import junit.framework.Assert.assertEquals
+import org.junit.jupiter.api.Test
 import tech.ajsf.instrutune.common.data.InstrumentFactory
 import tech.ajsf.instrutune.common.model.InstrumentCategory
 import tech.ajsf.instrutune.common.model.toInstrumentInfo
 import tech.ajsf.instrutune.features.tuner.SelectedInstrumentInfo
-import junit.framework.Assert.assertEquals
-import org.junit.jupiter.api.Test
 
 internal class InstrumentModelsTest {
 
@@ -19,7 +19,7 @@ internal class InstrumentModelsTest {
         val expectedInfo = SelectedInstrumentInfo(
             "Guitar (Standard)",
             instrument.notes.map { it.numberedName },
-            "440Hz"
+            "A4=440Hz"
         )
         assertEquals(expectedInfo, info)
     }

@@ -181,7 +181,7 @@ class TunerViewModelTest {
     fun `when getTunings is called, it calls getTunings on the repository`() {
         viewModel = buildViewModel()
         viewModel.getTunings()
-        verify(mockRepository).getTunings()
+        verify(mockRepository).getTuningsForSelectedCategory()
     }
 
     @Test

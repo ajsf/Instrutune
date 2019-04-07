@@ -13,10 +13,10 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.animation.doOnEnd
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
+import kotlinx.android.synthetic.main.tuner_string.view.*
 import tech.ajsf.instrutune.common.view.StringsView
 import tech.ajsf.instrutune.common.view.TunerStringView
 import tech.ajsf.instrutune.features.customtuning.moveItem
-import kotlinx.android.synthetic.main.tuner_string.view.*
 
 class CustomStringsView
 @JvmOverloads constructor(
@@ -27,22 +27,25 @@ class CustomStringsView
 
     var stringClickListener: (Int) -> Boolean = { true }
 
-    var noteClickListener: (Int) -> Unit = {}
+    var noteClickListener: (Int, String) -> Unit = { _, _ -> }
 
     private val scaleFactor = 1.05f
 
     override fun setStrings(numberedNames: List<String>) {
         if (numberedNames.size != stringViews.size) {
             super.setStrings(numberedNames)
-            stringViews.forEachIndexed { index, view -> setupStringView(index, view) }
+            stringViews.forEach { setupStringView(it) }
         } else {
-            stringViews.forEachIndexed { index, view -> view.numberedName = numberedNames[index] }
+            stringViews.forEachIndexed { index, view ->
+                view.numberedName = numberedNames[index]
+                view.noteNumber = index
+            }
         }
     }
 
-    private fun setupStringView(index: Int, view: TunerStringView) = with(view) {
-        string_name_outline.setOnLongClickListener { stringClickListener(index) }
-        string_name_outline.setOnClickListener { noteClickListener(index) }
+    private fun setupStringView(view: TunerStringView) = with(view) {
+        string_name_outline.setOnLongClickListener { stringClickListener(noteNumber) }
+        string_name_outline.setOnClickListener { noteClickListener(noteNumber, numberedName) }
         setOnTouchListener(StringDragListener())
     }
 
@@ -73,7 +76,6 @@ class CustomStringsView
             index = stringViews.indexOf(view)
             selectString(view)
         }
-
 
         private fun handleActionUp(eventX: Int, view: TunerStringView) {
             moveSelectedString(eventX, view.width / 2)
@@ -111,12 +113,13 @@ class CustomStringsView
             set.applyTo(this@CustomStringsView)
         }
 
-        private fun createMovementConstraints(viewId: Int, bias: Float): ConstraintSet = ConstraintSet().apply {
-            clone(this@CustomStringsView)
-            removeLeftAndRightConstraints(viewId)
-            connectToParentLeftAndRight(viewId)
-            setHorizontalBias(viewId, bias)
-        }
+        private fun createMovementConstraints(viewId: Int, bias: Float): ConstraintSet =
+            ConstraintSet().apply {
+                clone(this@CustomStringsView)
+                removeLeftAndRightConstraints(viewId)
+                connectToParentLeftAndRight(viewId)
+                setHorizontalBias(viewId, bias)
+            }
 
         private fun ConstraintSet.removeLeftAndRightConstraints(viewId: Int) {
             clear(viewId, ConstraintSet.LEFT)
@@ -168,7 +171,6 @@ class CustomStringsView
 
             if (stringViews.size > 1) {
                 if (index > 0 && x <= stringViews[0].x.toInt() + offset) {
-                    println(stringViews[0].x)
                     newIndex = 0
                 } else if (index != stringViews.lastIndex && x >= stringViews.last().x.toInt() + offset) {
                     newIndex = stringViews.lastIndex

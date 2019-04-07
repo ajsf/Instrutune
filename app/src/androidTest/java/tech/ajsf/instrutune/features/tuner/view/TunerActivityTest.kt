@@ -3,7 +3,6 @@ package tech.ajsf.instrutune.features.tuner.view
 import android.content.Context
 import android.content.SharedPreferences
 import android.widget.NumberPicker
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
@@ -12,15 +11,6 @@ import androidx.test.espresso.action.ViewActions.swipeDown
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
-import tech.ajsf.instrutune.R
-import tech.ajsf.instrutune.common.data.InstrumentFactory
-import tech.ajsf.instrutune.common.model.InstrumentCategory
-import tech.ajsf.instrutune.common.tuner.frequencydetection.FrequencyDetector
-import tech.ajsf.instrutune.common.tuner.notefinder.model.MusicalNote
-import tech.ajsf.instrutune.common.tuner.notefinder.model.mapToMusicalNoteList
-import tech.ajsf.instrutune.features.tuner.TunerActivity
-import tech.ajsf.instrutune.rules.OverridesRule
-import tech.ajsf.instrutune.rules.RepeatRule
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.BackpressureStrategy
 import io.reactivex.subjects.PublishSubject
@@ -33,6 +23,14 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.provider
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import tech.ajsf.instrutune.R
+import tech.ajsf.instrutune.common.data.InstrumentFactory
+import tech.ajsf.instrutune.common.model.InstrumentCategory
+import tech.ajsf.instrutune.common.tuner.frequencydetection.FrequencyDetector
+import tech.ajsf.instrutune.common.tuner.notefinder.model.MusicalNote
+import tech.ajsf.instrutune.common.tuner.notefinder.model.mapToMusicalNoteList
+import tech.ajsf.instrutune.features.tuner.TunerActivity
+import tech.ajsf.instrutune.rules.OverridesRule
 
 @RunWith(MockitoJUnitRunner::class)
 internal class TunerActivityTest {
@@ -42,12 +40,6 @@ internal class TunerActivityTest {
         bind<FrequencyDetector>(overrides = true) with provider { mockDetector }
         bind<SharedPreferences>(overrides = true) with provider { prefs }
     }
-
-    @get:Rule
-    val instantTaskRule = InstantTaskExecutorRule()
-
-    @get:Rule
-    val repeatRule: RepeatRule = RepeatRule()
 
     private lateinit var scenario: ActivityScenario<TunerActivity>
 
@@ -74,7 +66,7 @@ internal class TunerActivityTest {
 
     @Test
     fun the_default_view_shows_standard_guitar_and_middleA_equals_440Hz() {
-        onView(withText("440Hz")).check(matches(isDisplayed()))
+        onView(withText("A4=440Hz")).check(matches(isDisplayed()))
         onView(withText("Guitar (Standard)")).check(matches(isDisplayed()))
         val stringNames = getInstrument(InstrumentCategory.Guitar).notes.map { it.numberedName }
         stringNames.forEach {
@@ -133,7 +125,7 @@ internal class TunerActivityTest {
         onView(withText(R.string.btn_select_text))
             .perform(click())
 
-        onView(withText(Matchers.startsWith("43")))
+        onView(withText(Matchers.startsWith("A4=43")))
             .check(matches(isDisplayed()))
     }
 
@@ -181,7 +173,7 @@ internal class TunerActivityTest {
 
         scenario.recreate()
 
-        onView(withText(Matchers.startsWith("43")))
+        onView(withText(Matchers.startsWith("A4=43")))
             .check(matches(isDisplayed()))
     }
 
@@ -226,11 +218,12 @@ internal class TunerActivityTest {
     private fun getInstrument(category: InstrumentCategory) = InstrumentFactory
         .buildInstrumentsFromEntities(getInstrumentEntity(category)).first()
 
-    private fun getInstrumentEntity(category: InstrumentCategory, name: String = "Standard") = listOf(
-        InstrumentFactory
-            .getDefaultEntities()
-            .find { it.category == category.toString() && it.tuningName == name }!!
-    )
+    private fun getInstrumentEntity(category: InstrumentCategory, name: String = "Standard") =
+        listOf(
+            InstrumentFactory
+                .getDefaultEntities()
+                .find { it.category == category.toString() && it.tuningName == name }!!
+        )
 
     private fun randomFreq() = Math.random().toFloat() * 111
 

@@ -84,6 +84,7 @@ open class StringsView
             .apply {
                 id = View.generateViewId()
                 numberedName = stringName
+                noteNumber = index
                 transitionName = "$stringName$index"
             }
             .also { addView(it) }

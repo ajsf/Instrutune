@@ -30,6 +30,8 @@ class TunerStringView
             field = numberedName
         }
 
+    var noteNumber = 0
+
     fun updateSelectedString(selectedString: String, shakeString: Boolean = true) {
         if (selectedString == numberedName) {
             if (!stringIsSelected) selectString()

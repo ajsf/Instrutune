@@ -24,14 +24,26 @@
     <string name="btn_select_text">Select</string>
     <string name="btn_cancel_text">Cancel</string>
     <string name="btn_reset_text">Reset To Default</string>
-    <string name="create_tuning">Create Tuning</string>
+    <string name="custom_tunings">Custom Tunings</string>
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
-    <string name="request_onboarding">Thanks for granting the permission. Would you like a brief intro?</string>
+    <string name="tuner_onboarding_request">Thanks for granting the permission. Would you like a brief intro?</string>
     <string name="vu_showcase_text">This indicator lights up when you are close to an instrument note, and shows how sharp or flat you are in relation to that note.</string>
     <string name="chromatic_showcase_text">This is the note you are closest to chromatically, and the indicators show how sharp or flat you are in relation to that note.</string>
     <string name="instrument_showcase_text">You can tap here (or in the settings menu) to select an instrument.</string>
-    <string name="middleA_showcase_text">You can tap here (or in the settings menu) to change the middle A frequency.</string>
+    <string name="middleA_showcase_text">You can tap here (or in the settings menu) to change the middle A frequency. That\'s all for now, we hope you enjoy Instrutune!</string>
+
+    <string name="custom_onboarding_request">We don\'t see any custom tunings saved.
+        Would you like us to walk you through creating your first one?</string>
+
+    <string name="starter_showcase_one">You can start with a blank tuning, use an instrument as a starting point, or edit previously created custom tunings. Let\'s start off with a blank instrument.</string>
+    <string name="fab_showcase_text">You can tap here to add a note. Give it a try.</string>
+    <string name="fab_showcase_two_text">Let\'s add one more note. Don\'t worry about the actual note for now.</string>
+    <string name="note_showcase_text">If you need to change the note, you can tap here.
+    You can also delete the note by holding down. Try changing it&#8230;</string>
+    <string name="drag_showcase_text">If you need to reorder notes, you can hold down on a string and drag it. Give it a try&#8230;</string>
+    <string name="name_showcase_text">You can give your tuning a name here. Once your tuning has at least one note, a name with at least one character, the save button at the bottom will activate, and you can save it. That\'s it for this walkthrough, have fun!</string>
+
 </resources>

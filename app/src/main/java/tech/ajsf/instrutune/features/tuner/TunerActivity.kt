@@ -15,6 +15,7 @@ import org.kodein.di.Kodein
 import tech.ajsf.instrutune.R
 import tech.ajsf.instrutune.common.model.InstrumentCategory
 import tech.ajsf.instrutune.common.view.InjectedActivity
+import tech.ajsf.instrutune.common.view.InstrumentDialogHelper
 import tech.ajsf.instrutune.common.viewmodel.buildViewModel
 import tech.ajsf.instrutune.features.customtuning.CUSTOM_TUNING_EXTRA
 import tech.ajsf.instrutune.features.customtuning.CustomTuningActivity
@@ -30,6 +31,8 @@ class TunerActivity : InjectedActivity() {
     private val viewModel: TunerViewModel by buildViewModel()
 
     private val recordAudioPermission = RecordAudioPermissionHandler(this)
+
+    private val dialogHelper = InstrumentDialogHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,11 +51,13 @@ class TunerActivity : InjectedActivity() {
     }
 
     private fun initViewModel(): Unit = with(viewModel) {
-        selectedInstrumentInfo.observe(this@TunerActivity, Observer { (name, numberedNames, middleA) ->
-            instrument_name_text.text = name
-            middlea_freq_text.text = middleA
-            tuner_view.selectInstrument(numberedNames, selectedStringInfo, this@TunerActivity)
-        })
+        selectedInstrumentInfo.observe(
+            this@TunerActivity,
+            Observer { (name, numberedNames, middleA) ->
+                instrument_name_text.text = name
+                middlea_freq_text.text = middleA
+                tuner_view.selectInstrument(numberedNames, selectedStringInfo, this@TunerActivity)
+            })
 
         tuner_view.setFreqLiveData(mostRecentFrequency, this@TunerActivity)
         tuner_view.setNoteNameLiveData(mostRecentNoteName, this@TunerActivity)
@@ -60,7 +65,7 @@ class TunerActivity : InjectedActivity() {
     }
 
     private fun initButtons() {
-        instrument_name_text.setOnClickListener { showSelectInstrumentDialog() }
+        instrument_name_text.setOnClickListener { showSelectInstrumentDialog(true) }
         middlea_freq_text.setOnClickListener { showSetMiddleADialog() }
     }
 
@@ -106,29 +111,17 @@ class TunerActivity : InjectedActivity() {
         }
     }
 
-    private fun showSelectInstrumentDialog() {
-        val title = getString(R.string.select_instrument_title)
-        val instrumentNames = viewModel.getInstruments().toTypedArray()
-
-        showSelectorDialog(title, instrumentNames) {
-            viewModel.saveSelectedCategory(instrumentNames[it])
-            showSelectTuningDialog()
+    private fun showSelectInstrumentDialog(showTuning: Boolean = false) {
+        val instruments = viewModel.getInstruments()
+        dialogHelper.showSelectInstrumentDialog(instruments) {
+            viewModel.saveSelectedCategory(it)
+            if (showTuning) showSelectTuningDialog()
         }
     }
 
     private fun showSelectTuningDialog() {
-        val title = getString(R.string.select_tuning_title)
-        val tunings = viewModel.getTunings().map { it.tuningName }.toTypedArray()
-
-        showSelectorDialog(title, tunings) { viewModel.saveSelectedTuning(tunings[it]) }
-    }
-
-    private fun showSelectorDialog(title: String, items: Array<String>, onClick: (Int) -> Unit) {
-        with(AlertDialog.Builder(this)) {
-            setTitle(title)
-            setItems(items) { _, i -> onClick(i) }
-            create()
-        }.show()
+        val tunings = viewModel.getTunings().map { it.tuningName }
+        dialogHelper.showSelectTuningDialog(tunings) { viewModel.saveSelectedTuning(it) }
     }
 
     private fun showSetMiddleADialog() {
@@ -155,7 +148,11 @@ class TunerActivity : InjectedActivity() {
         with(AlertDialog.Builder(this)) {
             setView(picker)
             setTitle(getString(R.string.select_center_freq))
-            setPositiveButton(getString(R.string.btn_select_text)) { _, _ -> viewModel.saveOffset(newOffset) }
+            setPositiveButton(getString(R.string.btn_select_text)) { _, _ ->
+                viewModel.saveOffset(
+                    newOffset
+                )
+            }
             setNegativeButton(getString(R.string.btn_cancel_text)) { _, _ -> }
             setNeutralButton(getString(R.string.btn_reset_text)) { _, _ -> viewModel.saveOffset(0) }
             setCancelable(true)
