@@ -42,8 +42,9 @@ class CustomTuningActivity : InjectedActivity() {
 
     private fun initUi() {
         initViewModel()
-        initStringsView()
+        onboardCheck()
         initStarter()
+        initStringsView()
         val textWatcher = TextUpdateWatcher { viewModel.updateTitle(it) }
         tuning_name_edit_text.addTextChangedListener(textWatcher)
         add_string_fab.setOnClickListener { showSelectNoteDialog() }
@@ -52,23 +53,21 @@ class CustomTuningActivity : InjectedActivity() {
 
     private fun initViewModel() {
         viewModel.viewStateLiveData.observe(this, Observer { viewState ->
-            viewState.originalName?.let { tuning_name_edit_text.setText(it) }
             strings_view.setStrings(viewState.notes)
             btn_save?.isEnabled = viewState.tuningName.isNotBlank() && viewState.notes.isNotEmpty()
             onboarding?.advance()
         })
 
         viewModel.buildingLiveData.observe(this, Observer {
-            if (it) {
+            if (it.building) {
                 tuning_builder.visibility = View.VISIBLE
                 tuning_starter.visibility = View.GONE
+                tuning_name_edit_text.setText(it.tuningName)
             } else {
                 tuning_builder.visibility = View.GONE
                 tuning_starter.visibility = View.VISIBLE
             }
         })
-
-        onboardCheck()
     }
 
     private fun onboardCheck() {
@@ -80,6 +79,12 @@ class CustomTuningActivity : InjectedActivity() {
         btn_blank.setOnClickListener { viewModel.startBuilder() }
         btn_template.setOnClickListener { selectInstrument() }
         btn_edit.setOnClickListener { selectCustomTuning() }
+    }
+
+    private fun initStringsView() = with(strings_view) {
+        stringClickListener = { showConfirmDeleteDialog(it) }
+        noteClickListener = { index, name -> showSelectNoteDialog(index, name) }
+        moveStringCallback = { oldIndex, newIndex -> viewModel.moveNote(oldIndex, newIndex) }
     }
 
     private fun selectInstrument() {
@@ -99,12 +104,6 @@ class CustomTuningActivity : InjectedActivity() {
         } else {
             viewModel.startBuilder()
         }
-    }
-
-    private fun initStringsView() = with(strings_view) {
-        stringClickListener = { showConfirmDeleteDialog(it) }
-        noteClickListener = { index, name -> showSelectNoteDialog(index, name) }
-        moveStringCallback = { oldIndex, newIndex -> viewModel.moveNote(oldIndex, newIndex) }
     }
 
     private fun saveAndFinish() {

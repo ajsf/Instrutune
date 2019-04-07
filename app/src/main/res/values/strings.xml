@@ -38,12 +38,12 @@
     <string name="custom_onboarding_request">We don\'t see any custom tunings saved.
         Would you like us to walk you through creating your first one?</string>
 
-    <string name="starter_showcase_one">You can start with a blank tuning, use an instrument as a starting point, or edit previously created custom tunings. Let\'s start off with a blank instrument.</string>
+    <string name="starter_showcase_one">You can start with a blank tuning, use an instrument as a starting point, or edit a previously created custom tuning. Let\'s start off with a blank instrument.</string>
     <string name="fab_showcase_text">You can tap here to add a note. Give it a try.</string>
     <string name="fab_showcase_two_text">Let\'s add one more note. Don\'t worry about the actual note for now.</string>
-    <string name="note_showcase_text">If you need to change the note, you can tap here.
-    You can also delete the note by holding down. Try changing it&#8230;</string>
+    <string name="note_showcase_text">If you need to change a note, you can tap on the note name.
+    You can also delete the note by holding down on the name. Try changing it&#8230;</string>
     <string name="drag_showcase_text">If you need to reorder notes, you can hold down on a string and drag it. Give it a try&#8230;</string>
-    <string name="name_showcase_text">You can give your tuning a name here. Once your tuning has at least one note, a name with at least one character, the save button at the bottom will activate, and you can save it. That\'s it for this walkthrough, have fun!</string>
-
+    <string name="name_showcase_text">You can give your tuning a name here. Once your tuning has at least one note and a name with at least one character, the save button at the bottom will activate. That\'s it for this walkthrough, have fun!</string>
+    \
 </resources>

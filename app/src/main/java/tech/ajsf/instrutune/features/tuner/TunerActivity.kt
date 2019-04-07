@@ -22,6 +22,8 @@ import tech.ajsf.instrutune.features.customtuning.CustomTuningActivity
 import tech.ajsf.instrutune.features.tuner.di.tunerActivityModule
 import tech.ajsf.instrutune.features.tuner.view.TunerOnboarding
 
+private const val CUSTOM_TUNING_REQUEST_CODE = 101
+
 class TunerActivity : InjectedActivity() {
 
     override fun activityModule() = Kodein.Module("tuner") {
@@ -96,17 +98,15 @@ class TunerActivity : InjectedActivity() {
 
     private fun launchCustomTuning() {
         val intent = Intent(this, CustomTuningActivity::class.java)
-        startActivityForResult(intent, 1)
+        startActivityForResult(intent, CUSTOM_TUNING_REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
-                val name = data?.getStringExtra(CUSTOM_TUNING_EXTRA)
-                name?.let {
-                    viewModel.saveSelectedCategory(InstrumentCategory.Custom.toString())
-                    viewModel.saveSelectedTuning(it)
-                }
+        if (requestCode == CUSTOM_TUNING_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val name = data?.getStringExtra(CUSTOM_TUNING_EXTRA)
+            name?.let {
+                viewModel.saveSelectedCategory(InstrumentCategory.Custom.toString())
+                viewModel.saveSelectedTuning(it)
             }
         }
     }

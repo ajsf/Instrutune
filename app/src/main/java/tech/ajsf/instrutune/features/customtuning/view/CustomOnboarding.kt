@@ -1,5 +1,6 @@
 package tech.ajsf.instrutune.features.customtuning.view
 
+import android.view.MotionEvent
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.get
 import com.elconfidencial.bubbleshowcase.BubbleShowCase
@@ -32,7 +33,7 @@ class CustomOnboarding(private val activity: CustomTuningActivity) : Onboarding(
 
     private fun showOnboarding() = with(activity) {
         onboarding = (this@CustomOnboarding)
-        val starterShowcase = nextArrowBuilder()
+        val starterShowcase = noCloseBuilder()
             .title(getString(R.string.starter_showcase_one))
             .arrowPosition(BubbleShowCase.ArrowPosition.BOTTOM)
             .targetView(button_wrapper)
@@ -44,11 +45,6 @@ class CustomOnboarding(private val activity: CustomTuningActivity) : Onboarding(
                     btn_blank.performClick()
                 }
             })
-
-        /*   val starterShowcaseTwo = noCloseBuilder()
-               .title(getString(R.string.starter_showcase_two))
-               .targetView(btn_blank)
-               */
 
         val fabShowcase = noCloseBuilder()
             .title(getString(R.string.fab_showcase_text))
@@ -64,7 +60,6 @@ class CustomOnboarding(private val activity: CustomTuningActivity) : Onboarding(
 
         BubbleShowCaseSequence()
             .addShowCase(starterShowcase)
-            //.addShowCase(starterShowcaseTwo)
             .addShowCase(fabShowcase)
             .show()
     }
@@ -106,16 +101,20 @@ class CustomOnboarding(private val activity: CustomTuningActivity) : Onboarding(
         this@CustomOnboarding.onboardingState = StepFour
         val stringView = strings_view[1] as TunerStringView
 
-        nextArrowBuilder()
+        noCloseBuilder()
             .title(getString(R.string.drag_showcase_text))
             .targetView(stringView)
             .arrowPosition(BubbleShowCase.ArrowPosition.RIGHT)
+            .dismissOnTargetDown(true)
             .listener(object : BubbleShowCaseListener {
                 override fun onBackgroundDimClick(bubbleShowCase: BubbleShowCase) {}
                 override fun onBubbleClick(bubbleShowCase: BubbleShowCase) {}
                 override fun onCloseActionImageClick(bubbleShowCase: BubbleShowCase) {}
-                override fun onTargetClick(bubbleShowCase: BubbleShowCase) {
+                override fun onTargetClick(bubbleShowCase: BubbleShowCase) {}
+                override fun onTouch(bubbleShowCase: BubbleShowCase, event: MotionEvent) {
+                    stringView.dispatchTouchEvent(event)
                 }
+
             })
             .show()
     }
@@ -128,14 +127,6 @@ class CustomOnboarding(private val activity: CustomTuningActivity) : Onboarding(
             .show()
     }
 
-    /*  private fun saveShowcase(): Unit = with(activity) {
-          onboarding = null
-          builder()
-              .title(getString(R.string.save_showcase_text))
-              .targetView(btn_save)
-              .show()
-      }
-  */
     fun advance(): Unit = when (onboardingState) {
         StepOne -> advanceOnboardingOne()
         StepTwo -> noteShowcase()

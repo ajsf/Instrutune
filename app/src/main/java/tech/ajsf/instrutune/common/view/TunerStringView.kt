@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import androidx.core.animation.doOnEnd
-import tech.ajsf.instrutune.R
 import kotlinx.android.synthetic.main.tuner_string.view.*
+import tech.ajsf.instrutune.R
 
 class TunerStringView
 @JvmOverloads constructor(
@@ -38,7 +38,7 @@ class TunerStringView
             if (shakeString) shakeString()
         } else if (stringIsSelected) {
             clearAnimations()
-            unselect()
+            unselect(shakeString)
         }
     }
 
@@ -55,11 +55,12 @@ class TunerStringView
         string_image.startAnimation(stringShakeAnimation)
     }
 
-    private fun unselect() {
+    private fun unselect(shakeString: Boolean) {
         stringIsSelected = false
-        val shakeEndAnimation = AnimationUtils.loadAnimation(context, R.anim.string_shake_end)
-        string_image.startAnimation(shakeEndAnimation)
-
+        if (shakeString) {
+            val shakeEndAnimation = AnimationUtils.loadAnimation(context, R.anim.string_shake_end)
+            string_image.startAnimation(shakeEndAnimation)
+        }
         currentAnimation = imageAlphaAnimation(255, 0).apply {
             duration = 1000
             start()
