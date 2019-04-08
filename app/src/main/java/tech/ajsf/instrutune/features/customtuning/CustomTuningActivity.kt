@@ -42,20 +42,24 @@ class CustomTuningActivity : InjectedActivity() {
 
     private fun initUi() {
         initViewModel()
-        onboardCheck()
         initStarter()
         initStringsView()
         val textWatcher = TextUpdateWatcher { viewModel.updateTitle(it) }
         tuning_name_edit_text.addTextChangedListener(textWatcher)
         add_string_fab.setOnClickListener { showSelectNoteDialog() }
         btn_save.setOnClickListener { saveAndFinish() }
+        btn_delete.setOnClickListener { showConfirmDeleteTuningDialog() }
     }
 
     private fun initViewModel() {
         viewModel.viewStateLiveData.observe(this, Observer { viewState ->
             strings_view.setStrings(viewState.notes)
-            btn_save?.isEnabled = viewState.tuningName.isNotBlank() && viewState.notes.isNotEmpty()
-            onboarding?.advance()
+            btn_delete.isEnabled = viewState.id != null
+            btn_save.isEnabled = viewState.tuningName.isNotBlank() && viewState.notes.isNotEmpty()
+            if (viewState.notes.isNotEmpty()) {
+                onboarding?.advance()
+            }
+            if (viewState.checkOnboarding) onboardCheck()
         })
 
         viewModel.buildingLiveData.observe(this, Observer {
@@ -68,9 +72,12 @@ class CustomTuningActivity : InjectedActivity() {
                 tuning_starter.visibility = View.VISIBLE
             }
         })
+
+        if (viewModel.enableEdit().not()) btn_edit.isEnabled = false
     }
 
     private fun onboardCheck() {
+        viewModel.onboardingChecked()
         val customTunings = viewModel.getTuningsForCategory(InstrumentCategory.Custom.toString())
         if (customTunings.isEmpty()) CustomOnboarding(this).requestOnboarding()
     }
@@ -78,28 +85,27 @@ class CustomTuningActivity : InjectedActivity() {
     private fun initStarter() {
         btn_blank.setOnClickListener { viewModel.startBuilder() }
         btn_template.setOnClickListener { selectInstrument() }
-        btn_edit.setOnClickListener { selectCustomTuning() }
+        btn_edit.setOnClickListener { selectTuning() }
     }
 
     private fun initStringsView() = with(strings_view) {
-        stringClickListener = { showConfirmDeleteDialog(it) }
+        stringClickListener = { showConfirmDeleteNoteDialog(it) }
         noteClickListener = { index, name -> showSelectNoteDialog(index, name) }
         moveStringCallback = { oldIndex, newIndex -> viewModel.moveNote(oldIndex, newIndex) }
     }
 
     private fun selectInstrument() {
         dialogHelper.showSelectInstrumentDialog(viewModel.getCategories()) { category ->
-            dialogHelper.showSelectTuningDialog(viewModel.getTuningsForCategory(category)) { tuning ->
-                viewModel.startBuilder(tuning, category)
-            }
+            selectTuning(category)
         }
     }
 
-    private fun selectCustomTuning() {
-        val tunings = viewModel.getTuningsForCategory(InstrumentCategory.Custom.toString())
+    private fun selectTuning(category: String = InstrumentCategory.Custom.toString()) {
+        val tunings = viewModel.getTuningsForCategory(category)
         if (tunings.isNotEmpty()) {
-            dialogHelper.showSelectTuningDialog(tunings) { tuning ->
-                viewModel.startBuilder(tuning, InstrumentCategory.Custom.toString())
+            dialogHelper.showSelectTuningDialog(tunings.map { it.tuningName }) {
+                val tuningId = tunings[it].id
+                if (tuningId != null) viewModel.startBuilder(tuningId)
             }
         } else {
             viewModel.startBuilder()
@@ -107,17 +113,29 @@ class CustomTuningActivity : InjectedActivity() {
     }
 
     private fun saveAndFinish() {
-        val name = viewModel.saveTuningAndGetName()
+        val id = viewModel.saveTuningAndGetId()
         val data = Intent()
-        data.putExtra(CUSTOM_TUNING_EXTRA, name)
+        data.putExtra(CUSTOM_TUNING_EXTRA, id)
         setResult(Activity.RESULT_OK, data)
         finish()
     }
 
-    private fun showConfirmDeleteDialog(noteIndex: Int): Boolean {
-        ConfirmDeleteDialog(this) { viewModel.removeNote(noteIndex) }.show()
-        return true
+    private fun deleteAndFinish() {
+        viewModel.deleteTuning()
+        val data = Intent()
+        data.putExtra(CUSTOM_TUNING_EXTRA, -1)
+        setResult(Activity.RESULT_OK, data)
+        finish()
     }
+
+    private fun showConfirmDeleteTuningDialog() {
+        ConfirmDeleteDialog(this) { deleteAndFinish() }.show("Do you want to delete this tuning?")
+    }
+
+    private fun showConfirmDeleteNoteDialog(noteIndex: Int): Boolean =
+        ConfirmDeleteDialog(this) { viewModel.removeNote(noteIndex) }
+            .show("Do you want to delete this string?")
+            .run { true }
 
     private fun showSelectNoteDialog(noteIndex: Int = -1, numberedName: String = "C4") {
         val notePicker =

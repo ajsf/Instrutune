@@ -10,7 +10,8 @@ import tech.ajsf.instrutune.common.tuner.notefinder.model.ChromaticOctave
 data class CustomTuningViewState(
     val notes: List<String> = listOf(),
     val tuningName: String = "",
-    val id: String = ""
+    val id: Int? = null,
+    val checkOnboarding: Boolean = true
 )
 
 data class BuilderAction(
@@ -61,36 +62,37 @@ class CustomTuningViewModel(private val instrumentRepository: InstrumentReposito
 
     fun getNoteRange(): List<String> = ChromaticOctave.noteNames()
 
-    fun saveTuningAndGetName(): String {
-        val viewState = getViewState()
-        instrumentRepository.saveTuning(viewState.tuningName, viewState.notes)
-        return viewState.tuningName
+    fun enableEdit(): Boolean =
+        instrumentRepository.getInstrumentList().contains(InstrumentCategory.Custom.toString())
+
+    fun saveTuningAndGetId(): Int {
+        val (notes, tuningName, id) = getViewState()
+        return instrumentRepository.saveTuning(tuningName, notes, id)
     }
+
+    fun deleteTuning() = getViewState().id?.let { instrumentRepository.deleteTuning(it) }
 
     fun getCategories(): List<String> = instrumentRepository.getInstrumentList()
         .filter { it != InstrumentCategory.Custom.toString() }
 
     fun getTuningsForCategory(category: String) =
-        tunings[InstrumentCategory.valueOf(category)]?.map { it.tuningName } ?: listOf()
+        tunings[InstrumentCategory.valueOf(category)] ?: listOf()
 
     fun startBuilder(name: String = "") {
         _building.postValue(BuilderAction(true, name))
     }
 
-    fun startBuilder(name: String, category: String) {
-        tunings[InstrumentCategory.valueOf(category)]
-            ?.find { it.tuningName == name }
-            ?.let { instrument ->
-                val notes = instrument.notes.map { it.numberedName }
-                val newViewState = getViewState().copy(
-
-                )
-                _viewState.postValue(newViewState)
-            }
-        val tuningName =
-            if (category == InstrumentCategory.Custom.toString()) name else "$category - $name"
-        startBuilder(tuningName)
+    fun startBuilder(id: Int) = with(instrumentRepository.getTuningById(id)) {
+        val notes = notes.map { it.numberedName }
+        val tuningId = if (category == InstrumentCategory.Custom) id else null
+        val newViewState = getViewState().copy(notes = notes, id = tuningId)
+        _viewState.postValue(newViewState)
+        val name =
+            if (category == InstrumentCategory.Custom) tuningName else "$category - $tuningName"
+        startBuilder(name)
     }
+
+    fun onboardingChecked() = _viewState.postValue(getViewState().copy(checkOnboarding = false))
 
     private fun updateNotes(newNotes: List<String>) {
         val viewState = getViewState()

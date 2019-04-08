@@ -1,10 +1,9 @@
 package tech.ajsf.instrutune.common.data
 
 import tech.ajsf.instrutune.common.data.db.InstrumentEntity
+import tech.ajsf.instrutune.common.data.db.buildInstrument
 import tech.ajsf.instrutune.common.model.Instrument
 import tech.ajsf.instrutune.common.model.InstrumentCategory
-import tech.ajsf.instrutune.common.model.InstrumentNote
-import tech.ajsf.instrutune.common.tuner.notefinder.model.ChromaticOctave
 
 private data class InstrumentFactoryModel(
     val tuningName: String,
@@ -57,17 +56,9 @@ object InstrumentFactory {
         InstrumentEntity(it.tuningName, category.toString(), it.numberedNotes)
     }
 
-    fun buildInstrumentsFromEntities(entities: List<InstrumentEntity>, offset: Int = 0): List<Instrument> =
+    fun buildInstrumentsFromEntities(
+        entities: List<InstrumentEntity>,
+        offset: Int = 0
+    ): List<Instrument> =
         entities.map { it.buildInstrument(offset) }
-
-    private fun InstrumentEntity.buildInstrument(offset: Int): Instrument =
-        Instrument(InstrumentCategory.valueOf(category), tuningName, buildNoteList(offset))
-
-    private fun InstrumentEntity.buildNoteList(offset: Int): List<InstrumentNote> {
-        val notes = ChromaticOctave.createFullRange(offset)
-        return numberedNotes.map { numberedNote ->
-            notes.firstOrNull { it.numberedName == numberedNote }
-                ?: throw Exception("Invalid note")
-        }.map { InstrumentNote(it.numberedName, it.freq) }
-    }
 }

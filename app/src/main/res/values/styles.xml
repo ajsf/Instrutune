@@ -32,4 +32,9 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="BuilderButton" parent="Widget.AppCompat.Button.Borderless" >
+        <item name="android:textColor">@color/builder_button_color</item>
+        <item name="android:backgroundTint">@color/alpha</item>
+    </style>
+
 </resources>

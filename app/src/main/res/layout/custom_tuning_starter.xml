@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="64dp"
-        android:text="Would you like to..."
+        android:text="@string/builder_starter_prompt"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         app:layout_constraintBottom_toTopOf="@id/button_wrapper"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -37,22 +37,29 @@
 
         <Button
             android:id="@+id/btn_blank"
+            style="@style/BuilderButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="32dp"
             android:paddingEnd="32dp"
-            android:text="Start with a blank instrument" />
+            android:text="@string/btn_blank_text"
+            app:strokeColor="@color/builder_button_color"
+            app:strokeWidth="2dp" />
 
         <Space
+
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1" />
 
         <Button
             android:id="@+id/btn_template"
+            style="@style/BuilderButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pick a starting instrument" />
+            android:text="@string/btn_template_text"
+            app:strokeColor="@color/builder_button_color"
+            app:strokeWidth="2dp" />
 
         <Space
             android:layout_width="wrap_content"
@@ -61,9 +68,12 @@
 
         <Button
             android:id="@+id/btn_edit"
+            style="@style/BuilderButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Edit a custom instrument" />
+            android:text="@string/btn_edit_text"
+            app:strokeColor="@color/builder_button_color"
+            app:strokeWidth="2dp" />
 
     </LinearLayout>
 

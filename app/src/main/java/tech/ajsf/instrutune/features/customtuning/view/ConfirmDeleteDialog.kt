@@ -6,9 +6,8 @@ import androidx.appcompat.app.AlertDialog
 class ConfirmDeleteDialog(private val context: Context, private val callback: () -> Unit) {
 
     private val title = "Are You Sure?"
-    private val message = "Do you want to delete this string?"
 
-    fun show() {
+    fun show(message: String) {
         with(AlertDialog.Builder(context)) {
             setTitle(title)
             setMessage(message)

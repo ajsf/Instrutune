@@ -44,6 +44,10 @@
     <string name="note_showcase_text">If you need to change a note, you can tap on the note name.
     You can also delete the note by holding down on the name. Try changing it&#8230;</string>
     <string name="drag_showcase_text">If you need to reorder notes, you can hold down on a string and drag it. Give it a try&#8230;</string>
-    <string name="name_showcase_text">You can give your tuning a name here. Once your tuning has at least one note and a name with at least one character, the save button at the bottom will activate. That\'s it for this walkthrough, have fun!</string>
+    <string name="name_showcase_text">You can give your tuning a name here. Once your tuning has at least one note and a name with at least one character, the save button at the bottom will activate. When you are editing a custom tuning that\'s already been saved, the delete button at the bottom will be activated. That\'s it for this walkthrough, have fun!</string>
+    <string name="builder_starter_prompt">Would you like to&#8230;</string>
+    <string name="btn_blank_text">Start with a blank instrument</string>
+    <string name="btn_template_text">Pick a starting instrument</string>
+    <string name="btn_edit_text">Edit a custom instrument</string>
     \
 </resources>

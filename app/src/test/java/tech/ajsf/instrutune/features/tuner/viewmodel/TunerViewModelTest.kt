@@ -1,14 +1,6 @@
 package tech.ajsf.instrutune.features.tuner.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import tech.ajsf.instrutune.common.data.InstrumentRepository
-import tech.ajsf.instrutune.features.tuner.TunerViewModel
-import tech.ajsf.instrutune.common.model.toInstrumentInfo
-import tech.ajsf.instrutune.test.data.InstrumentDataFactory
-import tech.ajsf.instrutune.test.data.TestDataFactory
-import tech.ajsf.instrutune.common.tuner.SelectedNoteInfo
-import tech.ajsf.instrutune.common.tuner.SelectedStringInfo
-import tech.ajsf.instrutune.common.tuner.Tuner
 import com.nhaarman.mockitokotlin2.reset
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
@@ -20,6 +12,16 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import tech.ajsf.instrutune.common.data.InstrumentRepository
+import tech.ajsf.instrutune.common.model.toInstrumentInfo
+import tech.ajsf.instrutune.common.tuner.SelectedNoteInfo
+import tech.ajsf.instrutune.common.tuner.SelectedStringInfo
+import tech.ajsf.instrutune.common.tuner.Tuner
+import tech.ajsf.instrutune.features.tuner.TunerViewModel
+import tech.ajsf.instrutune.test.data.InstrumentDataFactory
+import tech.ajsf.instrutune.test.data.TestDataFactory
+import tech.ajsf.instrutune.test.data.TestDataFactory.randomInt
+import tech.ajsf.instrutune.test.data.TestDataFactory.randomString
 
 class TunerViewModelTest {
 
@@ -178,34 +180,27 @@ class TunerViewModelTest {
     }
 
     @Test
-    fun `when getTunings is called, it calls getTunings on the repository`() {
+    fun `when getTuningsForCategory is called, it calls getTunings on the repository`() {
         viewModel = buildViewModel()
-        viewModel.getTunings()
-        verify(mockRepository).getTuningsForSelectedCategory()
-    }
-
-    @Test
-    fun `when saveSelectedCategory is called it calls saveSelectedCategory on the repository`() {
-        val category = TestDataFactory.randomString()
-        viewModel = buildViewModel()
-        viewModel.saveSelectedCategory(category)
-        verify(mockRepository).saveSelectedCategory(category)
+        val category = randomString()
+        viewModel.getTuningsForCategory(category)
+        verify(mockRepository).getTuningsForCategory(category)
     }
 
     @Test
     fun `when saveSelectedTuning is called it calls saveSelectedTuning on the repository`() {
-        val tuningName = TestDataFactory.randomString()
+        val tuningId = randomInt()
         viewModel = buildViewModel()
-        viewModel.saveSelectedTuning(tuningName)
-        verify(mockRepository).saveSelectedTuning(tuningName)
+        viewModel.saveSelectedTuning(tuningId)
+        verify(mockRepository).saveSelectedTuning(tuningId)
     }
 
     @Test
     fun `when saveSelectedTuning is called it calls getSelectedTuning on the repository`() {
-        val tuningName = TestDataFactory.randomString()
+        val tuningId = randomInt()
         viewModel = buildViewModel()
         reset(mockRepository)
-        viewModel.saveSelectedTuning(tuningName)
+        viewModel.saveSelectedTuning(tuningId)
         verify(mockRepository).getSelectedTuning()
     }
 
@@ -214,12 +209,12 @@ class TunerViewModelTest {
         viewModel = buildViewModel()
         reset(mockRepository)
 
-        val tuningName = TestDataFactory.randomString()
+        val tuningId = randomInt()
         val instrument = InstrumentDataFactory.randomInstrument()
 
         whenever(mockRepository.getSelectedTuning()).thenReturn(instrument)
 
-        viewModel.saveSelectedTuning(tuningName)
+        viewModel.saveSelectedTuning(tuningId)
 
         verify(mockTuner).setInstrument(instrument)
     }
@@ -229,12 +224,12 @@ class TunerViewModelTest {
         viewModel = buildViewModel()
         reset(mockRepository)
 
+        val tuningId = randomInt()
         val instrument = InstrumentDataFactory.randomInstrument()
-        val tuningName = TestDataFactory.randomString()
 
         whenever(mockRepository.getSelectedTuning()).thenReturn(instrument)
 
-        viewModel.saveSelectedTuning(tuningName)
+        viewModel.saveSelectedTuning(tuningId)
 
         viewModel.selectedInstrumentInfo.observeForever {
             assertEquals(instrument.toInstrumentInfo(), it)

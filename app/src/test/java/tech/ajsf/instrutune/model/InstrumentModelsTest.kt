@@ -19,7 +19,8 @@ internal class InstrumentModelsTest {
         val expectedInfo = SelectedInstrumentInfo(
             "Guitar (Standard)",
             instrument.notes.map { it.numberedName },
-            "A4=440Hz"
+            "A4=440Hz",
+            InstrumentCategory.Guitar.toString()
         )
         assertEquals(expectedInfo, info)
     }

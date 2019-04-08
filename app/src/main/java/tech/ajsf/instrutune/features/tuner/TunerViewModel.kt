@@ -13,7 +13,7 @@ import io.reactivex.Flowable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 
-data class SelectedInstrumentInfo(val name: String, val noteNames: List<String>, val middleA: String)
+data class SelectedInstrumentInfo(val name: String, val noteNames: List<String>, val middleA: String, val category: String)
 
 class TunerViewModel(
     private val tuner: Tuner,
@@ -57,16 +57,12 @@ class TunerViewModel(
         return instrumentRepository.getInstrumentList()
     }
 
-    fun getTunings(): List<Instrument> {
-        return instrumentRepository.getTuningsForSelectedCategory()
+    fun getTuningsForCategory(category: String): List<Instrument> {
+        return instrumentRepository.getTuningsForCategory(category)
     }
 
-    fun saveSelectedCategory(categoryName: String) {
-        instrumentRepository.saveSelectedCategory(categoryName)
-    }
-
-    fun saveSelectedTuning(tuningName: String) {
-        instrumentRepository.saveSelectedTuning(tuningName)
+    fun saveSelectedTuning(tuningId: Int) {
+        instrumentRepository.saveSelectedTuning(tuningId)
         getSelectedInstrument()
     }
 
@@ -88,8 +84,4 @@ class TunerViewModel(
     }
 
     private fun getMiddleAFreq(): Int = 440 + getOffset()
-
-    private fun selectInstrument() {
-
-    }
 }

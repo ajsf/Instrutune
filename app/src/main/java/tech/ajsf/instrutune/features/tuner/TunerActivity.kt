@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.activity_tuner.*
 import kotlinx.android.synthetic.main.tuner_view.*
 import org.kodein.di.Kodein
 import tech.ajsf.instrutune.R
-import tech.ajsf.instrutune.common.model.InstrumentCategory
 import tech.ajsf.instrutune.common.view.InjectedActivity
 import tech.ajsf.instrutune.common.view.InstrumentDialogHelper
 import tech.ajsf.instrutune.common.viewmodel.buildViewModel
@@ -52,6 +51,11 @@ class TunerActivity : InjectedActivity() {
         if (requestOnboarding) TunerOnboarding(this).requestOnboarding()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        dialogHelper.clear()
+    }
+
     private fun initViewModel(): Unit = with(viewModel) {
         selectedInstrumentInfo.observe(
             this@TunerActivity,
@@ -67,7 +71,7 @@ class TunerActivity : InjectedActivity() {
     }
 
     private fun initButtons() {
-        instrument_name_text.setOnClickListener { showSelectInstrumentDialog(true) }
+        instrument_name_text.setOnClickListener { showSelectInstrumentDialog() }
         middlea_freq_text.setOnClickListener { showSetMiddleADialog() }
     }
 
@@ -82,7 +86,7 @@ class TunerActivity : InjectedActivity() {
             true
         }
         R.id.select_tuning -> {
-            showSelectTuningDialog()
+            viewModel.selectedInstrumentInfo.value?.let { showSelectTuningDialog(it.category) }
             true
         }
         R.id.set_center_a -> {
@@ -103,25 +107,24 @@ class TunerActivity : InjectedActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == CUSTOM_TUNING_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val name = data?.getStringExtra(CUSTOM_TUNING_EXTRA)
-            name?.let {
-                viewModel.saveSelectedCategory(InstrumentCategory.Custom.toString())
-                viewModel.saveSelectedTuning(it)
-            }
+            val id = data?.getIntExtra(CUSTOM_TUNING_EXTRA, -1)
+            viewModel.saveSelectedTuning(id ?: -1)
         }
     }
 
-    private fun showSelectInstrumentDialog(showTuning: Boolean = false) {
+    private fun showSelectInstrumentDialog() {
         val instruments = viewModel.getInstruments()
         dialogHelper.showSelectInstrumentDialog(instruments) {
-            viewModel.saveSelectedCategory(it)
-            if (showTuning) showSelectTuningDialog()
+            showSelectTuningDialog(it)
         }
     }
 
-    private fun showSelectTuningDialog() {
-        val tunings = viewModel.getTunings().map { it.tuningName }
-        dialogHelper.showSelectTuningDialog(tunings) { viewModel.saveSelectedTuning(it) }
+    private fun showSelectTuningDialog(category: String) {
+        val tunings = viewModel.getTuningsForCategory(category)
+        dialogHelper.showSelectTuningDialog(tunings.map { it.tuningName }) {
+            val id = tunings[it].id
+            if (id != null) viewModel.saveSelectedTuning(id)
+        }
     }
 
     private fun showSetMiddleADialog() {

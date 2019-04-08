@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
     android:paddingTop="8dp"
-    android:paddingBottom="8dp"
     tools:context=".features.customtuning.CustomTuningActivity">
 
     <TextView
@@ -40,14 +39,33 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tuning_name_edit_text" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_save"
-        android:layout_width="match_parent"
+        style="@style/BuilderButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="4dp"
         android:text="Save Tuning"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toLeftOf="@id/btn_delete"
+        app:strokeColor="@color/builder_button_color"
+        app:strokeWidth="2dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_delete"
+        style="@style/BuilderButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="8dp"
+        android:text="Delete Tuning"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/btn_save"
+        app:layout_constraintRight_toRightOf="parent"
+        app:strokeColor="@color/builder_button_color"
+        app:strokeWidth="2dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_string_fab"

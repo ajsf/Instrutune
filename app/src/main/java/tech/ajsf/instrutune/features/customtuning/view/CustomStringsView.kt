@@ -58,7 +58,6 @@ class CustomStringsView
         private var placeholder: FrameLayout? = null
 
         override fun onTouch(view: View?, event: MotionEvent?): Boolean {
-            println("custom strings view. ontouch. event: $event")
             if (view == null || event == null) return false
 
             view as TunerStringView

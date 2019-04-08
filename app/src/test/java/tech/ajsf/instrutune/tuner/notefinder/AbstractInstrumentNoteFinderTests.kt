@@ -108,7 +108,7 @@ internal abstract class AbstractInstrumentNoteFinderTests {
     @Test
     fun `it returns the higher note when the frequency is just above halfway between two notes`() {
         (1..sortedFreqs.lastIndex).forEach { i ->
-            val freq = (((sortedFreqs[i] - sortedFreqs[i - 1]) / 2f) + sortedFreqs[i - 1]) + .002f
+            val freq = (((sortedFreqs[i] - sortedFreqs[i - 1]) / 2f) + sortedFreqs[i - 1]) + .003f
             val noteData = noteFinder.findNote(freq)
 
             val expectedString = instrument.notes.find { it.freq / 1000f == sortedFreqs[i] }!!

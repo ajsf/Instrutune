@@ -27,7 +27,7 @@ class CustomOnboarding(private val activity: CustomTuningActivity) : Onboarding(
     fun requestOnboarding() = with(AlertDialog.Builder(activity)) {
         setMessage(activity.getString(R.string.custom_onboarding_request))
         setPositiveButton(activity.getString(R.string.yes)) { _, _ -> showOnboarding() }
-        setNegativeButton(activity.getString(R.string.no)) { _, _ -> }
+        setNegativeButton(activity.getString(R.string.no)) { _, _ -> activity.onboarding = null }
         setCancelable(false)
     }.show().run { }
 

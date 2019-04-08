@@ -17,7 +17,8 @@ object InstrumentDataFactory {
         category = randomCategory(),
         tuningName = TestDataFactory.randomString(),
         notes = (0..TestDataFactory.randomInt(3, 3))
-            .map { randomInstrumentNote() }
+            .map { randomInstrumentNote() },
+        id = TestDataFactory.randomInt()
     )
 
     fun randomStringInfoList(size: Int = TestDataFactory.randomInt(20)) =
