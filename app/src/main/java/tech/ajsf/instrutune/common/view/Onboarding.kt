@@ -7,7 +7,7 @@ import tech.ajsf.instrutune.R
 abstract class Onboarding(private val activity: AppCompatActivity) {
 
     protected fun builder() = BubbleShowCaseBuilder(activity)
-        .backgroundColorResourceId(R.color.colorAccent)
+        .backgroundColorResourceId(R.color.secondaryColor)
 
     protected fun nextArrowBuilder() = builder()
         .closeActionImageResourceId(R.drawable.ic_arrow_forward_white_24dp)

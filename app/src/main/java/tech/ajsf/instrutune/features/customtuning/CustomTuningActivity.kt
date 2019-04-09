@@ -37,6 +37,7 @@ class CustomTuningActivity : InjectedActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_custom_tuning)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         initUi()
     }
 

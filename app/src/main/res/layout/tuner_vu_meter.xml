@@ -1,22 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
+    android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/tunerVuImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/tuner_view"
-        android:scaleType="fitXY"
-        android:src="@drawable/tuner" />
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_left_14"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_final" />
 
-    <ImageView
-        android:id="@+id/vu_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:contentDescription="@string/vu_indicator"
-        android:src="@drawable/indicator" />
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_left_13"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_13" />
 
-</FrameLayout>
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_left_12"
+        android:layout_width="0dp"
+
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_13" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_left_11"
+        android:layout_width="0dp"
+
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_11" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_left_10"
+        android:layout_width="0dp"
+
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_10" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_left_9"
+        android:layout_width="0dp"
+
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_9" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_left_8"
+        android:layout_width="0dp"
+
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_8" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_left_7"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_7" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_left_6"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_6" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_left_5"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_5" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_left_4"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_4" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_left_3"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_3" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_left_2"
+        android:layout_width="0dp"
+
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_2" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_left_1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_1" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorMain
+        android:id="@+id/indicator_main"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        app:activeColor="@color/indicator_in" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_right_1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_1" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_right_2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_2" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_right_3"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_3" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_right_4"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_4" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_right_5"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_5" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_right_6"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_6" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_right_7"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_7" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_right_8"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_8" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_right_9"
+        android:layout_width="0dp"
+
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_9" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_right_10"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_10" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_right_11"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_11" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_right_12"
+        android:layout_width="0dp"
+
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_12" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_right_13"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_13" />
+
+    <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
+        android:id="@+id/indicator_right_14"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        app:activeColor="@color/indicator_out_13" />
+
+</LinearLayout>

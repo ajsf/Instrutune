@@ -22,7 +22,7 @@ class TunerView
 
     init {
         LinearLayout.inflate(context, R.layout.tuner_view, this)
-        colorAccentId = ContextCompat.getColor(context, R.color.colorAccent)
+        colorAccentId = ContextCompat.getColor(context, R.color.secondaryColor)
         textColorId = ContextCompat.getColor(context, R.color.textColor)
     }
 

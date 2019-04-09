@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
     <color name="backgroundColor">#222329</color>
     <color name="colorDisabled">#5F5F64</color>
     <color name="textColor">#FFF</color>
     <color name="alpha">#00000000</color>
+
+    <color name="primaryColor">#0277bd</color>
+    <color name="primaryLightColor">#58a5f0</color>
+    <color name="primaryDarkColor">#004c8c</color>
+    <color name="secondaryColor">#d81b60</color>
+    <color name="secondaryLightColor">#ff5c8d</color>
+    <color name="secondaryDarkColor">#a00037</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#ffffff</color>
+
+    <color name="indicator_in">#00C853</color>
+    <color name="indicator_out_1">#4D9648</color>
+    <color name="indicator_out_2">#588D4A</color>
+    <color name="indicator_out_3">#62834C</color>
+    <color name="indicator_out_4">#6D7A4E</color>
+    <color name="indicator_out_5">#78704F</color>
+    <color name="indicator_out_6">#826751</color>
+    <color name="indicator_out_7">#8D5D53</color>
+    <color name="indicator_out_8">#985455</color>
+    <color name="indicator_out_9">#A24A57</color>
+    <color name="indicator_out_10">#AD4158</color>
+    <color name="indicator_out_11">#B8375A</color>
+    <color name="indicator_out_12">#C22E5C</color>
+    <color name="indicator_out_13">#CD245E</color>
+    <color name="indicator_out_final">#D81B60</color>
+
 </resources>

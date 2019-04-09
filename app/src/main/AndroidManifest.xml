@@ -15,13 +15,12 @@
         <activity android:name=".features.tuner.TunerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".features.customtuning.CustomTuningActivity">
-
-        </activity>
+        <activity
+            android:name=".features.customtuning.CustomTuningActivity"
+            android:parentActivityName=".features.tuner.TunerActivity" />
 
     </application>
 
