@@ -6,6 +6,13 @@ import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.tuner_vu_meter.view.*
 import tech.ajsf.instrutune.R
 
+private sealed class Direction
+private object Flat : Direction()
+private object Sharp : Direction()
+private object Off : Direction()
+
+private data class TunerState(val direction: Direction = Off, val delta: Int = 0)
+
 class TunerMeter
 @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -13,6 +20,10 @@ class TunerMeter
 
     private val leftIndicators: List<TunerIndicator>
     private val rightIndicators: List<TunerIndicator>
+
+    private var tunerState = TunerState()
+
+    private val lightDelay = 35L
 
     init {
         inflate(context, R.layout.tuner_vu_meter, this)
@@ -52,6 +63,14 @@ class TunerMeter
         )
     }
 
+    fun setIndicatorVisibility(isVisible: Boolean) {
+        if (isVisible.not()) {
+            indicator_main.setInactive(1000, 200)
+            leftIndicators.setInactive(800, 200)
+            rightIndicators.setInactive(800, 200)
+        }
+    }
+
     fun setIndicatorDelta(delta: Float) {
         val deltaInt = delta.toInt()
         when {
@@ -60,8 +79,9 @@ class TunerMeter
             else -> setSharp(deltaInt)
         }
     }
-
+    
     private fun setInTune() {
+        tunerState = TunerState()
         indicator_main.setInTune()
         leftIndicators.setInTune()
         rightIndicators.setInTune()
@@ -69,43 +89,35 @@ class TunerMeter
 
     private fun setFlat(deltaInt: Int) {
         val smoothedDelta = smoothDelta(deltaInt)
+
+        if (tunerState.direction is Sharp) rightIndicators.setInactive()
+
         indicator_main.setActive()
-        rightIndicators.setInactive()
         leftIndicators.setByDelta(smoothedDelta)
+
+        tunerState = TunerState(Flat, deltaInt)
     }
 
     private fun setSharp(deltaInt: Int) {
         val smoothedDelta = smoothDelta(deltaInt)
+        if (tunerState.direction is Flat) leftIndicators.setInactive()
         indicator_main.setActive()
-        leftIndicators.setInactive()
         rightIndicators.setByDelta(smoothedDelta)
+        tunerState = TunerState(Sharp, deltaInt)
     }
 
-    private fun List<TunerIndicator>.setInactive() = indices.reversed()
-        .forEach { postFunction(get(it)::setInactive, size - it) }
+    private fun List<TunerIndicator>.setInactive(time: Long = 0, delay: Long = 0) =
+        indices.reversed()
+            .forEach { get(it).setInactive(time, delay) }
 
     private fun List<TunerIndicator>.setInTune() {
-        forEachIndexed { index, tunerIndicator ->
-            postFunction(tunerIndicator::setInTune, index + 1)
-        }
+        forEachIndexed { index, tunerIndicator -> tunerIndicator.setInTune(index * lightDelay) }
     }
 
     private fun List<TunerIndicator>.setByDelta(delta: Int) {
         forEachIndexed { index, tunerIndicator ->
-            if (delta > index) postFunction(tunerIndicator::setActive, index)
-            else postFunction(tunerIndicator::setInactive, index + 1)
-        }
-    }
-
-    private fun postFunction(function: () -> Unit, delay: Int) {
-        postDelayed({ function.invoke() }, delay * 28L)
-    }
-
-    fun setIndicatorVisibility(isVisible: Boolean) {
-        if (isVisible.not()) {
-            postFunction(indicator_main::setInactive, 15)
-            leftIndicators.setInactive()
-            rightIndicators.setInactive()
+            if (delta > index) tunerIndicator.setActive(index * lightDelay)
+            else tunerIndicator.setInactive(50, 10)
         }
     }
 

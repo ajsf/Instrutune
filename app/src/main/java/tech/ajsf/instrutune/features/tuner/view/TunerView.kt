@@ -54,6 +54,7 @@ class TunerView
 
     fun selectInstrument(names: List<String>, stringData: LiveData<SelectedStringInfo>, owner: LifecycleOwner) {
         stringData.observe(owner, Observer {
+            println("---- selstring: $it")
             if (it.numberedName.isNotBlank()) {
                 tuner_vu_view.setIndicatorVisibility(true)
                 tuner_vu_view.setIndicatorDelta(it.delta)

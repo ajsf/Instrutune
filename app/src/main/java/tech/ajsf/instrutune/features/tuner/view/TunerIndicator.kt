@@ -25,27 +25,31 @@ abstract class TunerIndicator @JvmOverloads constructor(
     init {
         attrs?.let {
             val a = context.obtainStyledAttributes(it, R.styleable.TunerIndicator)
-            val color = a.getColor(R.styleable.TunerIndicator_activeColor, R.color.colorDisabled)
+            val color = a.getColor(R.styleable.TunerIndicator_activeColor, inactiveColor)
             activeColor = color
             a.recycle()
         }
     }
 
-    fun setActive() {
-        createAnimation(activeColor, 200)
+    fun setActive(delay: Long = 0) {
+        createAnimation(activeColor, 300, delay)
     }
 
-    fun setInactive() {
-        createAnimation(inactiveColor, 400, 100)
+    fun setInactive(time: Long, delay: Long) {
+        createAnimation(inactiveColor, time, delay)
     }
 
-    fun setInTune() {
-        createAnimation(inTuneColor, 20)
+    fun setInTune(delay: Long = 0) {
+        createAnimation(inTuneColor, 100, delay)
+    }
+
+    private fun endAnimation() {
+        animator?.cancel()
+        animator = null
     }
 
     private fun createAnimation(toColor: Int, time: Long, delay: Long = 0L) {
-        animator?.cancel()
-        animator = null
+        endAnimation()
         val drawable = DrawableCompat.wrap(img_indicator.drawable).mutate()
         animator = ValueAnimator.ofObject(ArgbEvaluator(), currentColor, toColor).apply {
             duration = time
