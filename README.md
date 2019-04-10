@@ -15,11 +15,21 @@ As well as tunings for:
 
 The tuner allows you to adjust the middle A frequency, allowing you to tune to A = 432 Hz and other tunings.
 
-![Screenshot](./.github/screenshot1.png)&nbsp;&nbsp;&nbsp;&nbsp;![Screenshot](./.github/screenshot4.png)
+![Screenshot](./.github/screenshot1.png)&nbsp;&nbsp;&nbsp;&nbsp;![Screenshot](./.github/screenshot2.png)
+
+![Screenshot](./.github/screenshot4.png)
 
 ![Screenshot](./.github/screenshot3.png)
 
-![Screenshot](./.github/screenshot2.png)
+![Screenshot](./.github/screenshot5.png)&nbsp;&nbsp;&nbsp;&nbsp;![Screenshot](./.github/screenshot6.png)
+
+![Screenshot](./.github/screenshot7.png)
+
+The app also has a feature that allows you to create custom tunings.
+
+![Screenshot](./.github/screenshot8.png)
+
+![Screenshot](./.github/screenshot9.png)&nbsp;&nbsp;&nbsp;&nbsp;![Screenshot](./.github/screenshot10.png)
 
 ## Built With
 

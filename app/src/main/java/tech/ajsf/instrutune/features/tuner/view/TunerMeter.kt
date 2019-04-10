@@ -79,7 +79,7 @@ class TunerMeter
             else -> setSharp(deltaInt)
         }
     }
-    
+
     private fun setInTune() {
         tunerState = TunerState()
         indicator_main.setInTune()
