@@ -13,7 +13,7 @@ As well as tunings for:
 * Cello
 * Chromatic
 
-The tuner allows you to adjust the middle A frequency, allowing you to tune to A = 432 Hz and other tunings.
+The tuner allows you to adjust the middle A frequency, allowing you to tune to A = 432 Hz and other tunings. The app also has a feature that allows you to create custom tunings. [Download the beta version on Google Play.](https://play.google.com/store/apps/details?id=tech.ajsf.instrutune)
 
 ![Screenshot](./.github/screenshot1.png)&nbsp;&nbsp;&nbsp;&nbsp;![Screenshot](./.github/screenshot2.png)
 
@@ -24,8 +24,6 @@ The tuner allows you to adjust the middle A frequency, allowing you to tune to A
 ![Screenshot](./.github/screenshot5.png)&nbsp;&nbsp;&nbsp;&nbsp;![Screenshot](./.github/screenshot6.png)
 
 ![Screenshot](./.github/screenshot7.png)
-
-The app also has a feature that allows you to create custom tunings.
 
 ![Screenshot](./.github/screenshot8.png)
 
