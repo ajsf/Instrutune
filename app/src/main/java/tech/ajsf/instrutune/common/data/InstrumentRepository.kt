@@ -2,6 +2,7 @@ package tech.ajsf.instrutune.common.data
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import io.reactivex.Completable
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import tech.ajsf.instrutune.common.data.db.InstrumentDao
@@ -14,14 +15,14 @@ private const val SELECTED_TUNING = "SELECTED_TUNING"
 private const val OFFSET = "OFFSET"
 
 interface InstrumentRepository {
-    fun getAllTunings(): Map<InstrumentCategory, List<Instrument>>
-    fun getTuningsForCategory(category: String): List<Instrument>
-    fun getTuningById(id: Int): Instrument
-    fun saveTuning(tuningName: String, numberedNotes: List<String>, id: Int?): Int
-    fun deleteTuning(id: Int)
-    fun getInstrumentList(): List<String>
+    fun getAllTunings(): Single<List<Instrument>>
+    fun getTuningsForCategory(category: String): Single<List<Instrument>>
+    fun getTuningById(id: Int): Single<Instrument>
+    fun saveTuning(tuningName: String, numberedNotes: List<String>, id: Int?): Single<Int>
+    fun deleteTuning(id: Int): Completable
+    fun getCategories(): Single<List<String>>
     fun saveSelectedTuning(tuningId: Int)
-    fun getSelectedTuning(): Instrument
+    fun getSelectedTuning(): Single<Instrument>
     fun saveOffset(offset: Int)
     fun getOffset(): Int
 }
@@ -34,61 +35,70 @@ class InstrumentRepositoryImpl(
 
     private var tuningOffset: Int = prefs.getInt(OFFSET, 0)
 
-    override fun getAllTunings(): Map<InstrumentCategory, List<Instrument>> {
-        val instruments = instrumentDao.getAllInstruments().mapAndGet()
-        return instruments.groupBy { it.category }
+    override fun getAllTunings(): Single<List<Instrument>> = instrumentDao
+        .getAllInstruments()
+        .map { InstrumentFactory.buildInstrumentsFromEntities(it, tuningOffset) }
+        .subscribeOn(scheduler)
+
+    override fun getTuningsForCategory(category: String): Single<List<Instrument>> {
+        return instrumentDao.getInstrumentsForCategory(category)
+            .map { InstrumentFactory.buildInstrumentsFromEntities(it, tuningOffset) }
+            .subscribeOn(scheduler)
     }
 
-    override fun getTuningsForCategory(category: String): List<Instrument> {
-        return instrumentDao.getInstrumentsForCategory(category).mapAndGet()
+    override fun getTuningById(id: Int): Single<Instrument> {
+        return getInstrument(id).subscribeOn(scheduler)
     }
 
-    override fun getTuningById(id: Int): Instrument {
-        return getInstrument(id)
-    }
+    override fun saveTuning(
+        tuningName: String,
+        numberedNotes: List<String>,
+        id: Int?
+    ): Single<Int> {
+        val custom = InstrumentCategory.Custom.toString()
 
-    override fun saveTuning(tuningName: String, numberedNotes: List<String>, id: Int?): Int {
         return instrumentDao
-            .insert(
-                InstrumentEntity(
-                    tuningName,
-                    InstrumentCategory.Custom.toString(),
-                    numberedNotes,
-                    id
-                )
-            )
+            .insert(InstrumentEntity(tuningName, custom, numberedNotes, id))
+            .map { it.toInt() }
             .subscribeOn(scheduler)
-            .blockingGet().toInt()
     }
 
-    override fun deleteTuning(id: Int) {
-        val instrument = instrumentDao.getInstrumentById(id).subscribeOn(scheduler).blockingGet()
-        if (instrument.category == InstrumentCategory.Custom.toString()) {
-            instrumentDao.deleteInstrumentById(id).subscribeOn(scheduler).subscribe()
-        } else {
-            throw RuntimeException("Only custom tunings can be deleted.")
+    override fun deleteTuning(id: Int): Completable {
+        return instrumentDao
+            .getInstrumentById(id)
+            .map {
+                if (it.category == InstrumentCategory.Custom.toString()) {
+                    instrumentDao.deleteInstrumentById(id)
+                } else {
+                    throw RuntimeException("Only custom tunings can be deleted.")
+                }
+            }.ignoreElement()
+            .subscribeOn(scheduler)
+    }
+
+    override fun getCategories(): Single<List<String>> = instrumentDao
+        .getInstrumentsForCategory(InstrumentCategory.Custom.toString())
+        .map { customTunings ->
+            val list = InstrumentCategory.values().map { it.toString() }
+            if (customTunings.isNullOrEmpty()) {
+                list.filter { it != InstrumentCategory.Custom.toString() }
+            } else list
         }
-    }
-
-    override fun getInstrumentList(): List<String> {
-        val list = InstrumentCategory.values().map { it.toString() }
-        val customTunings = instrumentDao
-            .getInstrumentsForCategory(InstrumentCategory.Custom.toString())
-            .subscribeOn(scheduler)
-            .blockingGet()
-        return if (customTunings.isNullOrEmpty()) list.filter { it != InstrumentCategory.Custom.toString() } else list
-    }
+        .subscribeOn(scheduler)
 
     override fun saveSelectedTuning(tuningId: Int) = prefs.edit {
         putInt(SELECTED_TUNING, tuningId)
     }
 
-    override fun getSelectedTuning(): Instrument {
+    override fun getSelectedTuning(): Single<Instrument> {
         val tuningId = prefs.getInt(SELECTED_TUNING, -1)
         return if (tuningId > -1) {
-            getInstrument(tuningId)
+            getInstrument(tuningId).subscribeOn(scheduler)
         } else {
-            instrumentDao.getAllInstruments().mapAndGet().first()
+            instrumentDao.getAllInstruments()
+                .map { InstrumentFactory.buildInstrumentsFromEntities(it, tuningOffset) }
+                .map { it.first() }
+                .subscribeOn(scheduler)
         }
     }
 
@@ -99,12 +109,8 @@ class InstrumentRepositoryImpl(
 
     override fun getOffset() = tuningOffset
 
-    private fun getInstrument(id: Int): Instrument = instrumentDao.getInstrumentById(id)
+    private fun getInstrument(id: Int): Single<Instrument> = instrumentDao
+        .getInstrumentById(id)
         .map { it.buildInstrument(tuningOffset) }
         .subscribeOn(scheduler)
-        .blockingGet()
-
-    private fun Single<List<InstrumentEntity>>.mapAndGet(): List<Instrument> = map {
-        InstrumentFactory.buildInstrumentsFromEntities(it, tuningOffset)
-    }.subscribeOn(scheduler).blockingGet()
 }

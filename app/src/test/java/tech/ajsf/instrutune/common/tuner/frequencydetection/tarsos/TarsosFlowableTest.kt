@@ -1,4 +1,4 @@
-package tech.ajsf.instrutune.tuner.frequencydetection.tarsos
+package tech.ajsf.instrutune.common.tuner.frequencydetection.tarsos
 
 import tech.ajsf.instrutune.common.tuner.frequencydetection.tarsos.TarsosDispatcher
 import tech.ajsf.instrutune.common.tuner.frequencydetection.tarsos.TarsosFlowable

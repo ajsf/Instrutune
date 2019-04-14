@@ -19,7 +19,9 @@ data class BuilderAction(
     val tuningName: String = ""
 )
 
-class CustomTuningViewModel(private val instrumentRepository: InstrumentRepository) : ViewModel() {
+class CustomTuningViewModel(
+    private val instrumentRepository: InstrumentRepository
+) : ViewModel() {
 
     val buildingLiveData: LiveData<BuilderAction>
         get() = _building
@@ -31,7 +33,10 @@ class CustomTuningViewModel(private val instrumentRepository: InstrumentReposito
 
     private val _building = MutableLiveData<BuilderAction>()
 
-    private val tunings = instrumentRepository.getAllTunings()
+    private val tunings = instrumentRepository
+        .getAllTunings()
+        .blockingGet()
+        .groupBy { it.category }
 
     init {
         _viewState.postValue(CustomTuningViewState())
@@ -63,16 +68,20 @@ class CustomTuningViewModel(private val instrumentRepository: InstrumentReposito
     fun getNoteRange(): List<String> = ChromaticOctave.noteNames()
 
     fun enableEdit(): Boolean =
-        instrumentRepository.getInstrumentList().contains(InstrumentCategory.Custom.toString())
+        instrumentRepository.getCategories().blockingGet().contains(
+            InstrumentCategory.Custom.toString()
+        )
 
     fun saveTuningAndGetId(): Int {
         val (notes, tuningName, id) = getViewState()
         return instrumentRepository.saveTuning(tuningName, notes, id)
+            .blockingGet()
     }
 
     fun deleteTuning() = getViewState().id?.let { instrumentRepository.deleteTuning(it) }
 
-    fun getCategories(): List<String> = instrumentRepository.getInstrumentList()
+    fun getCategories(): List<String> = instrumentRepository.getCategories()
+        .blockingGet()
         .filter { it != InstrumentCategory.Custom.toString() }
 
     fun getTuningsForCategory(category: String) =
@@ -82,14 +91,20 @@ class CustomTuningViewModel(private val instrumentRepository: InstrumentReposito
         _building.postValue(BuilderAction(true, name))
     }
 
-    fun startBuilder(id: Int) = with(instrumentRepository.getTuningById(id)) {
-        val notes = notes.map { it.numberedName }
-        val tuningId = if (category == InstrumentCategory.Custom) id else null
-        val newViewState = getViewState().copy(notes = notes, id = tuningId)
-        _viewState.postValue(newViewState)
-        val name =
-            if (category == InstrumentCategory.Custom) tuningName else "$category - $tuningName"
-        startBuilder(name)
+    fun startBuilder(id: Int) {
+        instrumentRepository
+            .getTuningById(id)
+            .map { instrument ->
+                with(instrument) {
+                    val notes = notes.map { it.numberedName }
+                    val tuningId = if (category == InstrumentCategory.Custom) id else null
+                    val newViewState = getViewState().copy(notes = notes, id = tuningId)
+                    _viewState.postValue(newViewState)
+                    val name =
+                        if (category == InstrumentCategory.Custom) tuningName else "$category - $tuningName"
+                    startBuilder(name)
+                }
+            }.subscribe()
     }
 
     fun onboardingChecked() = _viewState.postValue(getViewState().copy(checkOnboarding = false))

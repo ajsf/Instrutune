@@ -1,4 +1,4 @@
-package tech.ajsf.instrutune.tuner.notefinder
+package tech.ajsf.instrutune.common.tuner.notefinder
 
 import tech.ajsf.instrutune.common.tuner.notefinder.NO_NOTE
 import tech.ajsf.instrutune.common.tuner.notefinder.NoteFinder

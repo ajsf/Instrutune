@@ -1,4 +1,4 @@
-package tech.ajsf.instrutune.tuner.frequencydetection
+package tech.ajsf.instrutune.common.tuner.frequencydetection
 
 import tech.ajsf.instrutune.common.tuner.frequencydetection.FrequencyDetector
 import tech.ajsf.instrutune.common.tuner.frequencydetection.FrequencyDetectorImpl

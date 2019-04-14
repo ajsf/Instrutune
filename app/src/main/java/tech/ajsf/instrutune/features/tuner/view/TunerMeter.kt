@@ -63,12 +63,10 @@ class TunerMeter
         )
     }
 
-    fun setIndicatorVisibility(isVisible: Boolean) {
-        if (isVisible.not()) {
-            indicator_main.setInactive(1000, 200)
-            leftIndicators.setInactive(800, 200)
-            rightIndicators.setInactive(800, 200)
-        }
+    fun clearIndicators() {
+        indicator_main.setInactive(1000, 200)
+        leftIndicators.setInactive(800, 200)
+        rightIndicators.setInactive(800, 200)
     }
 
     fun setIndicatorDelta(delta: Float) {

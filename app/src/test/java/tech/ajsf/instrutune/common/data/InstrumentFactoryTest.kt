@@ -1,6 +1,5 @@
-package tech.ajsf.instrutune.model
+package tech.ajsf.instrutune.common.data
 
-import tech.ajsf.instrutune.common.data.InstrumentFactory
 import tech.ajsf.instrutune.common.model.InstrumentCategory
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

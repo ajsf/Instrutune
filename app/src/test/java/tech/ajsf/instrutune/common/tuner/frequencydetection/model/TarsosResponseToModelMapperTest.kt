@@ -1,4 +1,4 @@
-package tech.ajsf.instrutune.tuner.frequencydetection.model
+package tech.ajsf.instrutune.common.tuner.frequencydetection.model
 
 import be.tarsos.dsp.AudioEvent
 import be.tarsos.dsp.pitch.PitchDetectionResult

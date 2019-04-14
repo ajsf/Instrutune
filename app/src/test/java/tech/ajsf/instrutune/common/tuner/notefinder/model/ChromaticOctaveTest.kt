@@ -1,10 +1,10 @@
-package tech.ajsf.instrutune.tuner.notefinder.model
+package tech.ajsf.instrutune.common.tuner.notefinder.model
 
-import tech.ajsf.instrutune.common.tuner.notefinder.model.ChromaticOctave
-import tech.ajsf.instrutune.common.tuner.notefinder.model.MusicalNote
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import tech.ajsf.instrutune.common.tuner.notefinder.model.ChromaticOctave
+import tech.ajsf.instrutune.common.tuner.notefinder.model.MusicalNote
 
 internal class ChromaticOctaveTest {
 
@@ -136,5 +136,13 @@ internal class ChromaticOctaveTest {
         val last = ChromaticOctave.createFullRange().last()
         val expectedNote = MusicalNote(7902133, "B8")
         assertEquals(expectedNote, last)
+    }
+
+    @Test
+    fun `to string generates the expected string`() {
+        val octave = ChromaticOctave()
+        val expectedString =
+            "C4-261.626 Hz, C#4-277.183 Hz, D4-293.665 Hz, D#4-311.127 Hz, E4-329.628 Hz, F4-349.228 Hz, F#4-369.994 Hz, G4-391.995 Hz, G#4-415.305 Hz, A4-440.000 Hz, A#4-466.164 Hz, B4-493.883 Hz"
+        assertEquals(expectedString, octave.toString())
     }
 }

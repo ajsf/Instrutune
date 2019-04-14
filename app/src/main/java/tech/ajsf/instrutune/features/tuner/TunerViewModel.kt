@@ -4,66 +4,88 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
-import tech.ajsf.instrutune.common.data.InstrumentRepository
-import tech.ajsf.instrutune.common.model.Instrument
-import tech.ajsf.instrutune.common.model.toInstrumentInfo
-import tech.ajsf.instrutune.common.tuner.SelectedStringInfo
-import tech.ajsf.instrutune.common.tuner.Tuner
 import io.reactivex.Flowable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.subscribeBy
+import tech.ajsf.instrutune.common.data.InstrumentRepository
+import tech.ajsf.instrutune.common.model.toInstrumentInfo
+import tech.ajsf.instrutune.common.tuner.SelectedStringInfo
+import tech.ajsf.instrutune.common.tuner.Tuner
+import tech.ajsf.instrutune.common.view.InstrumentDialogHelper
 
-data class SelectedInstrumentInfo(val name: String, val noteNames: List<String>, val middleA: String, val category: String)
+data class TunerViewState(
+    val tuningName: String = "",
+    val category: String = "",
+    val noteNames: List<String> = listOf(),
+    val middleA: String = ""
+)
+
+data class ChromaticViewState(
+    val freq: String = "0 Hz",
+    val noteName: String = "",
+    val delta: Int = 0
+)
 
 class TunerViewModel(
     private val tuner: Tuner,
     private val instrumentRepository: InstrumentRepository,
+    private val dialogHelper: InstrumentDialogHelper,
     private val uiScheduler: Scheduler = AndroidSchedulers.mainThread()
 ) :
     ViewModel() {
 
-    val selectedInstrumentInfo: LiveData<SelectedInstrumentInfo>
-        get() = _selectedInstrumentInfo
+    val tunerViewState: LiveData<TunerViewState>
+        get() = _tunerViewState
 
-    val selectedStringInfo: LiveData<SelectedStringInfo> =
+    val chromaticViewState: LiveData<ChromaticViewState> = tuner.mostRecentNoteInfo
+        .map { ChromaticViewState(it.freq, it.name, it.delta) }
+        .toUiThreadLiveData()
+
+    val selectedNoteViewState: LiveData<SelectedStringInfo> =
         tuner.instrumentTuning.toUiThreadLiveData()
 
-    val mostRecentFrequency: LiveData<String> =
-        tuner.mostRecentFrequency.toUiThreadLiveData()
+    private val _tunerViewState: MutableLiveData<TunerViewState> = MutableLiveData()
 
-    val mostRecentNoteName: LiveData<String> =
-        tuner.mostRecentNoteInfo.map { it.name }.toUiThreadLiveData()
-
-    val mostRecentNoteDelta: LiveData<Int> =
-        tuner.mostRecentNoteInfo.map { it.delta }.toUiThreadLiveData()
-
-    private fun <T> Flowable<T>.toUiThreadLiveData() =
-        this.observeOn(uiScheduler).toLiveData()
-
-    private val selectedInstrument = MutableLiveData<Instrument>()
-    private val _selectedInstrumentInfo = MutableLiveData<SelectedInstrumentInfo>()
+    private val disposable = CompositeDisposable()
 
     init {
-        selectedInstrument.observeForever {
-            it?.let { instrument ->
-                tuner.setInstrument(instrument)
-                _selectedInstrumentInfo.postValue(instrument.toInstrumentInfo(getMiddleAFreq()))
-            }
-        }
         setupTuner()
     }
 
-    fun getInstruments(): List<String> {
-        return instrumentRepository.getInstrumentList()
+    fun onActivityDestroyed() {
+        dialogHelper.clear()
     }
 
-    fun getTuningsForCategory(category: String): List<Instrument> {
-        return instrumentRepository.getTuningsForCategory(category)
+    override fun onCleared() {
+        disposable.clear()
+        super.onCleared()
+    }
+
+    fun showSelectCategory() {
+        disposable.add(
+            instrumentRepository
+                .getCategories()
+                .observeOn(uiScheduler)
+                .subscribeBy(
+                    onSuccess = { instruments ->
+                        dialogHelper.showSelectInstrumentDialog(instruments) { showSelectTuning(it) }
+                    })
+        )
+    }
+
+    fun showSelectTuning() {
+        showSelectTuning(getViewState().category)
+    }
+
+    fun showSelectMiddleA() {
+        dialogHelper.showSetMiddleADialog(getOffset()) { saveOffset(it) }
     }
 
     fun saveSelectedTuning(tuningId: Int) {
         instrumentRepository.saveSelectedTuning(tuningId)
-        getSelectedInstrument()
+        setupTuner()
     }
 
     fun saveOffset(offset: Int) {
@@ -74,14 +96,41 @@ class TunerViewModel(
     fun getOffset() = instrumentRepository.getOffset()
 
     private fun setupTuner() {
-        tuner.setOffset(instrumentRepository.getOffset())
-        getSelectedInstrument()
+        val offset = getOffset()
+        tuner.setOffset(offset)
+        disposable.addAll(instrumentRepository
+            .getSelectedTuning()
+            .doOnSuccess {
+                tuner.setInstrument(it)
+            }
+            .map { it.toInstrumentInfo(getMiddleAFreq(offset)) }
+            .observeOn(uiScheduler)
+            .subscribeBy {
+                _tunerViewState.postValue(
+                    TunerViewState(
+                        tuningName = it.name,
+                        category = it.category,
+                        noteNames = it.noteNames,
+                        middleA = it.middleA
+                    )
+                )
+            })
     }
 
-    private fun getSelectedInstrument() {
-        val instrument = instrumentRepository.getSelectedTuning()
-        selectedInstrument.postValue(instrument)
+    private fun showSelectTuning(category: String) {
+        disposable.add(instrumentRepository.getTuningsForCategory(category)
+            .observeOn(uiScheduler)
+            .subscribeBy { tunings ->
+                dialogHelper.showSelectTuningDialog(tunings.map { it.tuningName }) {
+                    val id = tunings[it].id
+                    if (id != null) saveSelectedTuning(id)
+                }
+            })
     }
 
-    private fun getMiddleAFreq(): Int = 440 + getOffset()
+    private fun getMiddleAFreq(offset: Int): Int = 440 + offset
+
+    private fun <T> Flowable<T>.toUiThreadLiveData() = this.observeOn(uiScheduler).toLiveData()
+
+    private fun getViewState(): TunerViewState = _tunerViewState.value ?: TunerViewState()
 }

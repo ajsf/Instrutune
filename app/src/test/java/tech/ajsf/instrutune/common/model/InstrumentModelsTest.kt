@@ -1,11 +1,8 @@
-package tech.ajsf.instrutune.model
+package tech.ajsf.instrutune.common.model
 
 import junit.framework.Assert.assertEquals
 import org.junit.jupiter.api.Test
 import tech.ajsf.instrutune.common.data.InstrumentFactory
-import tech.ajsf.instrutune.common.model.InstrumentCategory
-import tech.ajsf.instrutune.common.model.toInstrumentInfo
-import tech.ajsf.instrutune.features.tuner.SelectedInstrumentInfo
 
 internal class InstrumentModelsTest {
 

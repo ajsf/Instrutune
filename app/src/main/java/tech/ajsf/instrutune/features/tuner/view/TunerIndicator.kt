@@ -70,7 +70,7 @@ class TunerIndicatorSmall
 ) : TunerIndicator(context, attrs, defStyleAttr) {
 
     init {
-        FrameLayout.inflate(context, R.layout.indicator_view, this)
+        inflate(context, R.layout.indicator_view, this)
     }
 }
 

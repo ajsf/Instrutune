@@ -1,47 +1,63 @@
 package tech.ajsf.instrutune.test.data
 
+import tech.ajsf.instrutune.common.data.db.InstrumentEntity
 import tech.ajsf.instrutune.common.model.Instrument
 import tech.ajsf.instrutune.common.model.InstrumentCategory
 import tech.ajsf.instrutune.common.model.InstrumentNote
 import tech.ajsf.instrutune.common.tuner.SelectedNoteInfo
 import tech.ajsf.instrutune.common.tuner.SelectedStringInfo
 import tech.ajsf.instrutune.common.tuner.notefinder.model.MusicalNote
+import tech.ajsf.instrutune.test.data.TestDataFactory.randomFloat
+import tech.ajsf.instrutune.test.data.TestDataFactory.randomInt
+import tech.ajsf.instrutune.test.data.TestDataFactory.randomString
 
 object InstrumentDataFactory {
 
-    fun randomFreq() = TestDataFactory.randomFloat() * 111
+    fun randomFreq() = randomFloat() * 111
 
-    fun randomFreqList() = randomList(TestDataFactory.randomInt(20)) { TestDataFactory.randomFloat().toString() }
+    fun randomFreqList() = randomList(randomInt(20)) {
+        randomFloat().toString()
+    }
+
+    fun randomCategoryList() = randomList(10, ::randomString)
 
     fun randomInstrument() = Instrument(
         category = randomCategory(),
-        tuningName = TestDataFactory.randomString(),
-        notes = (0..TestDataFactory.randomInt(3, 3))
+        tuningName = randomString(),
+        notes = (0..randomInt(3, 3))
             .map { randomInstrumentNote() },
-        id = TestDataFactory.randomInt()
+        id = randomInt()
     )
 
-    fun randomStringInfoList(size: Int = TestDataFactory.randomInt(20)) =
+    fun randomInstrumentList(): List<Instrument> =
+        randomList(randomInt(), ::randomInstrument)
+
+ fun randomInstrumentEntityList(): List<InstrumentEntity> =
+        randomList(randomInt(), ::randomInstrumentEntity)
+
+    private fun randomInstrumentEntity() = InstrumentEntity(
+        category = randomCategory().toString(),
+        tuningName = randomString(),
+        numberedNotes = randomList(randomInt(8), TestDataFactory::randomString),
+        id = randomInt()
+    )
+
+    fun randomStringInfoList(size: Int = randomInt(20)) =
         randomList(size) {
             SelectedStringInfo(
-                TestDataFactory.randomString(),
-                TestDataFactory.randomFloat()
+                randomString(),
+                randomFloat()
             )
         }
 
-    fun randomNoteInfoList(size: Int = TestDataFactory.randomInt(20)) =
-        randomList(size) {
-            SelectedNoteInfo(
-                TestDataFactory.randomString(),
-                TestDataFactory.randomInt()
-            )
-        }
+    fun randomNoteInfoList(size: Int = randomInt(20)) =
+        randomList(size) { SelectedNoteInfo(randomString(), randomInt(), randomString()) }
 
-    private fun randomStringName() = TestDataFactory.randomString()
+    private fun randomStringName() = randomString()
 
     private fun randomCategory(): InstrumentCategory {
         val categories = InstrumentCategory.values()
-        val num = TestDataFactory.randomInt(categories.lastIndex)
+        val num = randomInt(categories.lastIndex)
         return InstrumentCategory.values()[num]
     }
 

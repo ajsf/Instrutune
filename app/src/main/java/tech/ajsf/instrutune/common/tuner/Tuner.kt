@@ -1,15 +1,15 @@
 package tech.ajsf.instrutune.common.tuner
 
+import io.reactivex.Flowable
+import io.reactivex.Scheduler
+import io.reactivex.schedulers.Schedulers
 import tech.ajsf.instrutune.common.model.Instrument
 import tech.ajsf.instrutune.common.tuner.frequencydetection.FrequencyDetector
 import tech.ajsf.instrutune.common.tuner.notefinder.NoteFinder
 import tech.ajsf.instrutune.common.tuner.notefinder.model.MusicalNote
-import io.reactivex.Flowable
-import io.reactivex.Scheduler
-import io.reactivex.schedulers.Schedulers
 
 data class SelectedStringInfo(val numberedName: String, val delta: Float)
-data class SelectedNoteInfo(val name: String, val delta: Int)
+data class SelectedNoteInfo(val name: String, val delta: Int, val freq: String)
 
 class Tuner(frequencyDetector: FrequencyDetector, scheduler: Scheduler = Schedulers.computation()) {
 
@@ -24,21 +24,14 @@ class Tuner(frequencyDetector: FrequencyDetector, scheduler: Scheduler = Schedul
         .map { instrumentNoteFinder?.findNote(it) }
         .map { SelectedStringInfo(it.numberedName, it.delta.toFloat()) }
 
-    val mostRecentFrequency: Flowable<String> = audioFeed
-        .filter { chromaticNoteFinder != null }
-        .filter { it != -1f }
-        .map { String.format("%.2f", it) }
-
     val mostRecentNoteInfo: Flowable<SelectedNoteInfo> = audioFeed
         .filter { chromaticNoteFinder != null }
         .filter { it != -1f }
-        .map { chromaticNoteFinder?.findNote(it) }
+        .map { it to chromaticNoteFinder!!.findNote(it) }
         .map {
-            SelectedNoteInfo(
-                MusicalNote.nameFromNumberedName(
-                    it.numberedName
-                ), it.delta
-            )
+            val name = MusicalNote.nameFromNumberedName(it.second.numberedName)
+            val freq = String.format("%.2f", it.first)
+            SelectedNoteInfo(name, it.second.delta, freq)
         }
 
     fun setInstrument(instrument: Instrument) {

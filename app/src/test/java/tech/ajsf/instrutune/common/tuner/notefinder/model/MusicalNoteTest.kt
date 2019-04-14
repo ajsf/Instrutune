@@ -1,4 +1,4 @@
-package tech.ajsf.instrutune.tuner.notefinder.model
+package tech.ajsf.instrutune.common.tuner.notefinder.model
 
 import tech.ajsf.instrutune.common.tuner.notefinder.model.MusicalNote
 import tech.ajsf.instrutune.test.data.InstrumentDataFactory
