@@ -1,10 +1,5 @@
 package tech.ajsf.instrutune.common.tuner
 
-import tech.ajsf.instrutune.common.tuner.SelectedStringInfo
-import tech.ajsf.instrutune.common.tuner.Tuner
-import tech.ajsf.instrutune.test.data.InstrumentDataFactory
-import tech.ajsf.instrutune.test.data.TestDataFactory
-import tech.ajsf.instrutune.common.tuner.frequencydetection.FrequencyDetector
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.rxkotlin.toFlowable
@@ -13,6 +8,9 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import tech.ajsf.instrutune.common.tuner.frequencydetection.FrequencyDetector
+import tech.ajsf.instrutune.test.data.InstrumentDataFactory
+import tech.ajsf.instrutune.test.data.TestDataFactory
 
 internal class TunerTest {
 
@@ -44,40 +42,6 @@ internal class TunerTest {
     fun `listen is called on the detector when it is created`() {
         stubRandomResponse()
         verify(mockDetector).listen()
-    }
-
-    @Test
-    fun `mostRecentFrequency sends no items if an offset hasn't been sent`() {
-        stubRandomResponse()
-      //  val testSubscriber = tuner.mostRecentFrequency.test()
-      //  scheduler.triggerActions()
-      //  testSubscriber.assertValueCount(0)
-    }
-
-    @Test
-    fun `mostRecentFrequency sends the same number of items as it receives once an offset has been set`() {
-        stubRandomResponse()
-        tuner.setOffset(0)
-       // val testSubscriber = tuner.mostRecentFrequency.test()
-    //    scheduler.triggerActions()
-      //  testSubscriber.assertValueCount(floatList.size)
-    }
-
-    @Test
-    fun `mostRecentNoteName sends no items if no offset has been sent`() {
-        stubRandomResponse()
-        val testSubscriber = tuner.mostRecentNoteInfo.test()
-        scheduler.triggerActions()
-        testSubscriber.assertValueCount(0)
-    }
-
-    @Test
-    fun `mostRecentNoteName sends the same number of items as it receives once an offset has been set`() {
-        stubRandomResponse()
-        tuner.setOffset(0)
-        val testSubscriber = tuner.mostRecentNoteInfo.test()
-        scheduler.triggerActions()
-        testSubscriber.assertValueCount(floatList.size)
     }
 
     @Test
@@ -115,5 +79,22 @@ internal class TunerTest {
             .map { SelectedStringInfo(it.numberedName, 0f) }
 
         testSubscriber.assertValueSequence(expectedResults)
+    }
+
+    @Test
+    fun `mostRecentNoteInfo sends no items if an offset hasn't been sent`() {
+        stubRandomResponse()
+        val testSubscriber = tuner.mostRecentNoteInfo.test()
+        scheduler.triggerActions()
+        testSubscriber.assertValueCount(0)
+    }
+
+    @Test
+    fun `mostRecentNoteInfo sends the same number of items as it receives once an offset has been set`() {
+        stubRandomResponse()
+        tuner.setOffset(0)
+        val testSubscriber = tuner.mostRecentNoteInfo.test()
+        scheduler.triggerActions()
+        testSubscriber.assertValueCount(floatList.size)
     }
 }

@@ -12,11 +12,15 @@ import tech.ajsf.instrutune.common.data.InstrumentRepository
 import tech.ajsf.instrutune.common.data.InstrumentRepositoryImpl
 import tech.ajsf.instrutune.common.data.db.InstrumentDao
 import tech.ajsf.instrutune.common.data.db.TunerDatabase
+import tech.ajsf.instrutune.common.data.mapper.EntityToInstrumentMapper
+import tech.ajsf.instrutune.common.data.mapper.InstrumentMapper
 
 fun dataModule() = Kodein.Module("dataModule") {
     bind<InstrumentDao>() with provider { TunerDatabase.getInstance(instance()).instrumentDao() }
+    bind<InstrumentMapper>() with provider { EntityToInstrumentMapper() }
     bind<InstrumentRepository>() with singleton {
         InstrumentRepositoryImpl(
+            instance(),
             instance(),
             instance(),
             Schedulers.io()

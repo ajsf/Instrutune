@@ -1,14 +1,11 @@
 package tech.ajsf.instrutune.common.tuner.notefinder
 
-import tech.ajsf.instrutune.common.model.Instrument
-import tech.ajsf.instrutune.common.tuner.notefinder.NO_NOTE
-import tech.ajsf.instrutune.common.tuner.notefinder.NoteData
-import tech.ajsf.instrutune.common.tuner.notefinder.NoteFinder
-import tech.ajsf.instrutune.common.tuner.notefinder.model.MusicalNote
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import tech.ajsf.instrutune.common.model.Instrument
+import tech.ajsf.instrutune.common.tuner.notefinder.model.MusicalNote
 
 internal abstract class AbstractInstrumentNoteFinderTests {
 

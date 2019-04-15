@@ -1,23 +1,24 @@
 package tech.ajsf.instrutune.common.model
 
-import junit.framework.Assert.assertEquals
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import tech.ajsf.instrutune.common.data.InstrumentFactory
+import tech.ajsf.instrutune.test.data.InstrumentDataFactory
 
 internal class InstrumentModelsTest {
 
     @Test
     fun `the toInstrumentInfo extension function maps correctly`() {
-        val instrument = InstrumentFactory
-            .buildInstrumentsFromEntities(InstrumentFactory.getDefaultEntities(), 0)
-            .find { it.category == InstrumentCategory.Guitar && it.tuningName == "Standard" }!!
+        val instrument = InstrumentDataFactory.randomInstrument()
 
         val info = instrument.toInstrumentInfo()
+
+        val expectedName = "${instrument.category} (${instrument.tuningName})"
+
         val expectedInfo = SelectedInstrumentInfo(
-            "Guitar (Standard)",
+            expectedName,
             instrument.notes.map { it.numberedName },
             "A4=440Hz",
-            InstrumentCategory.Guitar.toString()
+            instrument.category.toString()
         )
         assertEquals(expectedInfo, info)
     }

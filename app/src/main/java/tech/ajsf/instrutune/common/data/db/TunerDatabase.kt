@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import tech.ajsf.instrutune.common.data.InstrumentFactory
 import io.reactivex.schedulers.Schedulers
+import tech.ajsf.instrutune.common.data.InstrumentFactory
 
 @Database(
     entities = [InstrumentEntity::class],

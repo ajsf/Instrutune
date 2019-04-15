@@ -1,8 +1,8 @@
 package tech.ajsf.instrutune.features.tuner.view.tunerview
 
-import tech.ajsf.instrutune.features.tuner.view.calculateVuMeterXTranslation
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import tech.ajsf.instrutune.features.tuner.view.calculateVuMeterXTranslation
 
 internal class TunerVuFunctionsTest {
 

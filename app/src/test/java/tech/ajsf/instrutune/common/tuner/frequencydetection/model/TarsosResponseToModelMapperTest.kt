@@ -2,14 +2,13 @@ package tech.ajsf.instrutune.common.tuner.frequencydetection.model
 
 import be.tarsos.dsp.AudioEvent
 import be.tarsos.dsp.pitch.PitchDetectionResult
-import tech.ajsf.instrutune.common.tuner.frequencydetection.model.mapTarsosResponseToDetectionResult
-import tech.ajsf.instrutune.test.data.DetectionDataFactory
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import tech.ajsf.instrutune.test.data.DetectionDataFactory
 
 internal class TarsosResponseToModelMapperTest {
 

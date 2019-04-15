@@ -2,10 +2,6 @@ package tech.ajsf.instrutune.common.tuner.frequencydetection.tarsos
 
 import be.tarsos.dsp.AudioDispatcher
 import be.tarsos.dsp.pitch.PitchProcessor
-import tech.ajsf.instrutune.common.tuner.frequencydetection.tarsos.CurrentlyListeningException
-import tech.ajsf.instrutune.common.tuner.frequencydetection.tarsos.NotListeningException
-import tech.ajsf.instrutune.common.tuner.frequencydetection.tarsos.TarsosDispatcherImpl
-import tech.ajsf.instrutune.common.tuner.frequencydetection.tarsos.TarsosListener
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.jupiter.api.Assertions
@@ -57,7 +53,11 @@ internal class TarsosDispatcherImplTest {
     @Test
     fun `calling listen twice throws a CurrentlyListeningException`() {
         tarsosDispatcherImpl.listen(mockListener)
-        Assertions.assertThrows(CurrentlyListeningException::class.java) { tarsosDispatcherImpl.listen(mockListener) }
+        Assertions.assertThrows(CurrentlyListeningException::class.java) {
+            tarsosDispatcherImpl.listen(
+                mockListener
+            )
+        }
     }
 
     @Test

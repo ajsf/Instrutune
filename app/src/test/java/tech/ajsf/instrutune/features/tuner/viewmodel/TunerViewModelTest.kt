@@ -20,7 +20,7 @@ import tech.ajsf.instrutune.common.view.InstrumentDialogHelper
 import tech.ajsf.instrutune.features.tuner.TunerViewModel
 import tech.ajsf.instrutune.test.data.InstrumentDataFactory
 import tech.ajsf.instrutune.test.data.TestDataFactory.randomInt
-import tech.ajsf.instrutune.test.data.TestDataFactory.randomString
+import tech.ajsf.instrutune.test.data.TestDataFactory.randomStringList
 
 class TunerViewModelTest {
 
@@ -185,7 +185,7 @@ class TunerViewModelTest {
     @Test
     fun `when showSelectCategory is called, it calls getCategories on the repository`() {
         viewModel = buildViewModel()
-        whenever(mockRepository.getCategories()).thenReturn(Single.just(InstrumentDataFactory.randomCategoryList()))
+        whenever(mockRepository.getCategories()).thenReturn(Single.just(randomStringList()))
         viewModel.showSelectCategory()
         verify(mockRepository).getCategories()
     }
@@ -193,10 +193,8 @@ class TunerViewModelTest {
     @Test
     fun `when showSelectCategory is called, showSelectInstrumentDialog on the dialogHelper`() {
         viewModel = buildViewModel()
-        val categories = InstrumentDataFactory.randomCategoryList()
+        val categories = randomStringList()
         whenever(mockRepository.getCategories()).thenReturn(Single.just(categories))
-
-        val category = randomString()
 
         viewModel.showSelectCategory()
         verify(mockDialogHelper).showSelectInstrumentDialog(eq(categories), any())
@@ -205,7 +203,7 @@ class TunerViewModelTest {
     @Test
     fun `when showSelectTuning is called, it calls getTuningsForCategory on the repository`() {
         viewModel = buildViewModel()
-        val categories = InstrumentDataFactory.randomCategoryList()
+        val categories = randomStringList()
         val currentCategory = instrument.category.toString()
         whenever(mockRepository.getCategories()).thenReturn(Single.just(categories))
 
@@ -221,7 +219,7 @@ class TunerViewModelTest {
     @Test
     fun `when showSelectTuning is called, it calls showSelectTuningDialog on the dialogHelper`() {
         viewModel = buildViewModel()
-        val categories = InstrumentDataFactory.randomCategoryList()
+        val categories = randomStringList()
         val currentCategory = instrument.category.toString()
         whenever(mockRepository.getCategories()).thenReturn(Single.just(categories))
 
@@ -238,7 +236,51 @@ class TunerViewModelTest {
     }
 
     @Test
-    fun `when saveSelectedTuning is called it calls saveSelectedTuning on the repository`() {
+    fun `when showSelectMiddleA is called, it calls getOffset on the repository`() {
+        viewModel = buildViewModel()
+        reset(mockRepository)
+
+        viewModel.showSelectMiddleA()
+
+        verify(mockRepository).getOffset()
+    }
+
+    @Test
+    fun `when showSelectMiddleA is called, it calls showSetMiddleADialog on the dialog helper with the offset returned by the repository`() {
+        viewModel = buildViewModel()
+        reset(mockRepository)
+
+        val offset = randomInt()
+        whenever(mockRepository.getOffset()).thenReturn(offset)
+
+        viewModel.showSelectMiddleA()
+
+        verify(mockDialogHelper).showSetMiddleADialog(eq(offset), any())
+    }
+
+    @Test
+    fun `when the callback sent to showSetMiddleADialog is called, saveOffset is called on the repository`() {
+        viewModel = buildViewModel()
+        reset(mockRepository)
+
+        val offset = randomInt()
+        whenever(mockRepository.getOffset()).thenReturn(offset)
+        whenever(mockRepository.getSelectedTuning()).thenReturn(Single.just(instrument))
+
+        val captor = argumentCaptor<(Int) -> Unit>()
+
+        viewModel.showSelectMiddleA()
+
+        verify(mockDialogHelper).showSetMiddleADialog(eq(offset), captor.capture())
+
+        val newOffset = randomInt()
+        captor.firstValue.invoke(newOffset)
+
+        verify(mockRepository).saveOffset(newOffset)
+    }
+
+    @Test
+    fun `when saveSelectedTuning is called, it calls saveSelectedTuning on the repository`() {
         val tuningId = randomInt()
         viewModel = buildViewModel()
         viewModel.saveSelectedTuning(tuningId)
@@ -320,6 +362,15 @@ class TunerViewModelTest {
             count++
         }
         assertEquals(info.size, count)
+    }
+
+    @Test
+    fun `when onActivityDestroyed is called, is calls clear on the DialogHelper`() {
+        viewModel = buildViewModel()
+
+        viewModel.onActivityDestroyed()
+
+        verify(mockDialogHelper).clear()
     }
 
     private fun buildViewModel() =

@@ -15,12 +15,6 @@ object InstrumentDataFactory {
 
     fun randomFreq() = randomFloat() * 111
 
-    fun randomFreqList() = randomList(randomInt(20)) {
-        randomFloat().toString()
-    }
-
-    fun randomCategoryList() = randomList(10, ::randomString)
-
     fun randomInstrument() = Instrument(
         category = randomCategory(),
         tuningName = randomString(),
@@ -32,7 +26,7 @@ object InstrumentDataFactory {
     fun randomInstrumentList(): List<Instrument> =
         randomList(randomInt(), ::randomInstrument)
 
- fun randomInstrumentEntityList(): List<InstrumentEntity> =
+    fun randomInstrumentEntityList(): List<InstrumentEntity> =
         randomList(randomInt(), ::randomInstrumentEntity)
 
     private fun randomInstrumentEntity() = InstrumentEntity(

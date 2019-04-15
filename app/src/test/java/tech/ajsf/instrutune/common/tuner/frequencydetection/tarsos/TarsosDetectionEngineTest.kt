@@ -1,11 +1,5 @@
 package tech.ajsf.instrutune.common.tuner.frequencydetection.tarsos
 
-import tech.ajsf.instrutune.common.tuner.frequencydetection.model.TarsosResponseToModelMapper
-import tech.ajsf.instrutune.common.tuner.frequencydetection.tarsos.TarsosDetectionEngine
-import tech.ajsf.instrutune.common.tuner.frequencydetection.tarsos.TarsosResponse
-import tech.ajsf.instrutune.common.tuner.frequencydetection.tarsos.TarsosResponseStream
-import tech.ajsf.instrutune.test.data.DetectionDataFactory
-import tech.ajsf.instrutune.test.data.TestDataFactory
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
@@ -14,6 +8,9 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import tech.ajsf.instrutune.common.tuner.frequencydetection.model.TarsosResponseToModelMapper
+import tech.ajsf.instrutune.test.data.DetectionDataFactory
+import tech.ajsf.instrutune.test.data.TestDataFactory
 
 internal class TarsosDetectionEngineTest {
 

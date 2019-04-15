@@ -1,8 +1,6 @@
 package tech.ajsf.instrutune.common.data
 
 import tech.ajsf.instrutune.common.data.db.InstrumentEntity
-import tech.ajsf.instrutune.common.data.db.buildInstrument
-import tech.ajsf.instrutune.common.model.Instrument
 import tech.ajsf.instrutune.common.model.InstrumentCategory
 
 private data class InstrumentFactoryModel(
@@ -55,10 +53,4 @@ object InstrumentFactory {
     private fun List<InstrumentFactoryModel>.toEntities(category: InstrumentCategory) = map {
         InstrumentEntity(it.tuningName, category.toString(), it.numberedNotes)
     }
-
-    fun buildInstrumentsFromEntities(
-        entities: List<InstrumentEntity>,
-        offset: Int = 0
-    ): List<Instrument> =
-        entities.map { it.buildInstrument(offset) }
 }

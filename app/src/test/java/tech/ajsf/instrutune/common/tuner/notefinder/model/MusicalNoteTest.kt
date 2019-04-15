@@ -1,9 +1,8 @@
 package tech.ajsf.instrutune.common.tuner.notefinder.model
 
-import tech.ajsf.instrutune.common.tuner.notefinder.model.MusicalNote
-import tech.ajsf.instrutune.test.data.InstrumentDataFactory
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import tech.ajsf.instrutune.test.data.InstrumentDataFactory
 import kotlin.math.roundToInt
 
 internal class MusicalNoteTest {

@@ -12,5 +12,10 @@ object TestDataFactory {
     fun randomBoolean(): Boolean = Math.random() < 0.5
     fun randomString(): String = UUID.randomUUID().toString().take(5)
 
+    fun randomStringList() = randomList(10, ::randomString)
+
+    private fun <T> randomList(size: Int, creator: () -> T) = (0 until size).map {
+        creator.invoke()
+    }
 }
 
