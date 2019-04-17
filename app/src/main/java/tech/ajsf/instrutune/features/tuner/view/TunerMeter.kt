@@ -11,7 +11,7 @@ private object Flat : Direction()
 private object Sharp : Direction()
 private object Off : Direction()
 
-private data class TunerState(val direction: Direction = Off, val delta: Int = 0)
+private data class TunerState(val direction: Direction = Off, val delta: Float = 0f)
 
 class TunerMeter
 @JvmOverloads constructor(
@@ -70,11 +70,10 @@ class TunerMeter
     }
 
     fun setIndicatorDelta(delta: Float) {
-        val deltaInt = delta.toInt()
-        when {
-            deltaInt in (-1..1) -> setInTune()
-            deltaInt <= -2 -> setFlat(-deltaInt)
-            else -> setSharp(deltaInt)
+        when (delta.toInt()) {
+            in (-3..3) -> setInTune()
+            in (Int.MIN_VALUE..-3) -> setFlat(delta + 3)
+            else -> setSharp(delta - 3)
         }
     }
 
@@ -85,23 +84,24 @@ class TunerMeter
         rightIndicators.setInTune()
     }
 
-    private fun setFlat(deltaInt: Int) {
-        val smoothedDelta = smoothDelta(deltaInt)
-
-        if (tunerState.direction is Sharp) rightIndicators.setInactive()
+    private fun setFlat(delta: Float) {
+        val smoothedDelta = scaleAndCurveDelta(delta)
 
         indicator_main.setActive()
+        if (tunerState.direction !is Flat) rightIndicators.setInactive()
         leftIndicators.setByDelta(smoothedDelta)
 
-        tunerState = TunerState(Flat, deltaInt)
+        tunerState = TunerState(Flat, delta)
     }
 
-    private fun setSharp(deltaInt: Int) {
-        val smoothedDelta = smoothDelta(deltaInt)
-        if (tunerState.direction is Flat) leftIndicators.setInactive()
+    private fun setSharp(delta: Float) {
+        val smoothedDelta = scaleAndCurveDelta(delta)
+
         indicator_main.setActive()
+        if (tunerState.direction !is Sharp) leftIndicators.setInactive()
         rightIndicators.setByDelta(smoothedDelta)
-        tunerState = TunerState(Sharp, deltaInt)
+
+        tunerState = TunerState(Sharp, delta)
     }
 
     private fun List<TunerIndicator>.setInactive(time: Long = 0, delay: Long = 0) =
@@ -117,24 +117,5 @@ class TunerMeter
             if (delta > index) tunerIndicator.setActive(index * lightDelay)
             else tunerIndicator.setInactive(50, 10)
         }
-    }
-
-    private fun smoothDelta(deltaInt: Int) = when (Math.abs(deltaInt)) {
-        in (2..4) -> 1
-        in (5..7) -> 2
-        in (7..9) -> 3
-        in (10..12) -> 4
-        in (13..16) -> 5
-        in (17..20) -> 6
-        in (21..24) -> 7
-        in (25..29) -> 8
-        in (30..35) -> 9
-        in (34..41) -> 10
-        in (42..50) -> 11
-        in (51..60) -> 12
-        in (61..70) -> 13
-        in (71..80) -> 14
-        in (80..90) -> 15
-        else -> 16
     }
 }

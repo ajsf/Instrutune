@@ -100,9 +100,7 @@ class TunerViewModel(
         tuner.setOffset(offset)
         disposable.addAll(instrumentRepository
             .getSelectedTuning()
-            .doOnSuccess {
-                tuner.setInstrument(it)
-            }
+            .doOnSuccess { tuner.setInstrument(it) }
             .map { it.toInstrumentInfo(getMiddleAFreq(offset)) }
             .observeOn(uiScheduler)
             .subscribeBy {

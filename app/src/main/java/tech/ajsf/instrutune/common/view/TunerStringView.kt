@@ -37,12 +37,12 @@ class TunerStringView
             if (!stringIsSelected) selectString()
             if (shakeString) shakeString()
         } else if (stringIsSelected) {
-            clearAnimations()
             unselect(shakeString)
         }
     }
 
     private fun selectString() {
+        clearAnimations()
         stringIsSelected = true
         currentAnimation = imageAlphaAnimation(0, 255).apply {
             duration = 200
@@ -56,6 +56,7 @@ class TunerStringView
     }
 
     private fun unselect(shakeString: Boolean) {
+        clearAnimations()
         stringIsSelected = false
         if (shakeString) {
             val shakeEndAnimation = AnimationUtils.loadAnimation(context, R.anim.string_shake_end)

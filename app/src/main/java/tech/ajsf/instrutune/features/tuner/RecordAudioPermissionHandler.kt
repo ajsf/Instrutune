@@ -10,8 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import tech.ajsf.instrutune.R
+import tech.ajsf.instrutune.common.view.DialogHelper
 
-class RecordAudioPermissionHandler(private val activity: AppCompatActivity) {
+class RecordAudioPermissionHandler(private val activity: AppCompatActivity) : DialogHelper() {
 
     val requestCode = 202
 
@@ -32,6 +33,7 @@ class RecordAudioPermissionHandler(private val activity: AppCompatActivity) {
             }
             setNegativeButton("Cancel") { _, _ -> activity.finishAndRemoveTask() }
             setCancelable(false)
+            finishBuilding()
         }.show()
     }
 
@@ -51,6 +53,7 @@ class RecordAudioPermissionHandler(private val activity: AppCompatActivity) {
             }
             setNegativeButton("Cancel") { _, _ -> activity.finish() }
             setCancelable(false)
+            finishBuilding()
         }.show()
     }
 

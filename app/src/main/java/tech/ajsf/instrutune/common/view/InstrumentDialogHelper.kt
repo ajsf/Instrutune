@@ -6,9 +6,7 @@ import android.widget.NumberPicker
 import androidx.appcompat.app.AlertDialog
 import tech.ajsf.instrutune.R
 
-class InstrumentDialogHelper(private val context: Context) {
-
-    private var currentDialog: AlertDialog? = null
+class InstrumentDialogHelper(private val context: Context) : DialogHelper() {
 
     fun showSelectInstrumentDialog(instruments: List<String>, onSelect: (String) -> Unit) {
         val title = context.getString(R.string.select_instrument_title)
@@ -62,18 +60,5 @@ class InstrumentDialogHelper(private val context: Context) {
             setCancelable(true)
             finishBuilding()
         }.show()
-    }
-
-    private fun AlertDialog.Builder.finishBuilding(): AlertDialog {
-        val dialog = create()
-        currentDialog = dialog
-        return dialog
-    }
-
-    fun clear() {
-        currentDialog?.let {
-            it.dismiss()
-            currentDialog = null
-        }
     }
 }

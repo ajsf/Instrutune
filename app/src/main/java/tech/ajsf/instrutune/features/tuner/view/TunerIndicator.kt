@@ -80,6 +80,6 @@ class TunerIndicatorMain
 ) : TunerIndicator(context, attrs, defStyleAttr) {
 
     init {
-        FrameLayout.inflate(context, R.layout.indicator_main_view, this)
+        inflate(context, R.layout.indicator_main_view, this)
     }
 }
