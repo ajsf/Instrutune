@@ -36,7 +36,7 @@ abstract class TunerIndicator @JvmOverloads constructor(
     }
 
     fun setInactive(time: Long, delay: Long) {
-        createAnimation(inactiveColor, time, delay)
+        createAnimation(inactiveColor, time, delay + 250)
     }
 
     fun setInTune(delay: Long = 0) {

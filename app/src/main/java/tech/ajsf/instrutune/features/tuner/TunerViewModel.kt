@@ -44,7 +44,7 @@ class TunerViewModel(
         .toUiThreadLiveData()
 
     val selectedNoteViewState: LiveData<SelectedStringInfo> =
-        tuner.instrumentTuning.toUiThreadLiveData()
+        tuner.instrumentTuning.distinctUntilChanged().toUiThreadLiveData()
 
     private val _tunerViewState: MutableLiveData<TunerViewState> = MutableLiveData()
 

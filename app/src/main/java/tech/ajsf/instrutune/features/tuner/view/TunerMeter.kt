@@ -64,9 +64,9 @@ class TunerMeter
     }
 
     fun clearIndicators() {
-        indicator_main.setInactive(1000, 200)
-        leftIndicators.setInactive(800, 200)
-        rightIndicators.setInactive(800, 200)
+        indicator_main.setInactive(250, 700)
+        leftIndicators.setInactive(250, 50)
+        rightIndicators.setInactive(250, 50)
     }
 
     fun setIndicatorDelta(delta: Float) {
@@ -104,9 +104,12 @@ class TunerMeter
         tunerState = TunerState(Sharp, delta)
     }
 
-    private fun List<TunerIndicator>.setInactive(time: Long = 0, delay: Long = 0) =
+    private fun List<TunerIndicator>.setInactive(time: Long= 15, delay: Long = 15) {
         indices.reversed()
-            .forEach { get(it).setInactive(time, delay) }
+            .forEach {
+                get(it).setInactive(time, delay * ((lastIndex - it)))
+            }
+    }
 
     private fun List<TunerIndicator>.setInTune() {
         forEachIndexed { index, tunerIndicator -> tunerIndicator.setInTune(index * lightDelay) }
