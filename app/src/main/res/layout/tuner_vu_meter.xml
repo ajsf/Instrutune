@@ -2,10 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="6dp"
-    android:layout_marginRight="6dp"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content">
 
     <tech.ajsf.instrutune.features.tuner.view.TunerIndicatorSmall
         android:id="@+id/indicator_left_14"

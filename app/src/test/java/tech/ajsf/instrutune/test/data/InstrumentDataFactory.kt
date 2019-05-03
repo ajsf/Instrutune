@@ -4,8 +4,7 @@ import tech.ajsf.instrutune.common.data.db.InstrumentEntity
 import tech.ajsf.instrutune.common.model.Instrument
 import tech.ajsf.instrutune.common.model.InstrumentCategory
 import tech.ajsf.instrutune.common.model.InstrumentNote
-import tech.ajsf.instrutune.common.tuner.SelectedNoteInfo
-import tech.ajsf.instrutune.common.tuner.SelectedStringInfo
+import tech.ajsf.instrutune.common.tuner.NoteInfo
 import tech.ajsf.instrutune.common.tuner.notefinder.model.MusicalNote
 import tech.ajsf.instrutune.test.data.TestDataFactory.randomFloat
 import tech.ajsf.instrutune.test.data.TestDataFactory.randomInt
@@ -36,16 +35,8 @@ object InstrumentDataFactory {
         id = randomInt()
     )
 
-    fun randomStringInfoList(size: Int = randomInt(20)) =
-        randomList(size) {
-            SelectedStringInfo(
-                randomString(),
-                randomFloat()
-            )
-        }
-
     fun randomNoteInfoList(size: Int = randomInt(20)) =
-        randomList(size) { SelectedNoteInfo(randomString(), randomInt(), randomString()) }
+        randomList(size) { NoteInfo(randomString(), randomString(), randomInt(), randomFreq()) }
 
     private fun randomStringName() = randomString()
 

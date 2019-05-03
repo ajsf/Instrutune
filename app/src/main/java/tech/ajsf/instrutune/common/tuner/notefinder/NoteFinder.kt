@@ -73,7 +73,7 @@ class NoteFinder private constructor(private val notes: List<MusicalNote>) {
                 )
             )
 
-        fun instrumentNoteFinder(instrument: Instrument) =
-            NoteFinder(instrument.mapToMusicalNoteList())
+        fun instrumentNoteFinder(instrument: Instrument, offset: Int = 0) =
+            NoteFinder(instrument.mapToMusicalNoteList(offset))
     }
 }

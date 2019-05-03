@@ -34,16 +34,14 @@ class InstrumentRepositoryImpl(
     private val scheduler: Scheduler
 ) : InstrumentRepository {
 
-    private var tuningOffset: Int = prefs.getInt(OFFSET, 0)
-
     override fun getAllTunings(): Single<List<Instrument>> = instrumentDao
         .getAllInstruments()
-        .map { mapper.toInstrumentList(it, tuningOffset) }
+        .map { mapper.toInstrumentList(it) }
         .subscribeOn(scheduler)
 
     override fun getTuningsForCategory(category: String): Single<List<Instrument>> {
         return instrumentDao.getInstrumentsForCategory(category)
-            .map { mapper.toInstrumentList(it, tuningOffset) }
+            .map { mapper.toInstrumentList(it) }
             .subscribeOn(scheduler)
     }
 
@@ -96,15 +94,14 @@ class InstrumentRepositoryImpl(
         putInt(SELECTED_TUNING, tuningId)
     }
 
-    override fun getOffset() = tuningOffset
+    override fun getOffset() = prefs.getInt(OFFSET, 0)
 
     override fun saveOffset(offset: Int) {
         prefs.edit { putInt(OFFSET, offset) }
-        tuningOffset = offset
     }
 
     private fun getInstrument(id: Int): Single<Instrument> = instrumentDao
         .getInstrumentById(id)
-        .map { mapper.toInstrument(it, tuningOffset) }
+        .map { mapper.toInstrument(it) }
         .subscribeOn(scheduler)
 }

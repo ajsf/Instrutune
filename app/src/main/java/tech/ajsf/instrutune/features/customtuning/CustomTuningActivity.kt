@@ -41,6 +41,11 @@ class CustomTuningActivity : InjectedActivity() {
         initUi()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        onboarding?.clear()
+    }
+
     private fun initUi() {
         initViewModel()
         initStarter()

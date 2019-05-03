@@ -18,12 +18,6 @@ internal class InstrumentNoteFinderTest {
     }
 
     @Nested
-    inner class OffsetGuitarTest : AbstractInstrumentNoteFinderTests() {
-        override val instrument: Instrument =
-            mapper.toInstrument(getEntity(InstrumentCategory.Guitar), -8)
-    }
-
-    @Nested
     inner class BassTest : AbstractInstrumentNoteFinderTests() {
         override val instrument: Instrument =
             mapper.toInstrument(getEntity(InstrumentCategory.Bass))

@@ -4,27 +4,30 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
-import io.reactivex.Flowable
 import io.reactivex.Scheduler
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import tech.ajsf.instrutune.common.data.InstrumentRepository
+import tech.ajsf.instrutune.common.model.Instrument
 import tech.ajsf.instrutune.common.model.toInstrumentInfo
-import tech.ajsf.instrutune.common.tuner.SelectedStringInfo
-import tech.ajsf.instrutune.common.tuner.Tuner
+import tech.ajsf.instrutune.common.tuner.*
 import tech.ajsf.instrutune.common.view.InstrumentDialogHelper
 
 data class TunerViewState(
     val tuningName: String = "",
     val category: String = "",
     val noteNames: List<String> = listOf(),
-    val middleA: String = ""
+    val middleA: String = "",
+    val mode: TunerMode = InstrumentMode
 )
 
-data class ChromaticViewState(
-    val freq: String = "0 Hz",
-    val noteName: String = "",
+data class NoteViewState(
+    val numberedName: String,
+    val noteName: String,
+    val freqString: String,
+    val freqFloat: Float,
     val delta: Int = 0
 )
 
@@ -39,41 +42,33 @@ class TunerViewModel(
     val tunerViewState: LiveData<TunerViewState>
         get() = _tunerViewState
 
-    val chromaticViewState: LiveData<ChromaticViewState> = tuner.mostRecentNoteInfo
-        .map { ChromaticViewState(it.freq, it.name, it.delta) }
-        .toUiThreadLiveData()
-
-    val selectedNoteViewState: LiveData<SelectedStringInfo> =
-        tuner.instrumentTuning.distinctUntilChanged().toUiThreadLiveData()
+    val noteViewState: LiveData<NoteViewState> = tuner
+        .getTunerFlow()
+        .distinctUntilChanged()
+        .map { buildNoteViewState(it) }
+        .toLiveData()
 
     private val _tunerViewState: MutableLiveData<TunerViewState> = MutableLiveData()
 
     private val disposable = CompositeDisposable()
 
     init {
-        setupTuner()
+        configTuner()
     }
 
     fun onActivityDestroyed() {
         dialogHelper.clear()
-    }
-
-    override fun onCleared() {
         disposable.clear()
-        super.onCleared()
     }
 
-    fun showSelectCategory() {
-        disposable.add(
-            instrumentRepository
-                .getCategories()
-                .observeOn(uiScheduler)
-                .subscribeBy(
-                    onSuccess = { instruments ->
-                        dialogHelper.showSelectInstrumentDialog(instruments) { showSelectTuning(it) }
-                    })
-        )
-    }
+    fun showSelectCategory(): Unit = disposable.add(instrumentRepository
+        .getCategories()
+        .observeOn(uiScheduler)
+        .subscribeBy { instruments ->
+            dialogHelper
+                .showSelectInstrumentDialog(instruments) { showSelectTuning(it) }
+        }
+    ).run { }
 
     fun showSelectTuning() {
         showSelectTuning(getViewState().category)
@@ -85,34 +80,53 @@ class TunerViewModel(
 
     fun saveSelectedTuning(tuningId: Int) {
         instrumentRepository.saveSelectedTuning(tuningId)
-        setupTuner()
+        configTuner(InstrumentMode)
     }
 
     fun saveOffset(offset: Int) {
         instrumentRepository.saveOffset(offset)
-        setupTuner()
+        configTuner()
     }
 
     fun getOffset() = instrumentRepository.getOffset()
 
-    private fun setupTuner() {
-        val offset = getOffset()
-        tuner.setOffset(offset)
-        disposable.addAll(instrumentRepository
+    fun toggleMode() {
+        val viewState = getViewState()
+        val newMode = if (viewState.mode is InstrumentMode) ChromaticMode else InstrumentMode
+        tuner.mode = newMode
+        _tunerViewState.postValue(viewState.copy(mode = newMode))
+    }
+
+    private fun buildNoteViewState(note: NoteInfo) = NoteViewState(
+        note.numberedName,
+        note.name,
+        "${String.format("%.2f", note.freq)} Hz",
+        note.freq,
+        note.delta
+    )
+
+    private fun configTuner(tunerMode: TunerMode = getViewState().mode) {
+        disposable.add(getInstrument(tunerMode)
+            .doOnSuccess { tuner.configTuner(it.first, it.second) }
+            .subscribe())
+    }
+
+    private fun getInstrument(tunerMode: TunerMode): Single<Pair<Instrument, Int>> {
+        return instrumentRepository
             .getSelectedTuning()
-            .doOnSuccess { tuner.setInstrument(it) }
-            .map { it.toInstrumentInfo(getMiddleAFreq(offset)) }
-            .observeOn(uiScheduler)
-            .subscribeBy {
+            .map { it to getOffset() }
+            .doOnSuccess {
+                val info = it.first.toInstrumentInfo(440 + it.second)
                 _tunerViewState.postValue(
                     TunerViewState(
-                        tuningName = it.name,
-                        category = it.category,
-                        noteNames = it.noteNames,
-                        middleA = it.middleA
+                        tuningName = info.name,
+                        category = info.category,
+                        noteNames = info.noteNames,
+                        middleA = info.middleA,
+                        mode = tunerMode
                     )
                 )
-            })
+            }
     }
 
     private fun showSelectTuning(category: String) {
@@ -125,10 +139,6 @@ class TunerViewModel(
                 }
             })
     }
-
-    private fun getMiddleAFreq(offset: Int): Int = 440 + offset
-
-    private fun <T> Flowable<T>.toUiThreadLiveData() = this.observeOn(uiScheduler).toLiveData()
 
     private fun getViewState(): TunerViewState = _tunerViewState.value ?: TunerViewState()
 }

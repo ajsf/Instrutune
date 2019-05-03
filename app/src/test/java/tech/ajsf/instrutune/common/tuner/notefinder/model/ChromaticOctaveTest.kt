@@ -3,8 +3,6 @@ package tech.ajsf.instrutune.common.tuner.notefinder.model
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import tech.ajsf.instrutune.common.tuner.notefinder.model.ChromaticOctave
-import tech.ajsf.instrutune.common.tuner.notefinder.model.MusicalNote
 
 internal class ChromaticOctaveTest {
 

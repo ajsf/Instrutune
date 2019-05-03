@@ -24,12 +24,13 @@ class CustomOnboarding(private val activity: CustomTuningActivity) : Onboarding(
 
     private var onboardingState: OnboardingState = StepOne
 
-    fun requestOnboarding() = with(AlertDialog.Builder(activity)) {
+    override fun requestOnboarding() = with(AlertDialog.Builder(activity)) {
         setMessage(activity.getString(R.string.custom_onboarding_request))
         setPositiveButton(activity.getString(R.string.yes)) { _, _ -> showOnboarding() }
         setNegativeButton(activity.getString(R.string.no)) { _, _ -> activity.onboarding = null }
         setCancelable(false)
-    }.show().run { }
+        finishBuilding()
+    }.show()
 
     private fun showOnboarding() = with(activity) {
         onboarding = (this@CustomOnboarding)

@@ -10,6 +10,8 @@ import kotlinx.android.synthetic.main.activity_tuner.*
 import kotlinx.android.synthetic.main.tuner_view.*
 import org.kodein.di.Kodein
 import tech.ajsf.instrutune.R
+import tech.ajsf.instrutune.common.tuner.InstrumentMode
+import tech.ajsf.instrutune.common.tuner.TunerMode
 import tech.ajsf.instrutune.common.view.InjectedActivity
 import tech.ajsf.instrutune.common.viewmodel.buildViewModel
 import tech.ajsf.instrutune.features.customtuning.CUSTOM_TUNING_EXTRA
@@ -29,6 +31,8 @@ class TunerActivity : InjectedActivity() {
 
     private val recordAudioPermission = RecordAudioPermissionHandler(this)
 
+    private var onboarding: TunerOnboarding? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tuner)
@@ -41,31 +45,55 @@ class TunerActivity : InjectedActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        onboarding?.clear()
         viewModel.onActivityDestroyed()
     }
 
     private fun setupUi(requestOnboarding: Boolean = false) {
         initViewModel()
         initButtons()
-        if (requestOnboarding) TunerOnboarding(this).requestOnboarding()
+        if (requestOnboarding) {
+            onboarding = TunerOnboarding(this)
+            onboarding?.requestOnboarding()
+        }
     }
 
     private fun initViewModel(): Unit = with(viewModel) {
-        tuner_view.setChromaticLiveData(chromaticViewState, this@TunerActivity)
-        tuner_view.setInstrumentLiveData(selectedNoteViewState, this@TunerActivity)
+        tuner_view.setNoteViewState(noteViewState, this@TunerActivity)
 
         tunerViewState.observe(this@TunerActivity, Observer { viewState ->
             viewState?.let {
                 instrument_name_text.text = it.tuningName
                 middlea_freq_text.text = it.middleA
                 tuner_view.selectInstrument(it.noteNames)
+                setMode(it.mode)
             }
         })
+    }
+
+    private fun setMode(mode: TunerMode) {
+        tuner_view.clearView()
+        when (mode) {
+            InstrumentMode -> setInstrumentMode()
+            else -> setChromaticMode()
+        }
+    }
+
+    private fun setInstrumentMode() {
+        motionLayout?.transitionToStart()
+        mode_button.text = getString(R.string.instrument_mode)
+    }
+
+    private fun setChromaticMode() {
+        motionLayout?.transitionToEnd()
+        instrument_name_text.text = getString(R.string.chromatic)
+        mode_button.text = getString(R.string.chromatic_mode)
     }
 
     private fun initButtons() {
         instrument_name_text.setOnClickListener { viewModel.showSelectCategory() }
         middlea_freq_text.setOnClickListener { viewModel.showSelectMiddleA() }
+        mode_button.setOnClickListener { viewModel.toggleMode() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -13,8 +13,9 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import tech.ajsf.instrutune.common.data.InstrumentRepository
 import tech.ajsf.instrutune.common.model.Instrument
-import tech.ajsf.instrutune.common.tuner.SelectedNoteInfo
-import tech.ajsf.instrutune.common.tuner.SelectedStringInfo
+import tech.ajsf.instrutune.common.tuner.ChromaticMode
+import tech.ajsf.instrutune.common.tuner.InstrumentMode
+import tech.ajsf.instrutune.common.tuner.NoteInfo
 import tech.ajsf.instrutune.common.tuner.Tuner
 import tech.ajsf.instrutune.common.view.InstrumentDialogHelper
 import tech.ajsf.instrutune.features.tuner.TunerViewModel
@@ -35,9 +36,10 @@ class TunerViewModelTest {
 
     private lateinit var viewModel: TunerViewModel
 
-    private lateinit var stringInfo: List<SelectedStringInfo>
-    private lateinit var noteInfo: List<SelectedNoteInfo>
+    private lateinit var noteInfo: List<NoteInfo>
     private lateinit var instrument: Instrument
+
+    private var offset: Int = 0
 
     @Rule
     @JvmField
@@ -47,13 +49,34 @@ class TunerViewModelTest {
     fun setup() {
         MockitoAnnotations.initMocks(this)
 
-        stringInfo = InstrumentDataFactory.randomStringInfoList()
         noteInfo = InstrumentDataFactory.randomNoteInfoList()
         instrument = InstrumentDataFactory.randomInstrument()
+        offset = randomInt()
 
         whenever(mockRepository.getSelectedTuning()).thenReturn(Single.just(instrument))
-        whenever(mockTuner.instrumentTuning).thenReturn(stringInfo.toFlowable())
-        whenever(mockTuner.mostRecentNoteInfo).thenReturn(noteInfo.toFlowable())
+        whenever(mockRepository.getOffset()).thenReturn(offset)
+        whenever(mockTuner.getTunerFlow()).thenReturn(noteInfo.toFlowable())
+    }
+
+    @Test
+    fun `when first created, the TunerViewState mode is InstrumentMode`() {
+        viewModel = buildViewModel()
+        val viewState = viewModel.tunerViewState.value!!
+        assertEquals(viewState.mode, InstrumentMode)
+    }
+
+    @Test
+    fun `calling toggleMode changes the TunerViewState mode from InstrumentMode to ChromaticMode and back`() {
+        viewModel = buildViewModel()
+
+        viewModel.toggleMode()
+        assertEquals(viewModel.tunerViewState.value!!.mode, ChromaticMode)
+
+        viewModel.toggleMode()
+        assertEquals(viewModel.tunerViewState.value!!.mode, InstrumentMode)
+
+        viewModel.toggleMode()
+        assertEquals(viewModel.tunerViewState.value!!.mode, ChromaticMode)
     }
 
     @Test
@@ -63,51 +86,20 @@ class TunerViewModelTest {
     }
 
     @Test
-    fun `it calls setOffset on the tuner with a default of 0 when created`() {
-        viewModel = buildViewModel()
-        verify(mockTuner).setOffset(0)
-    }
-
-    @Test
-    fun `if the repository returns a different offset, it calls setOffset on the tuner with that number when created`() {
-        val offset = randomInt(20)
-        whenever(mockRepository.getOffset()).thenReturn(offset)
-        viewModel = buildViewModel()
-        verify(mockTuner).setOffset(offset)
-    }
-
-    @Test
     fun `it calls getSelectedTuning on the repository when created`() {
         viewModel = buildViewModel()
         verify(mockRepository).getSelectedTuning()
     }
 
     @Test
-    fun `it calls set instrument on the tuner with the instrument returned from getSelectedTuning`() {
+    fun `it calls getTunerFlow with the instrument and offset returned by the repository`() {
         viewModel = buildViewModel()
-        verify(mockTuner).setInstrument(instrument)
+        verify(mockTuner).getTunerFlow()
     }
 
     @Test
-    fun `it maps the instrument to TunerViewState and sends it as LiveData, with a default middleA of 440Hz`() {
+    fun `it maps the instrument to TunerViewState and sends it as LiveData, with a middleA of 440 plus the offset`() {
         viewModel = buildViewModel()
-        viewModel.tunerViewState.observeForever { viewState ->
-            with(viewState) {
-                assertEquals("${instrument.category} (${instrument.tuningName})", tuningName)
-                assertEquals(instrument.category.toString(), category)
-                assertEquals(instrument.notes.map { it.numberedName }, noteNames)
-                assertEquals("A4=440Hz", middleA)
-            }
-        }
-    }
-
-    @Test
-    fun `when there is an offset, the instrument info is created with a middleA of 440 plus the offset`() {
-        val offset = randomInt(20)
-        whenever(mockRepository.getOffset()).thenReturn(offset)
-
-        viewModel = buildViewModel()
-
         val expectedMiddleA = "A4=${440 + offset}Hz"
 
         viewModel.tunerViewState.observeForever { viewState ->
@@ -122,7 +114,7 @@ class TunerViewModelTest {
 
     @Test
     fun `when saveOffset is called, it calls the repository with the same offset`() {
-        val offset = randomInt()
+        offset = randomInt()
         viewModel = buildViewModel()
         viewModel.saveOffset(offset)
         verify(mockRepository).saveOffset(offset)
@@ -130,18 +122,18 @@ class TunerViewModelTest {
 
     @Test
     fun `when saveOffset is called, it calls the repository for the saved offset, and sets the tuner with that offset`() {
-        val offset = randomInt()
+        val newOffset = randomInt()
 
         viewModel = buildViewModel()
         reset(mockRepository)
 
-        whenever(mockRepository.getOffset()).thenReturn(offset)
+        whenever(mockRepository.getOffset()).thenReturn(newOffset)
         whenever(mockRepository.getSelectedTuning()).thenReturn(Single.just(instrument))
 
-        viewModel.saveOffset(offset)
+        viewModel.saveOffset(newOffset)
 
         verify(mockRepository).getOffset()
-        verify(mockTuner).setOffset(offset)
+        verify(mockTuner).getTunerFlow()
     }
 
     @Test
@@ -299,24 +291,14 @@ class TunerViewModelTest {
     }
 
     @Test
-    fun `when saveSelectedTuning is called it updates the tuner with the new instrument`() {
-        viewModel = buildViewModel()
-        reset(mockRepository)
-        reset(mockTuner)
-        whenever(mockRepository.getSelectedTuning()).thenReturn(Single.just(instrument))
-
-        val tuningId = randomInt()
-
-        viewModel.saveSelectedTuning(tuningId)
-
-        verify(mockTuner).setInstrument(instrument)
-    }
-
-    @Test
     fun `when saveSelectedTuning is called, it sends the new instrument info to tunerViewState`() {
         viewModel = buildViewModel()
+
         val newInstrument = InstrumentDataFactory.randomInstrument()
+
         whenever(mockRepository.getSelectedTuning()).thenReturn(Single.just(newInstrument))
+        whenever(mockRepository.getOffset()).thenReturn(offset)
+        whenever(mockTuner.getTunerFlow()).thenReturn(noteInfo.toFlowable())
 
         val tuningId = randomInt()
 
@@ -327,41 +309,25 @@ class TunerViewModelTest {
                 assertEquals("${newInstrument.category} (${newInstrument.tuningName})", tuningName)
                 assertEquals(newInstrument.category.toString(), category)
                 assertEquals(newInstrument.notes.map { it.numberedName }, noteNames)
-                assertEquals("A4=440Hz", middleA)
             }
         }
     }
 
     @Test
-    fun `selectedNoteViewState converts the tuner's instrumentTuning Flowable to LiveData`() {
-        val info = InstrumentDataFactory.randomStringInfoList()
-        whenever(mockTuner.instrumentTuning).thenReturn(info.toFlowable())
-
+    fun `when noteViewState is subscribed to it sends the NoteInfo sent by the tuner as NoteViewState`() {
         viewModel = buildViewModel()
+
         var count = 0
 
-        viewModel.selectedNoteViewState.observeForever {
-            assertEquals(info[count], it)
+        viewModel.noteViewState.observeForever {
+            val expectedInfo = noteInfo[count]
+            assertEquals(expectedInfo.name, it.noteName)
+            assertEquals(expectedInfo.delta, it.delta)
+            assertEquals("${String.format("%.2f", expectedInfo.freq)} Hz", it.freqString)
             count++
         }
-        assertEquals(info.size, count)
-    }
 
-    @Test
-    fun `chromaticViewState sends tuner's mostRecentNoteInfo as LiveData`() {
-        val info = InstrumentDataFactory.randomNoteInfoList()
-        whenever(mockTuner.mostRecentNoteInfo).thenReturn(info.toFlowable())
-
-        viewModel = buildViewModel()
-        var count = 0
-
-        viewModel.chromaticViewState.observeForever {
-            assertEquals(info[count].name, it.noteName)
-            assertEquals(info[count].delta, it.delta)
-            assertEquals(info[count].freq, it.freq)
-            count++
-        }
-        assertEquals(info.size, count)
+        assertEquals(noteInfo.size, count)
     }
 
     @Test

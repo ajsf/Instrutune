@@ -25,10 +25,10 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import tech.ajsf.instrutune.R
 import tech.ajsf.instrutune.common.data.InstrumentFactory
+import tech.ajsf.instrutune.common.data.mapper.EntityToInstrumentMapper
 import tech.ajsf.instrutune.common.model.InstrumentCategory
 import tech.ajsf.instrutune.common.tuner.frequencydetection.FrequencyDetector
 import tech.ajsf.instrutune.common.tuner.notefinder.model.MusicalNote
-import tech.ajsf.instrutune.common.tuner.notefinder.model.mapToMusicalNoteList
 import tech.ajsf.instrutune.features.tuner.TunerActivity
 import tech.ajsf.instrutune.rules.OverridesRule
 
@@ -68,7 +68,7 @@ internal class TunerActivityTest {
     fun the_default_view_shows_standard_guitar_and_middleA_equals_440Hz() {
         onView(withText("A4=440Hz")).check(matches(isDisplayed()))
         onView(withText("Guitar (Standard)")).check(matches(isDisplayed()))
-        val stringNames = getInstrument(InstrumentCategory.Guitar).notes.map { it.numberedName }
+        val stringNames = getInstrument(InstrumentCategory.Guitar).numberedNotes.map { it }
         stringNames.forEach {
             onView(withText(it)).check(matches(isDisplayed()))
         }
@@ -99,7 +99,7 @@ internal class TunerActivityTest {
         onView(withText("Bass (Standard)"))
             .check(matches(isDisplayed()))
 
-        val stringNames = getInstrument(InstrumentCategory.Bass).notes.map { it.numberedName }
+        val stringNames = getInstrument(InstrumentCategory.Bass).numberedNotes.map { it }
         stringNames.forEach {
             onView(withText(it)).check(matches(isDisplayed()))
         }
@@ -131,7 +131,9 @@ internal class TunerActivityTest {
 
     @Test
     fun it_displays_the_frequency_sent_by_the_detector() {
+        Thread.sleep(50)
         freqSubject.onNext(firstFreq)
+        Thread.sleep(50)
 
         onView(withText(firstFreq.formatForView()))
             .check(matches(isDisplayed()))
@@ -153,7 +155,7 @@ internal class TunerActivityTest {
         onView(withText("Bass (Standard)"))
             .check(matches(isDisplayed()))
 
-        val stringNames = getInstrument(InstrumentCategory.Bass).notes.map { it.numberedName }
+        val stringNames = getInstrument(InstrumentCategory.Bass).numberedNotes.map { it }
         stringNames.forEach {
             onView(withText(it)).check(matches(isDisplayed()))
         }
@@ -179,11 +181,15 @@ internal class TunerActivityTest {
 
     @Test
     fun it_displays_the_correct_frequency_and_note_number_for_each_guitar_string() {
-        getInstrument(InstrumentCategory.Guitar).mapToMusicalNoteList().forEach {
-            freqSubject.onNext(it.floatFreq)
-            Thread.sleep(15)
+        val mapper = EntityToInstrumentMapper()
+        Thread.sleep(100)
+
+        mapper.toInstrument(getInstrumentEntity(InstrumentCategory.Guitar)).notes.forEach {
+            val freq = it.freq / 1000f
+            freqSubject.onNext(freq)
+            Thread.sleep(100)
             onView(withId(R.id.recent_freq_text))
-                .check(matches(withText(it.floatFreq.formatForView())))
+                .check(matches(withText(freq.formatForView())))
             onView(withId(R.id.note_name_text))
                 .check(matches(withText(MusicalNote.nameFromNumberedName(it.numberedName))))
         }
@@ -202,7 +208,6 @@ internal class TunerActivityTest {
             .check(matches(withText(firstFreq.formatForView())))
 
         freqSubject.onNext(testFreq)
-        Thread.sleep(10)
 
         onView(withId(R.id.recent_freq_text))
             .check(matches(withText(testFreq.formatForView())))
@@ -215,18 +220,15 @@ internal class TunerActivityTest {
         }
     }
 
-    private fun getInstrument(category: InstrumentCategory) = InstrumentFactory
-        .buildInstrumentsFromEntities(getInstrumentEntity(category)).first()
+    private fun getInstrument(category: InstrumentCategory) = getInstrumentEntity(category)
 
     private fun getInstrumentEntity(category: InstrumentCategory, name: String = "Standard") =
-        listOf(
-            InstrumentFactory
-                .getDefaultEntities()
-                .find { it.category == category.toString() && it.tuningName == name }!!
-        )
+        InstrumentFactory
+            .getDefaultEntities()
+            .find { it.category == category.toString() && it.tuningName == name }!!
 
     private fun randomFreq() = Math.random().toFloat() * 111
 
-    private fun Float.formatForView() = String.format("%.2f", this)
+    private fun Float.formatForView() = "${String.format("%.2f", this)} Hz"
 }
 

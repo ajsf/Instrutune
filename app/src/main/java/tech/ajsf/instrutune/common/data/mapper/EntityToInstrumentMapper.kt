@@ -7,23 +7,23 @@ import tech.ajsf.instrutune.common.model.InstrumentNote
 import tech.ajsf.instrutune.common.tuner.notefinder.model.ChromaticOctave
 
 interface InstrumentMapper {
-    fun toInstrument(entity: InstrumentEntity, offset: Int = 0): Instrument
-    fun toInstrumentList(entities: List<InstrumentEntity>, offset: Int = 0): List<Instrument>
+    fun toInstrument(entity: InstrumentEntity): Instrument
+    fun toInstrumentList(entities: List<InstrumentEntity>): List<Instrument>
 }
 
 class EntityToInstrumentMapper : InstrumentMapper {
 
-    override fun toInstrument(entity: InstrumentEntity, offset: Int): Instrument =
-        entity.buildInstrument(offset)
+    override fun toInstrument(entity: InstrumentEntity): Instrument =
+        entity.buildInstrument()
 
-    override fun toInstrumentList(entities: List<InstrumentEntity>, offset: Int) =
-        entities.map { it.buildInstrument(offset) }
+    override fun toInstrumentList(entities: List<InstrumentEntity>) =
+        entities.map { it.buildInstrument() }
 
-    private fun InstrumentEntity.buildInstrument(offset: Int): Instrument =
-        Instrument(InstrumentCategory.valueOf(category), tuningName, buildNoteList(offset), id)
+    private fun InstrumentEntity.buildInstrument(): Instrument =
+        Instrument(InstrumentCategory.valueOf(category), tuningName, buildNoteList(), id)
 
-    private fun InstrumentEntity.buildNoteList(offset: Int): List<InstrumentNote> {
-        val notes = ChromaticOctave.createFullRange(offset)
+    private fun InstrumentEntity.buildNoteList(): List<InstrumentNote> {
+        val notes = ChromaticOctave.createFullRange()
         return numberedNotes.map { numberedNote ->
             notes.firstOrNull { it.numberedName == numberedNote }
                 ?: throw RuntimeException("Invalid note")

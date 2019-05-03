@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder
 import tech.ajsf.instrutune.R
 
-abstract class Onboarding(private val activity: AppCompatActivity) {
+abstract class Onboarding(private val activity: AppCompatActivity) : DialogHelper() {
+
+    abstract fun requestOnboarding()
 
     protected fun builder() = BubbleShowCaseBuilder(activity)
         .backgroundColorResourceId(R.color.secondaryColor)

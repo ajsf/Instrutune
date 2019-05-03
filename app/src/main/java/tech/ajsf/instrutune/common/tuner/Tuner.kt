@@ -6,39 +6,44 @@ import io.reactivex.schedulers.Schedulers
 import tech.ajsf.instrutune.common.model.Instrument
 import tech.ajsf.instrutune.common.tuner.frequencydetection.FrequencyDetector
 import tech.ajsf.instrutune.common.tuner.notefinder.NoteFinder
-import tech.ajsf.instrutune.common.tuner.notefinder.model.MusicalNote
 
-data class SelectedStringInfo(val numberedName: String, val delta: Float)
-data class SelectedNoteInfo(val name: String, val delta: Int, val freq: String)
+sealed class TunerMode
+object InstrumentMode : TunerMode()
+object ChromaticMode : TunerMode()
 
-class Tuner(frequencyDetector: FrequencyDetector, scheduler: Scheduler = Schedulers.computation()) {
+data class NoteInfo(
+    val numberedName: String = "",
+    val name: String = " ",
+    val delta: Int = 0,
+    val freq: Float = 0f
+)
 
-    private val audioFeed: Flowable<Float> = frequencyDetector
-        .listen().observeOn(scheduler)
+class Tuner(
+    private val frequencyDetector: FrequencyDetector,
+    private val mapper: DetectionToNoteMapper,
+    private val scheduler: Scheduler = Schedulers.computation()
+) {
 
-    private var chromaticNoteFinder: NoteFinder? = null
-    private var instrumentNoteFinder: NoteFinder? = null
+    var mode: TunerMode = InstrumentMode
 
-    val instrumentTuning: Flowable<SelectedStringInfo> = audioFeed
-        .filter { instrumentNoteFinder != null }
-        .map { instrumentNoteFinder?.findNote(it) }
-        .map { SelectedStringInfo(it.numberedName, it.delta.toFloat()) }
+    private var chromaticNoteFinder: NoteFinder = NoteFinder.chromaticNoteFinder(0)
+    private var instrumentNoteFinder: NoteFinder = chromaticNoteFinder
 
-    val mostRecentNoteInfo: Flowable<SelectedNoteInfo> = audioFeed
-        .filter { chromaticNoteFinder != null }
-        .filter { it != -1f }
-        .map { it to chromaticNoteFinder!!.findNote(it) }
-        .map {
-            val name = MusicalNote.nameFromNumberedName(it.second.numberedName)
-            val freq = String.format("%.2f", it.first)
-            SelectedNoteInfo(name, it.second.delta, freq)
-        }
-
-    fun setInstrument(instrument: Instrument) {
-        instrumentNoteFinder = NoteFinder.instrumentNoteFinder(instrument)
+    fun getTunerFlow(): Flowable<NoteInfo> {
+        return frequencyDetector
+            .listen()
+            .observeOn(scheduler)
+            .map {
+                val finder = when (mode) {
+                    InstrumentMode -> instrumentNoteFinder
+                    else -> chromaticNoteFinder
+                }
+                mapper.map(it, finder.findNote(it))
+            }
     }
 
-    fun setOffset(offset: Int) {
+    fun configTuner(instrument: Instrument, offset: Int) {
         chromaticNoteFinder = NoteFinder.chromaticNoteFinder(offset)
+        instrumentNoteFinder = NoteFinder.instrumentNoteFinder(instrument, offset)
     }
 }

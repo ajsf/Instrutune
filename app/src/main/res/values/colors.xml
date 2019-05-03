@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="backgroundColor">#222329</color>
-    <color name="colorDisabled">#5F5F64</color>
+    <color name="colorDisabled">#656565</color>
     <color name="textColor">#FFF</color>
     <color name="alpha">#00000000</color>
 

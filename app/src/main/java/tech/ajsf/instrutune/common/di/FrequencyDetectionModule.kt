@@ -4,6 +4,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
+import tech.ajsf.instrutune.common.tuner.DetectionToNoteMapper
 import tech.ajsf.instrutune.common.tuner.Tuner
 import tech.ajsf.instrutune.common.tuner.frequencydetection.FrequencyDetector
 import tech.ajsf.instrutune.common.tuner.frequencydetection.FrequencyDetectorImpl
@@ -24,7 +25,11 @@ fun frequencyDetectionModule() = Kodein.Module("frequencyDetectionModule") {
         TarsosDetectionEngine(instance(), instance())
     }
 
+    bind<DetectionToNoteMapper>() with provider {
+        DetectionToNoteMapper()
+    }
+
     bind<Tuner>() with provider {
-        Tuner(instance())
+        Tuner(instance(), instance())
     }
 }

@@ -44,40 +44,6 @@ internal class EntityToInstrumentMapperTest {
     }
 
     @Test
-    fun `when an offset of 6 is sent, it creates a guitar with frequencies tuned to A4 = 446`() {
-        val entity = getInstrumentEntity(InstrumentCategory.Guitar)
-        val guitar = mapper.toInstrument(entity, 6)
-
-        val freqs = guitar.notes.map { it.freq }
-        val expectedFreqs = listOf(
-            83531,
-            111500,
-            148835,
-            198670,
-            250309,
-            334122
-        )
-        assertEquals(expectedFreqs, freqs)
-    }
-
-    @Test
-    fun `when an offset of -8 is sent, it creates a guitar with frequencies tuned to A4 = 432`() {
-        val entity = getInstrumentEntity(InstrumentCategory.Guitar)
-        val guitar = mapper.toInstrument(entity, -8)
-
-        val freqs = guitar.notes.map { it.freq }
-        val expectedFreqs = listOf(
-            80909,
-            108000,
-            144163,
-            192434,
-            242452,
-            323634
-        )
-        assertEquals(expectedFreqs, freqs)
-    }
-
-    @Test
     fun `toInstrumentList maps each entity`() {
         val entities = InstrumentFactory.getDefaultEntities()
         val instruments = mapper.toInstrumentList(entities)

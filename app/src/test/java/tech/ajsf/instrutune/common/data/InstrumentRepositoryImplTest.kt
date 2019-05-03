@@ -40,7 +40,6 @@ internal class InstrumentRepositoryImplTest {
     private lateinit var randomCategory: String
     private lateinit var entities: List<InstrumentEntity>
     private lateinit var instruments: List<Instrument>
-    private var offset = 0
     private var id = 0
 
     @BeforeEach
@@ -52,13 +51,7 @@ internal class InstrumentRepositoryImplTest {
         randomCategory = randomString()
         entities = InstrumentDataFactory.randomInstrumentEntityList()
         instruments = InstrumentDataFactory.randomInstrumentList()
-        offset = randomInt()
         id = randomInt()
-    }
-
-    @Test
-    fun `when first created, it calls getInt on the SharedPreferences, with a default value of 0`() {
-        verify(mockPrefs).getInt(any(), eq(0))
     }
 
     @Test
@@ -91,18 +84,6 @@ internal class InstrumentRepositoryImplTest {
     }
 
     @Test
-    fun `if prefs returns an offset other than 0, that is passed to the mapper when getAllTunings is called`() {
-        stubOffset()
-
-        whenever(mockDao.getAllInstruments()).thenReturn(Single.just(entities))
-
-        repository.getAllTunings().test()
-        scheduler.triggerActions()
-
-        verify(mockMapper).toInstrumentList(entities, offset)
-    }
-
-    @Test
     fun `when getTuningsForCategory is called, it calls getInstrumentsForCategory on the dao`() {
         stubGetInstrumentsForCategory()
         repository.getTuningsForCategory(randomCategory)
@@ -128,18 +109,6 @@ internal class InstrumentRepositoryImplTest {
         scheduler.triggerActions()
 
         testSubscriber.assertValue(instruments)
-    }
-
-    @Test
-    fun `if prefs returns an offset other than 0, that is passed to the mapper when getTuningsForCategory is called`() {
-        stubOffset()
-
-        whenever(mockDao.getInstrumentsForCategory(randomCategory)).thenReturn(Single.just(entities))
-
-        repository.getTuningsForCategory(randomCategory).test()
-        scheduler.triggerActions()
-
-        verify(mockMapper).toInstrumentList(entities, offset)
     }
 
     @Test
@@ -169,18 +138,6 @@ internal class InstrumentRepositoryImplTest {
         scheduler.triggerActions()
 
         testSubscriber.assertValue(instruments.first())
-    }
-
-    @Test
-    fun `if prefs returns an offset other than 0, that is passed to the mapper when getTuningsById is called`() {
-        stubOffset()
-
-        whenever(mockDao.getInstrumentById(id)).thenReturn(Single.just(entities.first()))
-
-        repository.getTuningById(id).test()
-        scheduler.triggerActions()
-
-        verify(mockMapper).toInstrument(entities.first(), offset)
     }
 
     @Test
@@ -375,7 +332,10 @@ internal class InstrumentRepositoryImplTest {
 
     @Test
     fun `when getOffset is called, it returns the offset returned by prefs`() {
-        stubOffset()
+        val offset = randomInt()
+        whenever(mockPrefs.getInt(any(), any())).thenReturn(offset)
+
+        repository = InstrumentRepositoryImpl(mockPrefs, mockDao, mockMapper, scheduler)
 
         assertEquals(offset, repository.getOffset())
     }
@@ -384,6 +344,7 @@ internal class InstrumentRepositoryImplTest {
     fun `when saveOffset is called, it calls edit on prefs`() {
         whenever(mockPrefs.edit()).thenReturn(mockEditor)
 
+        val offset = randomInt()
         repository.saveOffset(offset)
 
         verify(mockPrefs).edit()
@@ -393,18 +354,10 @@ internal class InstrumentRepositoryImplTest {
     fun `when saveOffset is called, it calls putInt on the Editor with the offset`() {
         whenever(mockPrefs.edit()).thenReturn(mockEditor)
 
+        val offset = randomInt()
         repository.saveOffset(offset)
 
         verify(mockEditor).putInt(any(), eq(offset))
-    }
-
-    @Test
-    fun `when saveOffset is called, it updates the locally cached offset`() {
-        whenever(mockPrefs.edit()).thenReturn(mockEditor)
-
-        repository.saveOffset(offset)
-
-        assertEquals(offset, repository.getOffset())
     }
 
     private fun stubGetAllInstruments() {
@@ -432,14 +385,6 @@ internal class InstrumentRepositoryImplTest {
         val instrument = instruments.first()
         whenever(mockDao.getInstrumentById(id)).thenReturn(Single.just(entity))
         whenever(mockMapper.toInstrument(entity)).thenReturn(instrument)
-    }
-
-    private fun stubOffset() {
-        whenever(mockPrefs.getInt(any(), any())).thenReturn(offset)
-        repository = InstrumentRepositoryImpl(mockPrefs, mockDao, mockMapper, scheduler)
-
-        whenever(mockMapper.toInstrumentList(entities, offset)).thenReturn(instruments)
-        whenever(mockMapper.toInstrument(entities.first(), offset)).thenReturn(instruments.first())
     }
 
     private fun stubInsert(): InstrumentEntity {

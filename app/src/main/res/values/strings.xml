@@ -30,8 +30,9 @@
     <string name="no">No</string>
 
     <string name="tuner_onboarding_request">Thanks for granting the permission. Would you like a brief intro?</string>
-    <string name="vu_showcase_text">This indicator lights up when you are close to an instrument note, and shows how sharp or flat you are in relation to that note.</string>
-    <string name="chromatic_showcase_text">This is the note you are closest to chromatically, and the indicators show how sharp or flat you are in relation to that note.</string>
+    <string name="mode_showcase_text">This button toggles the tuner between instrument and chromatic modes.</string>
+    <string name="meter_showcase_text">In Instrument Mode, this meter lights up when you are close to an instrument note, and shows how sharp or flat you are in relation to that note. In Chromatic Mode, the meter lights up in relation to the closest chromatic note.</string>
+    <string name="note_name_showcase">This is the note you are closest to. In Instrument Mode, this is limited to the notes on selected instrument. In Chromatic Mode, it can be any chromatic note.</string>
     <string name="instrument_showcase_text">You can tap here (or in the settings menu) to select an instrument.</string>
     <string name="middleA_showcase_text">You can tap here (or in the settings menu) to change the middle A frequency. That\'s all for now, we hope you enjoy Instrutune!</string>
 
@@ -49,5 +50,9 @@
     <string name="btn_blank_text">Start with a blank instrument</string>
     <string name="btn_template_text">Pick a starting instrument</string>
     <string name="btn_edit_text">Edit a custom instrument</string>
-    \
+    <string name="chromatic_mode">Chromatic Mode</string>
+    <string name="instrument_mode">Instrument Mode</string>
+    <string name="chromatic">Chromatic</string>
+    <string name="blank_freq">000.00 Hz</string>
+
 </resources>
