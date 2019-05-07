@@ -13,7 +13,7 @@ import tech.ajsf.instrutune.features.customtuning.CustomTuningViewModel
 
 fun customTuningActivityModule() = Kodein.Module("customTuningActivityModule") {
     bind<ViewModel>(tag = CustomTuningViewModel::class.java.simpleName) with provider {
-        CustomTuningViewModel(instance())
+        CustomTuningViewModel(instance(), instance())
     }
     bind<ViewModelProvider.Factory>() with singleton {
         ViewModelFactory(kodein.direct)

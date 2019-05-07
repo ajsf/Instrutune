@@ -111,7 +111,7 @@ internal abstract class AbstractInstrumentNoteFinderTests {
             val expectedString = instrument.notes.find { it.freq / 1000f == sortedFreqs[i] }!!
 
             assertEquals(expectedString.numberedName, noteData.numberedName)
-            assertTrue { noteData.delta in (-100..-99) }
+            assertTrue { noteData.delta in (-100..-98) }
         }
     }
 }

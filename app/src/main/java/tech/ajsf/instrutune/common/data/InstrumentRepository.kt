@@ -59,13 +59,13 @@ class InstrumentRepositoryImpl(
 
     override fun deleteTuning(id: Int): Completable = instrumentDao
         .getInstrumentById(id)
-        .map {
+        .flatMapCompletable {
             if (it.category == InstrumentCategory.Custom.toString()) {
                 instrumentDao.deleteInstrumentById(id)
             } else {
                 throw RuntimeException("Only custom tunings can be deleted.")
             }
-        }.ignoreElement()
+        }
         .subscribeOn(scheduler)
 
     override fun getCategories(): Single<List<String>> = instrumentDao

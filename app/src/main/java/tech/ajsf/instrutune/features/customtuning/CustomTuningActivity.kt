@@ -12,7 +12,6 @@ import org.kodein.di.Kodein
 import tech.ajsf.instrutune.R
 import tech.ajsf.instrutune.common.model.InstrumentCategory
 import tech.ajsf.instrutune.common.view.InjectedActivity
-import tech.ajsf.instrutune.common.view.InstrumentDialogHelper
 import tech.ajsf.instrutune.common.viewmodel.buildViewModel
 import tech.ajsf.instrutune.features.customtuning.di.customTuningActivityModule
 import tech.ajsf.instrutune.features.customtuning.view.ConfirmDeleteDialog
@@ -30,8 +29,6 @@ class CustomTuningActivity : InjectedActivity() {
 
     private val viewModel: CustomTuningViewModel by buildViewModel()
 
-    private val dialogHelper = InstrumentDialogHelper(this)
-
     var onboarding: CustomOnboarding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +41,7 @@ class CustomTuningActivity : InjectedActivity() {
     override fun onDestroy() {
         super.onDestroy()
         onboarding?.clear()
+        viewModel.onActivityDestroyed()
     }
 
     private fun initUi() {
@@ -65,7 +63,7 @@ class CustomTuningActivity : InjectedActivity() {
             if (viewState.notes.isNotEmpty()) {
                 onboarding?.advance()
             }
-            if (viewState.checkOnboarding) onboardCheck()
+            if (viewState.requestOnboarding) requestOnboarding()
         })
 
         viewModel.buildingLiveData.observe(this, Observer {
@@ -82,16 +80,16 @@ class CustomTuningActivity : InjectedActivity() {
         if (viewModel.enableEdit().not()) btn_edit.isEnabled = false
     }
 
-    private fun onboardCheck() {
+    private fun requestOnboarding() {
+        onboarding = CustomOnboarding(this)
+        onboarding?.requestOnboarding()
         viewModel.onboardingChecked()
-        val customTunings = viewModel.getTuningsForCategory(InstrumentCategory.Custom.toString())
-        if (customTunings.isEmpty()) CustomOnboarding(this).requestOnboarding()
     }
 
     private fun initStarter() {
         btn_blank.setOnClickListener { viewModel.startBuilder() }
-        btn_template.setOnClickListener { selectInstrument() }
-        btn_edit.setOnClickListener { selectTuning() }
+        btn_template.setOnClickListener { viewModel.showSelectCategory() }
+        btn_edit.setOnClickListener { viewModel.showSelectTuning(InstrumentCategory.Custom.toString()) }
     }
 
     private fun initStringsView() = with(strings_view) {
@@ -100,30 +98,13 @@ class CustomTuningActivity : InjectedActivity() {
         moveStringCallback = { oldIndex, newIndex -> viewModel.moveNote(oldIndex, newIndex) }
     }
 
-    private fun selectInstrument() {
-        dialogHelper.showSelectInstrumentDialog(viewModel.getCategories()) { category ->
-            selectTuning(category)
-        }
-    }
-
-    private fun selectTuning(category: String = InstrumentCategory.Custom.toString()) {
-        val tunings = viewModel.getTuningsForCategory(category)
-        if (tunings.isNotEmpty()) {
-            dialogHelper.showSelectTuningDialog(tunings.map { it.tuningName }) {
-                val tuningId = tunings[it].id
-                if (tuningId != null) viewModel.startBuilder(tuningId)
-            }
-        } else {
-            viewModel.startBuilder()
-        }
-    }
-
     private fun saveAndFinish() {
-        val id = viewModel.saveTuningAndGetId()
-        val data = Intent()
-        data.putExtra(CUSTOM_TUNING_EXTRA, id)
-        setResult(Activity.RESULT_OK, data)
-        finish()
+        viewModel.saveTuningAndExecuteAction {
+            val data = Intent()
+            data.putExtra(CUSTOM_TUNING_EXTRA, it)
+            setResult(Activity.RESULT_OK, data)
+            finish()
+        }
     }
 
     private fun deleteAndFinish() {

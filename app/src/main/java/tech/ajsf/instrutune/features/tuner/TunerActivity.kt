@@ -118,6 +118,7 @@ class TunerActivity : InjectedActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CUSTOM_TUNING_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val id = data?.getIntExtra(CUSTOM_TUNING_EXTRA, -1)
             viewModel.saveSelectedTuning(id ?: -1)

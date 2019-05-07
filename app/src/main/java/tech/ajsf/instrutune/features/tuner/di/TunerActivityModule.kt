@@ -9,19 +9,16 @@ import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 import tech.ajsf.instrutune.common.di.frequencyDetectionModule
-import tech.ajsf.instrutune.common.view.InstrumentDialogHelper
 import tech.ajsf.instrutune.common.viewmodel.ViewModelFactory
 import tech.ajsf.instrutune.features.tuner.TunerViewModel
 
 fun tunerActivityModule() = Kodein
     .Module("tunerActivityModule") {
-        bind<InstrumentDialogHelper>() with provider { InstrumentDialogHelper(instance()) }
         bind<ViewModel>(tag = TunerViewModel::class.java.simpleName) with provider {
             TunerViewModel(instance(), instance(), instance())
         }
         bind<ViewModelProvider.Factory>() with singleton {
             ViewModelFactory(kodein.direct)
         }
-
         import(frequencyDetectionModule())
     }

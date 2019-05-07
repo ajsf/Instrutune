@@ -2,16 +2,20 @@ package tech.ajsf.instrutune.features.customtuning
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
 import tech.ajsf.instrutune.common.data.InstrumentRepository
 import tech.ajsf.instrutune.common.model.InstrumentCategory
 import tech.ajsf.instrutune.common.tuner.notefinder.model.ChromaticOctave
+import tech.ajsf.instrutune.common.view.InstrumentDialogHelper
+import tech.ajsf.instrutune.common.viewmodel.BaseViewModel
 
 data class CustomTuningViewState(
     val notes: List<String> = listOf(),
     val tuningName: String = "",
     val id: Int? = null,
-    val checkOnboarding: Boolean = true
+    val requestOnboarding: Boolean
 )
 
 data class BuilderAction(
@@ -20,8 +24,10 @@ data class BuilderAction(
 )
 
 class CustomTuningViewModel(
-    private val instrumentRepository: InstrumentRepository
-) : ViewModel() {
+    override val instrumentRepository: InstrumentRepository,
+    override val dialogHelper: InstrumentDialogHelper,
+    override val uiScheduler: Scheduler = AndroidSchedulers.mainThread()
+) : BaseViewModel() {
 
     val buildingLiveData: LiveData<BuilderAction>
         get() = _building
@@ -33,13 +39,13 @@ class CustomTuningViewModel(
 
     private val _building = MutableLiveData<BuilderAction>()
 
-    private val tunings = instrumentRepository
-        .getAllTunings()
-        .blockingGet()
-        .groupBy { it.category }
-
     init {
-        _viewState.postValue(CustomTuningViewState())
+        disposable.add(
+            getTunings(InstrumentCategory.Custom.toString())
+                .subscribeBy {
+                    _viewState.postValue(CustomTuningViewState(requestOnboarding = it.isEmpty()))
+                }
+        )
         _building.postValue(BuilderAction())
     }
 
@@ -72,26 +78,25 @@ class CustomTuningViewModel(
             InstrumentCategory.Custom.toString()
         )
 
-    fun saveTuningAndGetId(): Int {
+    fun saveTuningAndExecuteAction(action: (Int) -> Unit) {
         val (notes, tuningName, id) = getViewState()
-        return instrumentRepository.saveTuning(tuningName, notes, id)
-            .blockingGet()
+        disposable.add(
+            instrumentRepository
+                .saveTuning(tuningName, notes, id)
+                .subscribeBy {
+                    action(it)
+                })
     }
 
-    fun deleteTuning() = getViewState().id?.let { instrumentRepository.deleteTuning(it) }
-
-    fun getCategories(): List<String> = instrumentRepository.getCategories()
-        .blockingGet()
-        .filter { it != InstrumentCategory.Custom.toString() }
-
-    fun getTuningsForCategory(category: String) =
-        tunings[InstrumentCategory.valueOf(category)] ?: listOf()
+    fun deleteTuning() = getViewState().id?.let {
+        instrumentRepository.deleteTuning(it).subscribe()
+    }
 
     fun startBuilder(name: String = "") {
         _building.postValue(BuilderAction(true, name))
     }
 
-    fun startBuilder(id: Int) {
+    private fun startBuilder(id: Int) {
         instrumentRepository
             .getTuningById(id)
             .map { instrument ->
@@ -107,7 +112,7 @@ class CustomTuningViewModel(
             }.subscribe()
     }
 
-    fun onboardingChecked() = _viewState.postValue(getViewState().copy(checkOnboarding = false))
+    fun onboardingChecked() = _viewState.postValue(getViewState().copy(requestOnboarding = false))
 
     private fun updateNotes(newNotes: List<String>) {
         val viewState = getViewState()
@@ -118,6 +123,10 @@ class CustomTuningViewModel(
     private fun getNotes() = getViewState().notes.toMutableList()
 
     private fun getViewState() = _viewState.value!!
+
+    override fun onTuningsSelected(id: Int) {
+        startBuilder(id)
+    }
 }
 
 fun <T> MutableList<T>.moveItem(oldIndex: Int, newIndex: Int) {

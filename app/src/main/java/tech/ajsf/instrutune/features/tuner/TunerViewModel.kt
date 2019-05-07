@@ -14,6 +14,7 @@ import tech.ajsf.instrutune.common.model.Instrument
 import tech.ajsf.instrutune.common.model.toInstrumentInfo
 import tech.ajsf.instrutune.common.tuner.*
 import tech.ajsf.instrutune.common.view.InstrumentDialogHelper
+import tech.ajsf.instrutune.common.viewmodel.BaseViewModel
 
 data class TunerViewState(
     val tuningName: String = "",
@@ -33,11 +34,11 @@ data class NoteViewState(
 
 class TunerViewModel(
     private val tuner: Tuner,
-    private val instrumentRepository: InstrumentRepository,
-    private val dialogHelper: InstrumentDialogHelper,
-    private val uiScheduler: Scheduler = AndroidSchedulers.mainThread()
+    override val instrumentRepository: InstrumentRepository,
+    override val dialogHelper: InstrumentDialogHelper,
+    override val uiScheduler: Scheduler = AndroidSchedulers.mainThread()
 ) :
-    ViewModel() {
+    BaseViewModel() {
 
     val tunerViewState: LiveData<TunerViewState>
         get() = _tunerViewState
@@ -50,25 +51,9 @@ class TunerViewModel(
 
     private val _tunerViewState: MutableLiveData<TunerViewState> = MutableLiveData()
 
-    private val disposable = CompositeDisposable()
-
     init {
         configTuner()
     }
-
-    fun onActivityDestroyed() {
-        dialogHelper.clear()
-        disposable.clear()
-    }
-
-    fun showSelectCategory(): Unit = disposable.add(instrumentRepository
-        .getCategories()
-        .observeOn(uiScheduler)
-        .subscribeBy { instruments ->
-            dialogHelper
-                .showSelectInstrumentDialog(instruments) { showSelectTuning(it) }
-        }
-    ).run { }
 
     fun showSelectTuning() {
         showSelectTuning(getViewState().category)
@@ -95,6 +80,10 @@ class TunerViewModel(
         val newMode = if (viewState.mode is InstrumentMode) ChromaticMode else InstrumentMode
         tuner.mode = newMode
         _tunerViewState.postValue(viewState.copy(mode = newMode))
+    }
+
+    override fun onTuningsSelected(id: Int) {
+        saveSelectedTuning(id)
     }
 
     private fun buildNoteViewState(note: NoteInfo) = NoteViewState(
@@ -127,17 +116,6 @@ class TunerViewModel(
                     )
                 )
             }
-    }
-
-    private fun showSelectTuning(category: String) {
-        disposable.add(instrumentRepository.getTuningsForCategory(category)
-            .observeOn(uiScheduler)
-            .subscribeBy { tunings ->
-                dialogHelper.showSelectTuningDialog(tunings.map { it.tuningName }) {
-                    val id = tunings[it].id
-                    if (id != null) saveSelectedTuning(id)
-                }
-            })
     }
 
     private fun getViewState(): TunerViewState = _tunerViewState.value ?: TunerViewState()
