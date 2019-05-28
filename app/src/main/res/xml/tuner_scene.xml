@@ -172,25 +172,25 @@
         <Constraint
             android:id="@+id/chevron_left_one"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            motion:layout_constraintBottom_toBottomOf="@id/note_name_text"
+            android:layout_marginBottom="40dp"
+            motion:layout_constraintBottom_toTopOf="@+id/mode_button"
             motion:layout_constraintHorizontal_weight="1"
             motion:layout_constraintLeft_toRightOf="@id/chevron_left_two"
             motion:layout_constraintRight_toLeftOf="@id/note_name_text"
-            motion:layout_constraintTop_toTopOf="@id/note_name_text" />
+            motion:layout_constraintTop_toBottomOf="@id/meter_bottom_guideline" />
 
         <Constraint
             android:id="@+id/note_name_text"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:scaleX="1.4"
             android:scaleY="1.4"
-            motion:layout_constraintBottom_toBottomOf="@id/note_bottom_guide"
+            motion:layout_constraintBottom_toBottomOf="@id/chevron_left_one"
             motion:layout_constraintLeft_toRightOf="@id/chevron_left_one"
             motion:layout_constraintRight_toLeftOf="@id/chevron_right_one"
-            motion:layout_constraintTop_toBottomOf="@id/note_top_guide" />
+            motion:layout_constraintTop_toTopOf="@id/chevron_left_one" />
 
         <Constraint
             android:id="@+id/chevron_right_one"

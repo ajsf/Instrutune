@@ -75,7 +75,6 @@
 
         <Constraint
             android:id="@+id/chevron_left_one"
-            android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             motion:layout_constraintBottom_toBottomOf="@id/note_name_text"
             motion:layout_constraintHorizontal_weight="1"
@@ -87,6 +86,7 @@
             android:id="@+id/note_name_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             motion:layout_constraintBottom_toTopOf="@id/tuner_meter_view"
             motion:layout_constraintLeft_toRightOf="@id/chevron_left_one"
             motion:layout_constraintRight_toLeftOf="@id/chevron_right_one"
@@ -176,25 +176,26 @@
 
         <Constraint
             android:id="@+id/chevron_left_one"
-            motion:layout_constraintBottom_toBottomOf="@id/note_name_text"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintLeft_toRightOf="@id/chevron_left_two"
             motion:layout_constraintRight_toLeftOf="@id/note_name_text"
-            motion:layout_constraintTop_toTopOf="@id/note_name_text"
+            motion:layout_constraintTop_toBottomOf="@id/meter_bottom_guideline"
             motion:layout_constraintWidth_percent=".08" />
 
         <Constraint
             android:id="@+id/note_name_text"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            android:scaleX="1.2"
-            android:scaleY="1.2"
-            motion:layout_constraintBottom_toBottomOf="parent"
+            android:scaleX="1.3"
+            android:scaleY="1.3"
+            motion:layout_constraintBottom_toBottomOf="@id/chevron_left_one"
             motion:layout_constraintLeft_toRightOf="@id/chevron_left_one"
             motion:layout_constraintRight_toLeftOf="@id/chevron_right_one"
-            motion:layout_constraintTop_toBottomOf="@id/meter_bottom_guideline" />
+            motion:layout_constraintTop_toTopOf="@id/chevron_left_one" />
 
         <Constraint
             android:id="@+id/chevron_right_one"
