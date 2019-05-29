@@ -9,8 +9,8 @@ android {
         applicationId "tech.ajsf.instrutune"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 3
-        versionName "beta-1.02"
+        versionCode 4
+        versionName "beta-1.03"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
