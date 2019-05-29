@@ -15,11 +15,13 @@ As well as tunings for:
 
 The tuner allows you to adjust the middle A frequency, allowing you to tune to A = 432 Hz and other tunings. The app also has a feature that allows you to create custom tunings. [Download the beta version on Google Play.](https://play.google.com/store/apps/details?id=tech.ajsf.instrutune)
 
-![Screenshot](.github/screenshot1.png)&nbsp;&nbsp;&nbsp;&nbsp;![Screenshot](.github/TuningDown.gif)
+![Screenshot](.github/screenshot1.png)&nbsp;&nbsp;&nbsp;&nbsp;![Screenshot](.github/screenshot-chromatic.png)
 
 ![Screenshot](.github/screenshot4.png)
 
-![Screenshot](.github/Tuning.gif)&nbsp;&nbsp;&nbsp;&nbsp;![Screenshot](.github/screenshot7.png)
+![Screenshot](.github/TuningDown.gif)&nbsp;&nbsp;&nbsp;&nbsp;![Screenshot](.github/Tuning.gif)
+
+![Screenshot](.github/screenshot5.png)&nbsp;&nbsp;&nbsp;&nbsp;![Screenshot](.github/screenshot7.png)
 
 ![Screenshot](.github/SelectInstrument.gif)&nbsp;&nbsp;&nbsp;&nbsp;![Screenshot](.github/Custom.gif)
 
