@@ -3,6 +3,7 @@ package tech.ajsf.instrutune.features.customtuning.view
 import android.view.MotionEvent
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.get
+import androidx.core.view.size
 import com.elconfidencial.bubbleshowcase.BubbleShowCase
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseListener
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence
@@ -82,42 +83,46 @@ class CustomOnboarding(private val activity: CustomTuningActivity) : Onboarding(
 
     private fun noteShowcase(): Unit = with(activity) {
         this@CustomOnboarding.onboardingState = StepThree
-        val stringView = strings_view[1] as TunerStringView
-        stringView.updateSelectedString(stringView.numberedName, false)
-        noCloseBuilder()
-            .title(getString(R.string.note_showcase_text))
-            .targetView(stringView.string_name_outline)
-            .listener(object : BubbleShowCaseListener {
-                override fun onBackgroundDimClick(bubbleShowCase: BubbleShowCase) {}
-                override fun onBubbleClick(bubbleShowCase: BubbleShowCase) {}
-                override fun onCloseActionImageClick(bubbleShowCase: BubbleShowCase) {}
-                override fun onTargetClick(bubbleShowCase: BubbleShowCase) {
-                    stringView.string_name_outline.performClick()
-                    stringView.updateSelectedString("", false)
-                }
-            }).show()
+        if (strings_view.size > 0) {
+            val stringView = strings_view[1] as TunerStringView
+            stringView.updateSelectedString(stringView.numberedName, false)
+            noCloseBuilder()
+                .title(getString(R.string.note_showcase_text))
+                .targetView(stringView.string_name_outline)
+                .listener(object : BubbleShowCaseListener {
+                    override fun onBackgroundDimClick(bubbleShowCase: BubbleShowCase) {}
+                    override fun onBubbleClick(bubbleShowCase: BubbleShowCase) {}
+                    override fun onCloseActionImageClick(bubbleShowCase: BubbleShowCase) {}
+                    override fun onTargetClick(bubbleShowCase: BubbleShowCase) {
+                        stringView.string_name_outline.performClick()
+                        stringView.updateSelectedString("", false)
+                    }
+                }).show()
+        }
     }
 
     private fun dragShowcase(): Unit = with(activity) {
         this@CustomOnboarding.onboardingState = StepFour
-        val stringView = strings_view[1] as TunerStringView
 
-        noCloseBuilder()
-            .title(getString(R.string.drag_showcase_text))
-            .targetView(stringView)
-            .arrowPosition(BubbleShowCase.ArrowPosition.RIGHT)
-            .dismissOnTargetDown(true)
-            .listener(object : BubbleShowCaseListener {
-                override fun onBackgroundDimClick(bubbleShowCase: BubbleShowCase) {}
-                override fun onBubbleClick(bubbleShowCase: BubbleShowCase) {}
-                override fun onCloseActionImageClick(bubbleShowCase: BubbleShowCase) {}
-                override fun onTargetClick(bubbleShowCase: BubbleShowCase) {}
-                override fun onTouch(bubbleShowCase: BubbleShowCase, event: MotionEvent) {
-                    stringView.dispatchTouchEvent(event)
-                }
+        if (strings_view.size > 0) {
+            val stringView = strings_view[1] as TunerStringView
+            noCloseBuilder()
+                .title(getString(R.string.drag_showcase_text))
+                .targetView(stringView)
+                .arrowPosition(BubbleShowCase.ArrowPosition.RIGHT)
+                .dismissOnTargetDown(true)
+                .listener(object : BubbleShowCaseListener {
+                    override fun onBackgroundDimClick(bubbleShowCase: BubbleShowCase) {}
+                    override fun onBubbleClick(bubbleShowCase: BubbleShowCase) {}
+                    override fun onCloseActionImageClick(bubbleShowCase: BubbleShowCase) {}
+                    override fun onTargetClick(bubbleShowCase: BubbleShowCase) {}
+                    override fun onTouch(bubbleShowCase: BubbleShowCase, event: MotionEvent) {
+                        stringView.dispatchTouchEvent(event)
+                    }
 
-            })
-            .show()
+                })
+                .show()
+        }
     }
 
     private fun nameShowcase(): Unit = with(activity) {
