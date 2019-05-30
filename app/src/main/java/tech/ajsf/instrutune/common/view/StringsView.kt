@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import tech.ajsf.instrutune.R
 
 open class StringsView
 @JvmOverloads constructor(
@@ -17,7 +16,6 @@ open class StringsView
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         setPadding(16, 8, 16, 0)
-        setBackgroundResource(R.color.backgroundColor)
     }
 
     open fun setStrings(numberedNames: List<String>) {

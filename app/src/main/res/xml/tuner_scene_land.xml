@@ -14,14 +14,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            motion:layout_constraintGuide_percent=".32" />
+            motion:layout_constraintGuide_percent=".4" />
 
         <Constraint
             android:id="@+id/meter_bottom_guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            motion:layout_constraintGuide_percent=".58" />
+            motion:layout_constraintGuide_percent=".62" />
 
         <Constraint
             android:id="@+id/note_top_guide"
@@ -41,10 +41,11 @@
             android:id="@+id/recent_freq_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             motion:layout_constraintBottom_toTopOf="@id/tuner_meter_view"
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="@id/vertical_guide"
-            motion:layout_constraintTop_toBottomOf="@id/instrument_name_text" />
+            motion:layout_constraintTop_toTopOf="parent" />
 
         <Constraint
             android:id="@+id/strings_view"
@@ -87,10 +88,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            motion:layout_constraintBottom_toTopOf="@id/tuner_meter_view"
+            motion:layout_constraintBaseline_toBaselineOf="@id/recent_freq_text"
             motion:layout_constraintLeft_toRightOf="@id/chevron_left_one"
-            motion:layout_constraintRight_toLeftOf="@id/chevron_right_one"
-            motion:layout_constraintTop_toBottomOf="@id/middlea_freq_text" />
+            motion:layout_constraintRight_toLeftOf="@id/chevron_right_one" />
 
         <Constraint
             android:id="@+id/chevron_right_one"
@@ -129,23 +129,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            motion:layout_constraintGuide_percent=".3" />
+            motion:layout_constraintGuide_percent=".36" />
 
         <Constraint
             android:id="@+id/meter_bottom_guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            motion:layout_constraintGuide_percent=".6" />
+            motion:layout_constraintGuide_percent=".62" />
 
         <Constraint
             android:id="@+id/recent_freq_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             motion:layout_constraintBottom_toTopOf="@id/tuner_meter_view"
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
-            motion:layout_constraintTop_toBottomOf="@id/instrument_name_text" />
+            motion:layout_constraintTop_toTopOf="parent" />
 
         <Constraint
             android:id="@+id/strings_view"
@@ -177,7 +178,7 @@
         <Constraint
             android:id="@+id/chevron_left_one"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintLeft_toRightOf="@id/chevron_left_two"
             motion:layout_constraintRight_toLeftOf="@id/note_name_text"

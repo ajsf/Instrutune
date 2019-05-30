@@ -5,7 +5,7 @@ import kotlin.math.pow
 data class ChromaticOctave(private val number: Int = 4, private val centerA: Int = 440) {
 
     private val aFreq: Float = centerA * 2.0.pow(number - 4).toFloat()
-    private val A = MusicalNote.fromFloatAndName(
+    private val aNote = MusicalNote.fromFloatAndName(
         aFreq,
         "A",
         (number * 12) + 1
@@ -17,58 +17,58 @@ data class ChromaticOctave(private val number: Int = 4, private val centerA: Int
 
     val notes = listOf(
         MusicalNote.fromName(
-            A.relativeFreq(-9),
+            aNote.relativeFreq(-9),
             "C",
             (number * 12) - 8
         ),
         MusicalNote.fromName(
-            A.relativeFreq(-8),
+            aNote.relativeFreq(-8),
             "C#",
             (number * 12) - 7
         ),
         MusicalNote.fromName(
-            A.relativeFreq(-7),
+            aNote.relativeFreq(-7),
             "D",
             (number * 12) - 6
         ),
         MusicalNote.fromName(
-            A.relativeFreq(-6),
+            aNote.relativeFreq(-6),
             "D#",
             (number * 12) - 5
         ),
         MusicalNote.fromName(
-            A.relativeFreq(-5),
+            aNote.relativeFreq(-5),
             "E",
             (number * 12) - 4
         ),
         MusicalNote.fromName(
-            A.relativeFreq(-4),
+            aNote.relativeFreq(-4),
             "F",
             (number * 12) - 3
         ),
         MusicalNote.fromName(
-            A.relativeFreq(-3),
+            aNote.relativeFreq(-3),
             "F#",
             (number * 12) - 2
         ),
         MusicalNote.fromName(
-            A.relativeFreq(-2),
+            aNote.relativeFreq(-2),
             "G",
             (number * 12) - 1
         ),
         MusicalNote.fromName(
-            A.relativeFreq(-1),
+            aNote.relativeFreq(-1),
             "G#",
             number * 12
         ),
-        A,
+        aNote,
         MusicalNote.fromName(
-            A.relativeFreq(1),
-            "A#",
+            aNote.relativeFreq(1),
+            "aNote#",
             (number * 12) + 2
         ),
         MusicalNote.fromName(
-            A.relativeFreq(2),
+            aNote.relativeFreq(2),
             "B",
             (number * 12) + 3
         )

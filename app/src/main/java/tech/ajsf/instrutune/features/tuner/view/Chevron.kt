@@ -2,13 +2,13 @@ package tech.ajsf.instrutune.features.tuner.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import tech.ajsf.instrutune.R
 
 abstract class Chevron @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : ImageView(context, attrs, defStyleAttr) {
+) : AppCompatImageView(context, attrs, defStyleAttr) {
 
     private val activeColor: Int = ContextCompat.getColor(context, R.color.secondaryColor)
     private val inactiveColor: Int = ContextCompat.getColor(context, R.color.colorDisabled)

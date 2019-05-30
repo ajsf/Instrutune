@@ -11,8 +11,6 @@
     <color name="secondaryColor">#d81b60</color>
     <color name="secondaryLightColor">#ff5c8d</color>
     <color name="secondaryDarkColor">#a00037</color>
-    <color name="primaryTextColor">#ffffff</color>
-    <color name="secondaryTextColor">#ffffff</color>
 
     <color name="indicator_in">#00C853</color>
     <color name="indicator_out_1">#4D9648</color>

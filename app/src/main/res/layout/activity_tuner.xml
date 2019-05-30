@@ -4,7 +4,6 @@
     android:id="@+id/tuner_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
     android:paddingLeft="4dp"
     android:paddingTop="8dp"
     android:paddingRight="4dp"

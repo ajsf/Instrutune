@@ -8,4 +8,5 @@
     android:paddingRight="1dp"
     android:paddingBottom="6dp"
     android:scaleType="fitXY"
-    android:src="@drawable/meter_indicator" />
+    android:src="@drawable/meter_indicator"
+    android:contentDescription="@string/note_name_description" />

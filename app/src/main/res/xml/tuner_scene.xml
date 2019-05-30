@@ -14,14 +14,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            motion:layout_constraintGuide_percent=".18" />
+            motion:layout_constraintGuide_percent=".2" />
 
         <Constraint
             android:id="@+id/meter_bottom_guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            motion:layout_constraintGuide_percent=".33" />
+            motion:layout_constraintGuide_percent=".35" />
 
         <Constraint
             android:id="@+id/note_top_guide"

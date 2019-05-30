@@ -2,13 +2,10 @@ package tech.ajsf.instrutune.features.tuner
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.toLiveData
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.subscribeBy
 import tech.ajsf.instrutune.common.data.InstrumentRepository
 import tech.ajsf.instrutune.common.model.Instrument
 import tech.ajsf.instrutune.common.model.toInstrumentInfo

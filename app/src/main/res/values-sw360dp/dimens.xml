@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="string_width">48dp</dimen>
+    <dimen name="string_text_size">20sp</dimen>
+    <dimen name="note_text_size">64sp</dimen>
+    <dimen name="note_text_size_land">44sp</dimen>
+</resources>

@@ -1,10 +1,5 @@
 package tech.ajsf.instrutune.common.tuner.frequencydetection
 
-import tech.ajsf.instrutune.common.tuner.frequencydetection.FrequencyDetector
-import tech.ajsf.instrutune.common.tuner.frequencydetection.FrequencyDetectorImpl
-import tech.ajsf.instrutune.test.data.TestDataFactory
-import tech.ajsf.instrutune.common.tuner.frequencydetection.detector.DetectionEngine
-import tech.ajsf.instrutune.common.tuner.frequencydetection.model.DetectionResult
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
@@ -15,6 +10,9 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import tech.ajsf.instrutune.common.tuner.frequencydetection.detector.DetectionEngine
+import tech.ajsf.instrutune.common.tuner.frequencydetection.model.DetectionResult
+import tech.ajsf.instrutune.test.data.TestDataFactory
 
 internal class FrequencyDetectorTest {
 

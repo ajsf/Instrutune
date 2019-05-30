@@ -2,6 +2,7 @@ package tech.ajsf.instrutune.features.customtuning.view
 
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -49,7 +50,7 @@ class CustomStringsView
         setOnTouchListener(StringDragListener())
     }
 
-    inner class StringDragListener : View.OnTouchListener {
+    inner class StringDragListener : OnTouchListener {
 
         private var startX: Int = 0
 
@@ -57,6 +58,7 @@ class CustomStringsView
 
         private var placeholder: FrameLayout? = null
 
+        @SuppressLint("ClickableViewAccessibility")
         override fun onTouch(view: View?, event: MotionEvent?): Boolean {
             if (view == null || event == null) return false
 

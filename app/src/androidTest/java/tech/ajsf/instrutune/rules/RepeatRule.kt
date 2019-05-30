@@ -9,7 +9,7 @@ class RepeatRule : TestRule {
     private class RepeatStatement(private val statement: Statement, private val repeat: Int) : Statement() {
         @Throws(Throwable::class)
         override fun evaluate() {
-            for (i in 0..repeat - 1) {
+            for (i in 0 until repeat) {
                 statement.evaluate()
             }
         }

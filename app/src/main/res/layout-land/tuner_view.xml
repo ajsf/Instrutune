@@ -12,15 +12,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent=".52" />
+        app:layout_constraintGuide_percent=".51" />
 
     <TextView
         android:id="@+id/instrument_name_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:paddingTop="4dp"
+        android:minHeight="@dimen/min_item_height"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+        app:layout_constraintBaseline_toBaselineOf="@id/mode_button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent=".3"
@@ -31,6 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:minHeight="@dimen/min_item_height"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
         app:layout_constraintBaseline_toBaselineOf="@id/instrument_name_text"
         app:layout_constraintRight_toRightOf="parent"
@@ -42,6 +44,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Display2"
         android:textColor="@color/colorDisabled"
+        android:textSize="@dimen/note_text_size_land"
         tools:text="000.00 Hz" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -60,7 +63,7 @@
         android:id="@+id/tuner_meter_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         app:layout_constraintBottom_toBottomOf="@id/meter_bottom_guideline"
@@ -91,8 +94,9 @@
         android:gravity="center"
         android:maxLines="1"
         android:minWidth="48dp"
+        android:paddingTop="4dp"
         android:textColor="@color/colorDisabled"
-        android:textSize="60sp"
+        android:textSize="@dimen/note_text_size_land"
         tools:text="A#" />
 
     <tech.ajsf.instrutune.features.tuner.view.RightChevron
@@ -110,9 +114,10 @@
     <Button
         android:id="@+id/mode_button"
         style="@style/BuilderButton"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="0dp"
+        android:gravity="start"
+        android:minHeight="@dimen/min_item_height"
         android:padding="0dp"
         android:text="@string/instrument_mode"
         android:textColor="@color/primaryLightColor"
