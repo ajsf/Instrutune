@@ -11,6 +11,7 @@ import androidx.test.espresso.action.ViewActions.swipeDown
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.GrantPermissionRule
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.BackpressureStrategy
 import io.reactivex.subjects.PublishSubject
@@ -40,6 +41,10 @@ internal class TunerActivityTest {
         bind<FrequencyDetector>(overrides = true) with provider { mockDetector }
         bind<SharedPreferences>(overrides = true) with provider { prefs }
     }
+
+    @get:Rule
+    val grantPermissionRule: GrantPermissionRule = GrantPermissionRule
+        .grant(android.Manifest.permission.RECORD_AUDIO)
 
     private lateinit var scenario: ActivityScenario<TunerActivity>
 
@@ -208,6 +213,7 @@ internal class TunerActivityTest {
             .check(matches(withText(firstFreq.formatForView())))
 
         freqSubject.onNext(testFreq)
+        Thread.sleep(100)
 
         onView(withId(R.id.recent_freq_text))
             .check(matches(withText(testFreq.formatForView())))
