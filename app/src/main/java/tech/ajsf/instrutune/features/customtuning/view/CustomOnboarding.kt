@@ -83,7 +83,7 @@ class CustomOnboarding(private val activity: CustomTuningActivity) : Onboarding(
 
     private fun noteShowcase(): Unit = with(activity) {
         this@CustomOnboarding.onboardingState = StepThree
-        if (strings_view.size > 0) {
+        if (strings_view.size > 1) {
             val stringView = strings_view[1] as TunerStringView
             stringView.updateSelectedString(stringView.numberedName, false)
             noCloseBuilder()
@@ -104,7 +104,7 @@ class CustomOnboarding(private val activity: CustomTuningActivity) : Onboarding(
     private fun dragShowcase(): Unit = with(activity) {
         this@CustomOnboarding.onboardingState = StepFour
 
-        if (strings_view.size > 0) {
+        if (strings_view.size > 1) {
             val stringView = strings_view[1] as TunerStringView
             noCloseBuilder()
                 .title(getString(R.string.drag_showcase_text))
