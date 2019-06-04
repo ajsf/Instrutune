@@ -24,9 +24,7 @@ class EntityToInstrumentMapper : InstrumentMapper {
 
     private fun InstrumentEntity.buildNoteList(): List<InstrumentNote> {
         val notes = ChromaticOctave.createFullRange()
-        println("0----0 notes: $notes")
         return numberedNotes.map { numberedNote ->
-            println("-------------: nn: $numberedNote")
             notes.firstOrNull { it.numberedName == numberedNote }
                 ?: throw RuntimeException("Invalid note")
         }.map { InstrumentNote(it.numberedName, it.freq) }

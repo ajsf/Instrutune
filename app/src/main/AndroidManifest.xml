@@ -3,6 +3,9 @@
     package="tech.ajsf.instrutune">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="true" />
 
     <application
         android:name=".InstrutuneApp"
