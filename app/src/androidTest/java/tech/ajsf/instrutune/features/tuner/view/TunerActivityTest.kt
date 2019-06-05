@@ -213,7 +213,7 @@ internal class TunerActivityTest {
             .check(matches(withText(firstFreq.formatForView())))
 
         freqSubject.onNext(testFreq)
-        Thread.sleep(100)
+        Thread.sleep(200)
 
         onView(withId(R.id.recent_freq_text))
             .check(matches(withText(testFreq.formatForView())))

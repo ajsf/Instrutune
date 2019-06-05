@@ -64,7 +64,7 @@ data class ChromaticOctave(private val number: Int = 4, private val centerA: Int
         aNote,
         MusicalNote.fromName(
             aNote.relativeFreq(1),
-            "aNote#",
+            "A#",
             (number * 12) + 2
         ),
         MusicalNote.fromName(
