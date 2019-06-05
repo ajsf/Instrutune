@@ -37,7 +37,7 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:$androidx_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
-    implementation 'com.google.android.material:material:1.1.0-alpha05'
+    implementation 'com.google.android.material:material:1.1.0-alpha07'
 
     implementation "org.kodein.di:kodein-di-generic-jvm:$kodein_version"
     implementation "org.kodein.di:kodein-di-framework-android-x:$kodein_version"
@@ -58,7 +58,7 @@ dependencies {
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
     testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
 
-    androidTestImplementation 'androidx.test:core:1.1.0'
+    androidTestImplementation 'androidx.test:core:1.2.0'
     androidTestImplementation "androidx.test:runner:$android_test_runner_version"
     androidTestImplementation "androidx.test:rules:$android_test_runner_version"
     androidTestImplementation "androidx.arch.core:core-testing:$lifecycle_version"

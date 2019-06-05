@@ -4,9 +4,13 @@
     <style name="AppTheme" parent="Theme.MaterialComponents">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorSurface">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
-        <item name="colorAccent">@color/secondaryColor</item>s
+        <item name="colorSecondary">@color/secondaryColor</item>s
+        <item name="colorSecondaryVariant">@color/secondaryLightColor</item>s
         <item name="android:textColor">@color/textColor</item>
+        <item name="materialAlertDialogTheme">@style/DialogTheme</item>
         <item name="alertDialogTheme">@style/DialogTheme</item>
         <item name="dialogTheme">@style/DialogTheme</item>
     </style>
